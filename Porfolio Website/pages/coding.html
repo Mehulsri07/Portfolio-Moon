@@ -1,1 +1,175 @@
-﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Coding</title></head><body><h1>Coding Page</h1><p>Welcome to Coding</p></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineering & Logic | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #fafafa;
+      --border: #eaeaea;
+      --border-hover: #d0d0d0;
+      --text: #111111;
+      --text-muted: #666666;
+      --accent: #222222;
+      --sans: 'Inter', sans-serif;
+      --mono: 'Space Mono', monospace;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    .nav {
+      padding: 1.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+    }
+    .back {
+      font-family: var(--mono);
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+    .back:hover {
+      color: var(--text);
+    }
+    .brand {
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 4rem;
+    }
+    .header {
+      margin-bottom: 5rem;
+    }
+    h1 {
+      font-weight: 500;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin: 0 0 1.5rem 0;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      max-width: 600px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .card {
+      padding: 3rem;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s ease;
+    }
+    .card:hover {
+      background: var(--surface);
+    }
+    .card-meta {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .card h3 {
+      font-size: 1.75rem;
+      font-weight: 500;
+      margin: 0 0 1rem 0;
+      letter-spacing: -0.02em;
+    }
+    .card p {
+      color: var(--text-muted);
+      flex-grow: 1;
+      margin-bottom: 3rem;
+    }
+    .card-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text);
+      text-decoration: none;
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-link::after {
+      content: '→';
+      transition: transform 0.2s ease;
+    }
+    .card-link:hover::after {
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="back">← Return to orbit</a>
+    <div class="brand">Engineering</div>
+  </nav>
+
+  <main class="container">
+    <header class="header">
+      <h1>Systems, Architecture<br>& Logic.</h1>
+      <p class="subtitle">A product-first approach to building scalable infrastructure and precise user experiences.</p>
+    </header>
+
+    <div class="grid">
+      <article class="card">
+        <div class="card-meta">
+          <span>Backend</span>
+          <span>● Rust</span>
+        </div>
+        <h3>High-Frequency Trading Engine</h3>
+        <p>A distributed order matching system capable of processing millions of transactions per second with sub-millisecond latency.</p>
+        <a href="#" class="card-link">View Documentation</a>
+      </article>
+      
+      <article class="card">
+        <div class="card-meta">
+          <span>Frontend</span>
+          <span>● React</span>
+        </div>
+        <h3>Financial Analytics Dashboard</h3>
+        <p>Real-time data visualization platform processing dense datasets into actionable, minimal interfaces for analysts.</p>
+        <a href="#" class="card-link">Explore Case Study</a>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span>Systems</span>
+          <span>● Go</span>
+        </div>
+        <h3>Distributed Cache Node</h3>
+        <p>A custom in-memory keystore with automated sharding protocol built entirely in Go to reduce latency on global CDN edges.</p>
+        <a href="#" class="card-link">Read Source Code</a>
+      </article>
+    </div>
+  </main>
+</body>
+</html>

@@ -41,6 +41,26 @@
   <div id="scroll-space"></div>
   <canvas id="moon-canvas"></canvas>
 
+  <div class="hover-bg coding-bg">
+    <div class="code-lines">
+import React from 'react';
+function App() {
+  const [active, setActive] = useState(false);
+  return <Terminal className="matrix-rain" />;
+}
+
+// Processing data streams
+const buffer = new Uint8Array(1024);
+async function stream() {
+  while(true) {
+    await process(buffer);
+  }
+}
+    </div>
+  </div>
+
+  <div class="hover-bg creativity-bg"></div>
+
   <div id="labels">
     <a href="pages/coding.html" class="label left">Coding</a>
     <a href="pages/creativity.html" class="label right">Creativity</a>
