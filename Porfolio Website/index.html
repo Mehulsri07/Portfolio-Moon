@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | Moon Experience</title>
+
+  <link rel="stylesheet" href="style.css?v=2" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Space+Mono&display=swap"
+    rel="stylesheet" />
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.152.2/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.152.2/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="main.js?v=4" defer></script>
+</head>
+
+<body>
+  <section id="hero">
+    <span class="welcome-line">Welcome to</span>
+    <span class="welcome-line cursive">my world</span>
+    <div class="hint">Scroll to reveal</div>
+  </section>
+
+  <div id="moon-loading" class="done" aria-live="polite" aria-busy="false">
+    <div class="moon-loading-inner">
+      <span class="moon-loading-label">Loading moon</span>
+      <div class="moon-loading-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="moon-loading-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="scroll-space"></div>
+  <canvas id="moon-canvas"></canvas>
+
+  <div id="labels">
+    <a href="pages/coding.html" class="label left">Coding</a>
+    <a href="pages/creativity.html" class="label right">Creativity</a>
+  </div>
+</body>
+
+</html>
