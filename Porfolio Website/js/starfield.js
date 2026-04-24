@@ -1,6 +1,6 @@
 // js/starfield.js
 // Animated twinkling starfield with subtle parallax
-(function () {
+export function initStarfield() {
   const canvas = document.createElement('canvas');
   canvas.id = 'starfield-canvas';
   Object.assign(canvas.style, {
@@ -8,6 +8,7 @@
     inset: '0',
     zIndex: '0',
     pointerEvents: 'none',
+    transition: 'opacity 1s ease',
   });
   document.body.prepend(canvas);
 
@@ -31,7 +32,6 @@
         alpha: Math.random() * 0.6 + 0.2,
         twinkleSpeed: Math.random() * 0.015 + 0.005,
         twinklePhase: Math.random() * Math.PI * 2,
-        // Parallax depth layer: 0.2 = far, 1.0 = near
         depth: Math.random() * 0.8 + 0.2,
       });
     }
@@ -46,11 +46,9 @@
     time += 1;
 
     for (const star of stars) {
-      // Twinkling
       const twinkle = Math.sin(time * star.twinkleSpeed + star.twinklePhase);
       const alpha = star.alpha + twinkle * 0.25;
 
-      // Subtle parallax on scroll
       const parallaxY = (star.y - scrollY * star.depth * 0.05) % canvas.height;
       const drawY = parallaxY < 0 ? parallaxY + canvas.height : parallaxY;
 
@@ -66,4 +64,4 @@
   resize();
   window.addEventListener('resize', resize);
   draw();
-})();
+}

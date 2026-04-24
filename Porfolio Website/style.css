@@ -12,9 +12,13 @@
   --text: #c4c9d6;
   --cream: #e2d9c6;
   --muted: #404558;
+  --accent: #c8b8ff;
   --serif: 'Cormorant Garamond', serif;
   --mono: 'Space Mono', monospace;
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+
 
 body {
   background: var(--bg);
@@ -22,6 +26,7 @@ body {
   overflow-x: hidden;
   font-family: var(--mono);
   min-height: 200vh;
+  transition: background var(--transition), color var(--transition);
 }
 
 #hero {
@@ -345,3 +350,5 @@ body:has(.label.right:hover) .label.right {
   50% { bottom: 55%; left: 52%; transform: rotate(15deg); }
   100% { bottom: 110%; left: 60%; opacity: 0; transform: rotate(-10deg); }
 }
+
+

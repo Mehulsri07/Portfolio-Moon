@@ -26,7 +26,7 @@ function ease(t) {
   return t * t * (3 - 2 * t);
 }
 
-export function createAnimationLoop({ renderer, scene, camera, getMoon, scrollState }) {
+export function createAnimationLoop({ composer, renderer, scene, camera, getMoon, scrollState }) {
   const state = {
     currentY: -5.5,
     currentRotY: Math.PI,
@@ -50,7 +50,11 @@ export function createAnimationLoop({ renderer, scene, camera, getMoon, scrollSt
       moon.rotation.x = Math.sin(eased * Math.PI) * 0.05;
     }
 
-    renderer.render(scene, camera);
+    if (composer) {
+      composer.render();
+    } else {
+      renderer.render(scene, camera);
+    }
   }
 
   animate();

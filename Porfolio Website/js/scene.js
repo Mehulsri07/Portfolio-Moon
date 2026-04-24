@@ -3,6 +3,34 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
+export function updateSceneTheme(scene, components, theme) {
+  // Background
+  scene.background = new THREE.Color('#050609');
+
+  // Lighting
+  if (components.keyLight) {
+    components.keyLight.intensity = 1.2;
+    components.keyLight.color.set(0xffffff);
+  }
+
+  if (components.fillLight) {
+    components.fillLight.intensity = 0.18;
+    components.fillLight.color.set(0x8899bb);
+  }
+
+  if (components.ambientLight) {
+    components.ambientLight.intensity = 0.14;
+    components.ambientLight.color.set(0x9090a0);
+  }
+
+  // Hide stars in light mode (optional if using separate canvas, but good for Three.js points)
+  scene.traverse(child => {
+    if (child.isPoints) {
+      child.visible = true;
+    }
+  });
+}
+
 export function createScene(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -56,7 +84,7 @@ export function createScene(canvas) {
   });
   scene.add(new THREE.Points(starsGeometry, starsMaterial));
 
-  return { scene, camera, renderer };
+  return { scene, camera, renderer, keyLight, fillLight, ambientLight };
 }
 
 export function createBloomComposer(renderer, scene, camera) {

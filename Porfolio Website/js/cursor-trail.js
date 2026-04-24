@@ -1,6 +1,6 @@
 // js/cursor-trail.js
 // Glowing particle trail that follows the mouse
-(function () {
+export function initCursorTrail() {
   const canvas = document.createElement('canvas');
   canvas.id = 'cursor-trail-canvas';
   Object.assign(canvas.style, {
@@ -69,4 +69,4 @@
   }
 
   draw();
-})();
+}

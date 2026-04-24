@@ -3,7 +3,9 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
-const MODEL_URL = 'assets/models/moon.glb';
+const MODELS = {
+  moon: 'assets/models/moon.glb'
+};
 const FALLBACK_MOON_TEXTURE = 'assets/moon_1024.jpg';
 
 // Draco decoder for compressed GLTF meshes
@@ -36,7 +38,7 @@ export function setMoonOpacity(moon, opacity) {
   }
 }
 
-function applyMoonMaterial(mesh, texture, renderer) {
+function applyModelMaterial(mesh, texture, renderer, modelType) {
   const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
 
   mats.forEach((mat) => {
@@ -61,23 +63,25 @@ function applyMoonMaterial(mesh, texture, renderer) {
   }
 }
 
-export async function loadMoonModel(scene, options = {}) {
+export async function loadPortfolioModel(scene, type, options = {}) {
   const { onProgress, renderer } = options;
 
+  const url = MODELS[type] || MODELS.moon;
   const texLoader = new THREE.TextureLoader();
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);
-  const gltf = await gltfLoader.loadAsync(MODEL_URL, (e) => {
+  
+  const gltf = await gltfLoader.loadAsync(url, (e) => {
     if (!onProgress) return;
     if (e.lengthComputable && e.total > 0) {
       onProgress(e.loaded / e.total);
     }
   });
 
-  const moon = gltf.scene;
+  const model = gltf.scene;
 
   let needsFallbackTexture = false;
-  moon.traverse((child) => {
+  model.traverse((child) => {
     if (!child.isMesh) return;
     const mats = Array.isArray(child.material) ? child.material : [child.material];
     for (const m of mats) {
@@ -88,37 +92,42 @@ export async function loadMoonModel(scene, options = {}) {
     }
   });
 
-  let moonTexture = null;
+  let texture = null;
   if (needsFallbackTexture) {
-    moonTexture = await texLoader.loadAsync(FALLBACK_MOON_TEXTURE).catch(() => null);
-    if (moonTexture) {
-      moonTexture.colorSpace = THREE.SRGBColorSpace;
+    texture = await texLoader.loadAsync(FALLBACK_MOON_TEXTURE).catch(() => null);
+    if (texture) {
+      texture.colorSpace = THREE.SRGBColorSpace;
     }
   }
 
-  moon.traverse((child) => {
+  model.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
-      applyMoonMaterial(child, moonTexture, renderer);
+      applyModelMaterial(child, texture, renderer, type);
     }
   });
 
-  const box = new THREE.Box3().setFromObject(moon);
+  const box = new THREE.Box3().setFromObject(model);
   const size = new THREE.Vector3();
   box.getSize(size);
   const maxDim = Math.max(size.x, size.y, size.z) || 1;
   const targetDiameter = 6.4;
-  moon.scale.setScalar((targetDiameter / maxDim) * 1.06);
+  model.scale.setScalar((targetDiameter / maxDim) * 1.06);
 
-  moon.position.set(0, -5.5, 0);
-  moon.rotation.set(0, 0, 0);
+  model.position.set(0, -5.5, 0);
+  model.rotation.set(0, 0, 0);
 
-  scene.add(moon);
+  scene.add(model);
 
-  // Make the moon visible and fully opaque after loading
-  setMoonOpacity(moon, 1);
-  moon.visible = true;
+  // Make the model visible and fully opaque after loading
+  setMoonOpacity(model, 1);
+  model.visible = true;
 
-  return moon;
+  return model;
+}
+
+// Deprecated alias
+export async function loadMoonModel(scene, options) {
+  return loadPortfolioModel(scene, 'moon', options);
 }

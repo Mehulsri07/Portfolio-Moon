@@ -1,8 +1,14 @@
 // main.js
-import { createScene, createBloomComposer } from './js/scene.js';
-import { loadMoonModel } from './js/loader.js?v=2';
-import { createScrollController, createAnimationLoop } from './js/animation.js?v=4';
-import { setupInteraction } from './js/interaction.js';
+import { createScene, createBloomComposer, updateSceneTheme } from './js/scene.js?v=20';
+import { loadPortfolioModel } from './js/loader.js?v=20';
+import { createScrollController, createAnimationLoop } from './js/animation.js?v=20';
+import { setupInteraction } from './js/interaction.js?v=20';
+
+// Import visual effects
+import { initStarfield } from './js/starfield.js';
+import { initCursorTrail } from './js/cursor-trail.js';
+import { initHoverEffects } from './js/hover-effects.js';
+import { initTransitions } from './js/transitions.js';
 
 const canvas = document.getElementById('moon-canvas');
 const labels = document.getElementById('labels');
@@ -12,13 +18,25 @@ const loadingBar = loadingEl?.querySelector('.moon-loading-bar');
 
 const LAZY_LOAD_SCROLL_PX = 8;
 
-const { scene, camera, renderer } = createScene(canvas);
+const { scene, camera, renderer, keyLight, fillLight, ambientLight } = createScene(canvas);
+const sceneComponents = { keyLight, fillLight, ambientLight };
 const { composer, bloomPass } = createBloomComposer(renderer, scene, camera);
 
 const scrollState = createScrollController(labels);
 
-let moon = null;
-let moonLoadStarted = false;
+let activeModel = null;
+let modelLoadStarted = false;
+let currentModelType = 'moon';
+
+// Initial theme update
+updateSceneTheme(scene, sceneComponents, 'dark');
+bloomPass.strength = 0.15;
+
+// Initialize visual effects
+initStarfield();
+initCursorTrail();
+initHoverEffects();
+initTransitions();
 
 function setLoadingProgress(p) {
   if (!loadingFill || !loadingBar) return;
@@ -27,60 +45,72 @@ function setLoadingProgress(p) {
   loadingBar.setAttribute('aria-valuenow', String(pct));
 }
 
-function beginMoonLazyLoad() {
-  if (moonLoadStarted) return;
-  moonLoadStarted = true;
+async function loadThemeModel(type) {
+  if (activeModel) {
+    scene.remove(activeModel);
+    activeModel = null;
+  }
 
   loadingEl?.classList.remove('done');
   loadingEl?.setAttribute('aria-busy', 'true');
   setLoadingProgress(0);
 
-  loadMoonModel(scene, {
-    renderer,
-    onProgress: setLoadingProgress,
-  })
-    .then((loadedMoon) => {
-      moon = loadedMoon;
-      setLoadingProgress(1);
-      loadingEl?.classList.add('done');
-      loadingEl?.setAttribute('aria-busy', 'false');
-      setupInteraction({
-        canvas,
-        camera,
-        moon,
-        isInteractive: () => scrollState.moonFade > 0.18,
-      });
-    })
-    .catch((err) => {
-      console.error('Moon model failed to load:', err);
-      loadingEl?.classList.add('done');
-      loadingEl?.setAttribute('aria-busy', 'false');
+  try {
+    const loadedModel = await loadPortfolioModel(scene, type, {
+      renderer,
+      onProgress: setLoadingProgress,
     });
+
+    activeModel = loadedModel;
+    currentModelType = type;
+
+    setLoadingProgress(1);
+    loadingEl?.classList.add('done');
+    loadingEl?.setAttribute('aria-busy', 'false');
+
+    setupInteraction({
+      canvas,
+      camera,
+      moon: activeModel,
+      isInteractive: () => scrollState.moonFade > 0.18,
+    });
+  } catch (err) {
+    console.error(`${type} model failed to load:`, err);
+    loadingEl?.classList.add('done');
+    loadingEl?.setAttribute('aria-busy', 'false');
+  }
 }
 
-function tryBeginMoonLazyLoad(event) {
-  if (moonLoadStarted) return;
+function beginLazyLoad() {
+  if (modelLoadStarted) return;
+  modelLoadStarted = true;
+  loadThemeModel(currentModelType);
+}
+
+function tryBeginLazyLoad(event) {
+  if (modelLoadStarted) return;
   if (window.scrollY >= LAZY_LOAD_SCROLL_PX) {
-    beginMoonLazyLoad();
+    beginLazyLoad();
     return;
   }
   if (event?.type === 'wheel') {
-    beginMoonLazyLoad();
+    beginLazyLoad();
   }
 }
 
-window.addEventListener('scroll', tryBeginMoonLazyLoad, { passive: true });
-window.addEventListener('wheel', tryBeginMoonLazyLoad, { passive: true });
 
-// Force moon to load immediately on page load
-beginMoonLazyLoad();
+window.addEventListener('scroll', tryBeginLazyLoad, { passive: true });
+window.addEventListener('wheel', tryBeginLazyLoad, { passive: true });
+
+// Force load immediately
+beginLazyLoad();
 
 createAnimationLoop({
   composer,
   renderer,
   scene,
   camera,
-  getMoon: () => moon,
+  getMoon: () => activeModel,
   scrollState,
 });
 

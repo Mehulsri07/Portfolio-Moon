@@ -1,3 +1,4 @@
+export function initHoverEffects() {
 // ── Matrix Rain (Coding Side) ─────────────────────────────────────
 (function initMatrix() {
     const canvas = document.getElementById('matrix-canvas');
@@ -168,3 +169,5 @@
 
     requestAnimationFrame(draw);
 })();
+
+}

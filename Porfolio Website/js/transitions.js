@@ -1,6 +1,6 @@
 // js/transitions.js
 // Cinematic fade-out transition for page navigation
-(function () {
+export function initTransitions() {
     // Create overlay element
     const overlay = document.createElement('div');
     overlay.id = 'page-transition-overlay';
@@ -54,4 +54,4 @@
             overlay.style.pointerEvents = 'none';
         }
     });
-})();
+}
