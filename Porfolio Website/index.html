@@ -4,11 +4,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio | Moon Experience</title>
+  <title>Mehul Srivastava | Portfolio</title>
+  <meta name="description" content="Portfolio of Mehul Srivastava — Software Engineer, Photographer, and Creative Builder.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
-  <link rel="stylesheet" href="style.css?v=2" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mehul Srivastava | Portfolio">
+  <meta property="og:description" content="Software engineer, photographer, and creative builder. Explore my projects and visual work.">
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="style.css?v=8" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Space+Mono&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"
     rel="stylesheet" />
 
   <script type="importmap">
@@ -19,52 +26,111 @@
     }
   }
   </script>
-  <script type="module" src="main.js?v=4" defer></script>
+  <script type="module" src="main.js?v=5" defer></script>
 </head>
 
 <body>
-  <section id="hero">
-    <span class="welcome-line">Welcome to</span>
-    <span class="welcome-line cursive">my world</span>
-    <div class="hint">Scroll to reveal</div>
-  </section>
 
+  <!-- Preloader -->
   <div id="moon-loading" class="done" aria-live="polite" aria-busy="false">
     <div class="moon-loading-inner">
-      <span class="moon-loading-label">Loading moon</span>
+      <div class="preloader-moon">
+        <svg viewBox="0 0 60 60" width="60" height="60">
+          <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(200,184,255,0.15)" stroke-width="1"/>
+          <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(200,184,255,0.5)" stroke-width="1"
+                  stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke-linecap="round"
+                  class="preloader-arc"/>
+          <circle cx="30" cy="30" r="8" fill="rgba(200,184,255,0.08)"/>
+          <circle cx="26" cy="27" r="2" fill="rgba(200,184,255,0.06)"/>
+          <circle cx="35" cy="33" r="1.5" fill="rgba(200,184,255,0.05)"/>
+        </svg>
+      </div>
+      <span class="moon-loading-label">Entering orbit</span>
       <div class="moon-loading-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <div class="moon-loading-fill"></div>
       </div>
     </div>
   </div>
 
+  <section id="hero">
+    <span class="welcome-line">Welcome to</span>
+    <span class="welcome-line cursive">my world</span>
+    <div class="hint">Scroll to reveal</div>
+  </section>
+
   <div id="scroll-space"></div>
   <canvas id="moon-canvas"></canvas>
 
   <div class="hover-bg coding-bg">
-    <div class="code-lines">
-import React from 'react';
-function App() {
-  const [active, setActive] = useState(false);
-  return <Terminal className="matrix-rain" />;
-}
-
-// Processing data streams
-const buffer = new Uint8Array(1024);
-async function stream() {
-  while(true) {
-    await process(buffer);
-  }
-}
-    </div>
+    <canvas id="matrix-canvas"></canvas>
   </div>
 
-  <div class="hover-bg creativity-bg"></div>
+  <div class="hover-bg creativity-bg">
+    <canvas id="creativity-canvas"></canvas>
+  </div>
 
   <div id="labels">
     <a href="pages/coding.html" class="label left">Coding</a>
     <a href="pages/creativity.html" class="label right">Creativity</a>
   </div>
+
+  <!-- Bottom nav for sub-pages -->
+  <nav id="bottom-nav">
+    <a href="pages/about.html" class="bottom-link">About</a>
+    <a href="pages/contact.html" class="bottom-link">Contact</a>
+    <a href="pages/blog.html" class="bottom-link">Blog</a>
+  </nav>
+
+  <!-- Easter egg tooltip -->
+  <div id="easter-egg-toast" class="easter-toast">🧑‍🚀 You found the astronaut!</div>
+
+  <script src="js/starfield.js"></script>
+  <script src="js/cursor-trail.js"></script>
+  <script src="js/hover-effects.js?v=1"></script>
+  <script src="js/transitions.js"></script>
+
+  <!-- Moon Easter Egg -->
+  <script>
+    (function () {
+      let clickCount = 0;
+      let clickTimer = null;
+      const canvas = document.getElementById('moon-canvas');
+      const toast = document.getElementById('easter-egg-toast');
+
+      canvas.addEventListener('click', (e) => {
+        clickCount++;
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
+
+        if (clickCount >= 5) {
+          clickCount = 0;
+          triggerEasterEgg();
+        }
+      });
+
+      function triggerEasterEgg() {
+        // Show toast
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+
+        // Create floating astronaut
+        const astro = document.createElement('div');
+        astro.className = 'floating-astronaut';
+        astro.innerHTML = `<svg viewBox="0 0 50 50" width="50" height="50" fill="none">
+          <ellipse cx="25" cy="18" rx="10" ry="12" fill="#444" stroke="#666" stroke-width="0.8"/>
+          <rect x="18" y="12" width="14" height="10" rx="4" fill="#333" stroke="#777" stroke-width="0.5"/>
+          <rect x="19" y="13" width="12" height="8" rx="3" fill="#1a1a2e"/>
+          <ellipse cx="25" cy="17" rx="4" ry="2.5" fill="rgba(200,184,255,0.2)"/>
+          <rect x="19" y="30" width="12" height="10" rx="3" fill="#444" stroke="#666" stroke-width="0.8"/>
+          <rect x="15" y="32" width="6" height="7" rx="2" fill="#444"/>
+          <rect x="29" y="32" width="6" height="7" rx="2" fill="#444"/>
+        </svg>`;
+        document.body.appendChild(astro);
+
+        setTimeout(() => astro.remove(), 6000);
+      }
+    })();
+  </script>
 </body>
 
 </html>

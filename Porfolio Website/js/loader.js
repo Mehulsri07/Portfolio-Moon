@@ -1,10 +1,14 @@
 // js/loader.js
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 const MODEL_URL = 'assets/models/moon.glb';
-const FALLBACK_MOON_TEXTURE =
-  'https://unpkg.com/three@0.152.2/examples/textures/planets/moon_1024.jpg';
+const FALLBACK_MOON_TEXTURE = 'assets/moon_1024.jpg';
+
+// Draco decoder for compressed GLTF meshes
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('https://unpkg.com/three@0.152.2/examples/jsm/libs/draco/gltf/');
 
 export function setMoonOpacity(moon, opacity) {
   if (!moon) return;
@@ -62,6 +66,7 @@ export async function loadMoonModel(scene, options = {}) {
 
   const texLoader = new THREE.TextureLoader();
   const gltfLoader = new GLTFLoader();
+  gltfLoader.setDRACOLoader(dracoLoader);
   const gltf = await gltfLoader.loadAsync(MODEL_URL, (e) => {
     if (!onProgress) return;
     if (e.lengthComputable && e.total > 0) {

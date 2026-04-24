@@ -1,6 +1,6 @@
 // main.js
 import { createScene, createBloomComposer } from './js/scene.js';
-import { loadMoonModel } from './js/loader.js';
+import { loadMoonModel } from './js/loader.js?v=2';
 import { createScrollController, createAnimationLoop } from './js/animation.js?v=4';
 import { setupInteraction } from './js/interaction.js';
 

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Mehul Srivastava</title>
+  <meta name="description" content="Thoughts on engineering, photography, and building things that matter.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <meta property="og:title" content="Blog | Mehul Srivastava">
+  <meta property="og:description" content="Thoughts on engineering, photography, and building things.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0b; --surface: #111112; --surface-raised: #161618;
+      --border: #1e1e20; --border-hover: #333336;
+      --text: #f0f0f0; --text-muted: #777779;
+      --accent: #c8b8ff; --accent-dim: rgba(200,184,255,0.08);
+      --accent-warm: #e2d9c6;
+      --sans: 'Inter', sans-serif; --mono: 'Space Mono', monospace;
+      --serif: 'Cormorant Garamond', serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 3rem; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(10,10,11,0.7); backdrop-filter: blur(20px) saturate(1.6);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .back { font-family: var(--mono); text-decoration: none; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; transition: color 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .back:hover { color: var(--text); }
+    .back-arrow { display: inline-block; transition: transform 0.3s var(--ease-out); }
+    .back:hover .back-arrow { transform: translateX(-3px); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-link { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+    .nav-link:hover { color: var(--text); }
+    .nav-link.active { color: var(--accent); }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 20px; height: 1.5px; background: var(--text-muted); margin: 4px 0; }
+    .mobile-menu { display: none; position: fixed; inset: 0; background: rgba(10,10,11,0.95); backdrop-filter: blur(20px); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--serif); font-size: 2rem; color: var(--text); text-decoration: none; opacity: 0.7; transition: opacity 0.3s; }
+    .mobile-menu a:hover { opacity: 1; }
+    @media (max-width: 768px) { .nav-links { display: none; } .hamburger { display: block; } .nav { padding: 1rem 1.5rem; } }
+
+    .hero { padding: 10rem 3rem 3rem; max-width: 800px; margin: 0 auto; }
+    .hero-label { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.2s forwards; }
+    h1 { font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--accent-warm); line-height: 1.15; margin-bottom: 1rem; opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.35s forwards; }
+    .subtitle { color: var(--text-muted); font-size: 1rem; font-weight: 300; opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.5s forwards; }
+
+    .posts-section { max-width: 800px; margin: 0 auto; padding: 2rem 3rem 5rem; }
+    .posts-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; opacity: 0; animation: fadeIn 1s var(--ease-out) 0.6s forwards; }
+
+    .post-card { background: var(--bg); padding: 2.5rem; transition: background 0.3s; cursor: default; }
+    .post-card:hover { background: var(--surface); }
+    .post-meta { font-family: var(--mono); font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; display: flex; gap: 1rem; margin-bottom: 0.75rem; }
+    .post-tag { color: var(--accent); }
+    .post-card h2 { font-size: 1.3rem; font-weight: 500; margin-bottom: 0.6rem; letter-spacing: -0.01em; }
+    .post-card p { color: var(--text-muted); font-size: 0.9rem; font-weight: 300; line-height: 1.7; max-width: 600px; }
+    .post-read { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1rem; font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .post-read::after { content: '→'; transition: transform 0.2s; }
+    .post-card:hover .post-read::after { transform: translateX(4px); }
+
+    .footer { border-top: 1px solid var(--border); padding: 3rem; text-align: center; }
+    .footer p { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin: 0; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @media (max-width: 768px) { .hero, .posts-section { padding-left: 1.5rem; padding-right: 1.5rem; } }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="back"><span class="back-arrow">←</span> Return to orbit</a>
+    <div class="nav-links">
+      <a href="coding.html" class="nav-link">Coding</a>
+      <a href="creativity.html" class="nav-link">Creativity</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="blog.html" class="nav-link active">Blog</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="coding.html">Coding</a><a href="creativity.html">Creativity</a>
+    <a href="about.html">About</a><a href="contact.html">Contact</a>
+    <a href="blog.html">Blog</a><a href="../index.html">Home</a>
+  </div>
+
+  <section class="hero">
+    <div class="hero-label">Blog</div>
+    <h1>Thoughts & Reflections</h1>
+    <p class="subtitle">Notes on engineering, photography, and the things I'm learning along the way.</p>
+  </section>
+
+  <section class="posts-section">
+    <div class="posts-list">
+      <article class="post-card">
+        <div class="post-meta">
+          <span class="post-tag">Engineering</span>
+          <span>Apr 2026</span>
+        </div>
+        <h2>Building StrataDesk: Visualizing Geology in the Browser</h2>
+        <p>How I built a geological cross-section renderer using React and JavaScript — handling Bézier curves, stratigraphic correlation, and real-world borehole data from field geologists.</p>
+        <div class="post-read">Read more</div>
+      </article>
+
+      <article class="post-card">
+        <div class="post-meta">
+          <span class="post-tag">Photography</span>
+          <span>Mar 2026</span>
+        </div>
+        <h2>Behind the Lens: Shooting Live Events at Scale</h2>
+        <p>Lessons learned managing a photography team for university events — from equipment logistics to post-processing workflows that deliver hundreds of photos overnight.</p>
+        <div class="post-read">Read more</div>
+      </article>
+
+      <article class="post-card">
+        <div class="post-meta">
+          <span class="post-tag">Deep Learning</span>
+          <span>Jan 2026</span>
+        </div>
+        <h2>Training a CNN to Read Handwritten Math</h2>
+        <p>A walkthrough of my OCR project — from dataset preparation and model architecture choices to the challenges of recognizing mathematical symbols in real time.</p>
+        <div class="post-read">Read more</div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer"><p>© Mehul Srivastava</p></footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('open'));
+  </script>
+  <script src="../js/transitions.js"></script>
+</body>
+</html>
