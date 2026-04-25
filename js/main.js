@@ -1,4 +1,6 @@
 // main.js
+window.addEventListener('error', e => console.error('Global Error:', e));
+window.addEventListener('unhandledrejection', e => console.error('Promise Error:', e));
 
 import { createScene, createBloomComposer, updateSceneTheme } from './scene.js';
 import { loadPortfolioModel } from './loader.js';
@@ -17,8 +19,6 @@ const loadingEl = document.getElementById('moon-loading');
 const loadingFill = loadingEl?.querySelector('.moon-loading-fill');
 const loadingBar = loadingEl?.querySelector('.moon-loading-bar');
 
-const LAZY_LOAD_SCROLL_PX = 8;
-
 const { scene, camera, renderer, keyLight, fillLight, ambientLight } = createScene(canvas);
 const sceneComponents = { keyLight, fillLight, ambientLight };
 
@@ -27,8 +27,6 @@ const { composer, bloomPass } = createBloomComposer(renderer, scene, camera);
 const scrollState = createScrollController(labels);
 
 let activeModel = null;
-let modelLoadStarted = false;
-let currentModelType = 'moon';
 
 // Initial theme update
 updateSceneTheme(scene, sceneComponents, 'dark');
@@ -47,24 +45,16 @@ function setLoadingProgress(p) {
   loadingBar.setAttribute('aria-valuenow', String(pct));
 }
 
-async function loadThemeModel(type) {
-  if (activeModel) {
-    scene.remove(activeModel);
-    activeModel = null;
-  }
-
+async function loadModel() {
   loadingEl?.classList.remove('done');
   loadingEl?.setAttribute('aria-busy', 'true');
   setLoadingProgress(0);
 
   try {
-    const loadedModel = await loadPortfolioModel(scene, type, {
+    activeModel = await loadPortfolioModel(scene, 'moon', {
       renderer,
       onProgress: setLoadingProgress,
     });
-
-    activeModel = loadedModel;
-    currentModelType = type;
 
     setLoadingProgress(1);
     loadingEl?.classList.add('done');
@@ -78,35 +68,13 @@ async function loadThemeModel(type) {
     });
 
   } catch (err) {
-    console.error(`${type} model failed to load:`, err);
+    console.error('Moon model failed to load:', err);
     loadingEl?.classList.add('done');
     loadingEl?.setAttribute('aria-busy', 'false');
   }
 }
 
-function beginLazyLoad() {
-  if (modelLoadStarted) return;
-  modelLoadStarted = true;
-  loadThemeModel(currentModelType);
-}
-
-function tryBeginLazyLoad(event) {
-  if (modelLoadStarted) return;
-
-  if (window.scrollY >= LAZY_LOAD_SCROLL_PX) {
-    beginLazyLoad();
-    return;
-  }
-
-  if (event?.type === 'wheel') {
-    beginLazyLoad();
-  }
-}
-
-window.addEventListener('scroll', tryBeginLazyLoad, { passive: true });
-window.addEventListener('wheel', tryBeginLazyLoad, { passive: true });
-
-// ❌ Removed forced load to enable true lazy loading
+loadModel();
 
 createAnimationLoop({
   composer,

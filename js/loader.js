@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 const MODELS = {
-  moon: 'assets/models/moon_opt.glb'
+  moon: './assets/models/moon_opt.glb'
 };
 const FALLBACK_MOON_TEXTURE = 'assets/moon_1024.jpg';
 
