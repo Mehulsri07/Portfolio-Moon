@@ -241,7 +241,7 @@ body:has(.label.right:hover) .creativity-bg {
   z-index: -1;
 }
 
-/* ── Labels ───────────────────────────────────────────── */
+/* ── Desktop: bigger hit area for labels ─────────────── */
 .label {
   position: absolute;
   top: 50%;
@@ -257,14 +257,15 @@ body:has(.label.right:hover) .creativity-bg {
   cursor: pointer;
   transition: color 0.3s ease, text-shadow 0.3s ease;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+  padding: 20px 28px;
 }
 
 .label.left {
-  left: 80px;
+  left: 52px;
 }
 
 .label.right {
-  right: 80px;
+  right: 52px;
 }
 
 .label:hover {
@@ -363,28 +364,85 @@ body:has(.label.right:hover) .label.right {
   100% { bottom: 110%; left: 60%; opacity: 0; transform: rotate(-10deg); }
 }
 
-@media (max-width: 600px) {
-  #labels {
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+@media (max-width: 768px) {
+  /* Hero text — readable, no overlap */
+  .welcome-line:first-child {
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
   }
-  .label.left, .label.right {
-    position: relative;
+  .welcome-line.cursive {
+    font-size: clamp(2.2rem, 9vw, 3rem);
+  }
+  #hero {
+    padding-top: 0;
+    justify-content: flex-start;
+    padding-top: 22vh;
+  }
+  .hint {
+    bottom: 40px;
+    font-size: 0.55rem;
+  }
+
+  /* Labels: stack vertically at bottom, large tap targets */
+  #labels {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    padding-bottom: 100px;
+    gap: 0;
+    inset: 0;
+  }
+  .label {
+    position: static;
+    transform: none;
     top: auto;
     left: auto;
     right: auto;
-    transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 18px 24px;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
   }
-  #hero {
-    background-size: cover;
+  .label.left {
+    left: auto;
   }
-  .welcome-line:first-child {
-    font-size: 2rem;
+  .label.right {
+    right: auto;
   }
-  .welcome-line.cursive {
-    font-size: 2.5rem;
+
+  /* Bottom nav: spread out, easier to tap */
+  #bottom-nav {
+    bottom: 20px;
+    gap: 1.5rem;
+    width: 100%;
+    justify-content: center;
+    padding: 0 1rem;
   }
+  .bottom-link {
+    padding: 10px 8px;
+    font-size: 10px;
+  }
+
+  /* Disable hover-only canvas effects on touch */
+  .hover-bg {
+    display: none;
+  }
+
+  /* Reduce star count impact — canvas still renders but lighter */
+  #starfield-canvas {
+    opacity: 0.6;
+  }
+
+  /* Cursor trail off on touch devices */
+  #cursor-trail-canvas {
+    display: none;
+  }
+
   .featured-grid {
     grid-template-columns: 1fr !important;
   }
