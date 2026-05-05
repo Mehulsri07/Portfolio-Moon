@@ -1,0 +1,32 @@
+name: Convert JPG to WebP
+
+on:
+  push:
+    paths:
+      - 'Images/Portfolio_Creativity/**'
+      - 'data/photos.json'
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Pillow
+        run: pip install Pillow
+
+      - name: Convert JPGs to WebP and update photos.json
+        run: python scripts/convert_images.py
+
+      - name: Commit converted images and updated JSON
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-convert new images to WebP"
+          file_pattern: "Images/Portfolio_Creativity/*.webp data/photos.json"
