@@ -645,12 +645,13 @@
     <p class="subtitle">A curated collection of photography exploring light, composition, and the quiet beauty in
       everyday moments.</p>
     <div class="hero-divider"></div>
-    <div class="photo-count">18 Photographs</div>
+    <div class="photo-count" id="photo-count"></div>
   </section>
 
-  <!-- Gallery -->
+  <!-- Gallery — built dynamically from data/photos.json -->
   <section class="gallery-section" id="gallery">
-    <div class="masonry" id="masonry-grid">
+    <div class="masonry" id="masonry-grid"></div>
+  </section>
 
       <div class="gallery-item" data-index="0">
         <img src="../Images/Portfolio_Creativity/DSC02168.webp" alt="Stillness after rain" loading="lazy" decoding="async">
@@ -902,34 +903,65 @@
   </div>
 
   <script>
-    // ── Lightbox Logic ──
-    const imagesData = [
-  { src: '../Images/Portfolio_Creativity/DSC02168.webp', title: 'Stillness After Rain', desc: 'A quiet moment where nature pauses under fresh droplets.' },
-  { src: '../Images/Portfolio_Creativity/HTP01692.webp', title: 'Spotlight Conversations', desc: 'Two performers sharing energy under the stage lights.' },
-  { src: '../Images/Portfolio_Creativity/DSC07037.webp', title: 'Divinity in Motion', desc: 'A vibrant procession where faith and celebration collide.' },
-  { src: '../Images/Portfolio_Creativity/IMG_6712.webp', title: 'Carrying Weight', desc: 'A portrait of labor, strength, and silent resilience.' },
-  { src: '../Images/Portfolio_Creativity/HTP02204.webp', title: 'Rhythm in the Fog', desc: 'Music and motion cutting through haze and light.' },
-  { src: '../Images/Portfolio_Creativity/DSC08585.webp', title: 'Unseen Movement', desc: 'A blur of motion capturing emotion beyond clarity.' },
-  { src: '../Images/Portfolio_Creativity/HTP03224.webp', title: 'Controlled Chaos', desc: 'Explosive energy unfolding in a perfectly timed moment.' },
-  { src: '../Images/Portfolio_Creativity/HTP01037.webp', title: 'Strings in Silence', desc: 'A lone melody echoing through a calm atmosphere.' },
-  { src: '../Images/Portfolio_Creativity/IMG_6554.webp', title: 'Watcher in Grey', desc: 'A quiet observer standing out in muted tones.' },
-  { src: '../Images/Portfolio_Creativity/HTP02996.webp', title: 'Light Over Noise', desc: 'Brilliant beams rising above the chaos of the crowd.' },
-  { src: '../Images/Portfolio_Creativity/HTP03040.webp', title: 'Voice in the Firelight', desc: 'A performer illuminated by intensity and sound.' },
-  { src: '../Images/Portfolio_Creativity/DSC03248.webp', title: 'Red Velocity', desc: 'You froze chaos mid-motion. The blur feels intentional, like the energy is leaking out of the frame instead of staying contained.' },
-  { src: '../Images/Portfolio_Creativity/DSC03915.webp', title: 'Ritual of Noise', desc: 'This isn\'t just a concert, it\'s a collective moment. The crowd, the lights, the symmetry, everything builds into one loud visual pulse.' },
-  { src: '../Images/Portfolio_Creativity/DSC03261.webp', title: 'Calm Before the Drop', desc: 'Stillness wrapped in tension. The lighting isolates the subject just enough to make the moment feel like it\'s about to explode.' },
-  { src: '../Images/Portfolio_Creativity/DSC03319.webp', title: 'Distorted Presence', desc: 'You didn\'t capture a person, you captured movement as identity. Feels unstable in a good way, like reality is slightly slipping.' },
-  { src: '../Images/Portfolio_Creativity/DSC03968.webp', title: 'Aftermath in Red', desc: 'Confetti, light, and chaos settling down. This feels like the moment right after everything peaked.' },
-  { src: '../Images/Portfolio_Creativity/DSC04280_1.webp', title: 'Hawa Mahal, Unfolded', desc: 'Clean, structured, almost architectural obsession. A rare calm shot in a set full of motion.' },
-  { src: '../Images/Portfolio_Creativity/DSC_3740.webp', title: 'Echoes of Motion', desc: 'Heavy blur but still readable. It feels like memory instead of a moment, like something you remember more than something you saw.' }
-];
+    // ── Dynamic Gallery from data/photos.json ──
+    const BASE = '../Images/Portfolio_Creativity/';
+    const ICON_SVG = `<svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>`;
 
+    let imagesData = [];
     let currentIndex = 0;
-    const lightbox = document.getElementById('lightbox');
+
+    const grid        = document.getElementById('masonry-grid');
+    const photoCount  = document.getElementById('photo-count');
+    const lightbox    = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxTitle = document.getElementById('lightbox-title');
-    const lightboxDesc = document.getElementById('lightbox-desc');
-    const counter = document.getElementById('lightbox-counter');
+    const lightboxDesc  = document.getElementById('lightbox-desc');
+    const counter       = document.getElementById('lightbox-counter');
+
+    // Scroll-reveal observer
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    function buildGallery(photos) {
+      imagesData = photos.map(p => ({
+        src: BASE + p.file,
+        title: p.title,
+        desc: p.desc
+      }));
+
+      photoCount.textContent = `${photos.length} Photograph${photos.length !== 1 ? 's' : ''}`;
+
+      photos.forEach((p, i) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.dataset.index = i;
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        item.style.transition = `opacity 0.7s ${0.05 * i}s var(--ease-out), transform 0.7s ${0.05 * i}s var(--ease-out)`;
+        item.innerHTML = `
+          <img src="${BASE + p.file}" alt="${p.title}" loading="lazy" decoding="async">
+          <div class="item-overlay">
+            <span class="item-label">${p.title}</span>
+            <div class="view-icon">${ICON_SVG}</div>
+          </div>`;
+        item.addEventListener('click', () => openLightbox(i));
+        grid.appendChild(item);
+        revealObserver.observe(item);
+      });
+    }
+
+    // Load photos.json
+    fetch('../data/photos.json')
+      .then(r => r.json())
+      .then(buildGallery)
+      .catch(err => console.error('Failed to load photos.json:', err));
 
     function openLightbox(index) {
       currentIndex = index;
@@ -945,7 +977,6 @@
 
     function updateLightbox() {
       const data = imagesData[currentIndex];
-      // Reset info animation so it slides in fresh on each navigation
       const info = document.getElementById('lightbox-info');
       info.style.transition = 'none';
       info.style.opacity = '0';
@@ -957,7 +988,6 @@
       lightboxDesc.textContent = data.desc;
       counter.textContent = `${currentIndex + 1} / ${imagesData.length}`;
 
-      // Re-trigger animation after a frame
       requestAnimationFrame(() => {
         info.style.transition = 'opacity 0.45s var(--ease-out) 0.1s, transform 0.45s var(--ease-out) 0.1s';
         info.style.opacity = '1';
@@ -970,42 +1000,16 @@
       updateLightbox();
     }
 
-    // Event listeners
-    document.querySelectorAll('.gallery-item').forEach(item => {
-      item.addEventListener('click', () => {
-        openLightbox(parseInt(item.dataset.index));
-      });
-    });
-
     document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
     document.getElementById('lightbox-backdrop').addEventListener('click', closeLightbox);
     document.getElementById('lightbox-prev').addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
     document.getElementById('lightbox-next').addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('active')) return;
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowLeft') navigate(-1);
       if (e.key === 'ArrowRight') navigate(1);
-    });
-
-    // ── Scroll Reveal Animation ──
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-    document.querySelectorAll('.gallery-item').forEach((item, i) => {
-      item.style.opacity = '0';
-      item.style.transform = 'translateY(30px)';
-      item.style.transition = `opacity 0.7s ${0.05 * i}s var(--ease-out), transform 0.7s ${0.05 * i}s var(--ease-out)`;
-      observer.observe(item);
     });
 
     // ── Hamburger ──
