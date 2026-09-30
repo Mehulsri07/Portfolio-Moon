@@ -1,23 +1,26 @@
 # Portfolio-Moon 🌙
 
-A personal portfolio website featuring a Matrix-inspired landing page with distinct, immersive paths for technical engineering and creative digital work. 
+My personal portfolio: a 3D moon landing page that splits into two tracks, one for engineering work and one for creative work.
+
+**Live site:** [mehulsri07.github.io/Portfolio-Moon](https://mehulsri07.github.io/Portfolio-Moon/)
 
 ---
 
 ## 🚀 Features
 
-- **Matrix-Inspired Terminal Landing:** An interactive entry point that sets the tone for the experience with digital rain aesthetics and terminal-style commands.
-- **Dual-Track Navigation:** Clear architectural separation allowing visitors to explore either the **Technical Track** (software engineering, backend systems, machine learning) or the **Creative Track** (digital art direction, image manipulation, animation).
-- **Dynamic UI Elements:** Custom text-scrambling effects, smooth timeline animations, and responsive layout designs.
-- **Modern Frontend Architecture:** Built with clean, maintainable code optimized for performance and fluid transitions.
+- **3D moon landing:** a Three.js scene with a lit, textured moon model (glTF) over an animated starfield.
+- **Two tracks:** hover the coding side for a Matrix-style digital rain effect, or the creative side for the art portfolio. Each leads to its own page.
+- **Pages:** about, coding projects, creative work (photo gallery), blog and contact, with animated page transitions.
+- **Automated image pipeline:** a GitHub Actions workflow converts new gallery photos to WebP whenever `Images/Portfolio_Creativity/` or `data/photos.json` changes.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Core:** HTML5, CSS3, JavaScript (ES6+)
-- **Styling & Effects:** Custom CSS animations, Canvas API (for digital rain/matrix effects), responsive grid layouts
-- **Tooling:** Git / GitHub Pages (or preferred hosting provider)
+- **Core:** HTML5, CSS3, JavaScript (ES modules)
+- **3D:** Three.js (GLTF moon model, custom lighting, starfield)
+- **Animation:** Canvas API (digital rain, cursor trail), AOS scroll animations
+- **Hosting & CI:** GitHub Pages, GitHub Actions (Python WebP conversion)
 
 ---
 
@@ -25,9 +28,27 @@ A personal portfolio website featuring a Matrix-inspired landing page with disti
 
 ```text
 Portfolio-Moon/
-├── assets/          # Images, icons, and media files
-├── css/             # Stylesheets (Matrix theme, animations, layout)
-├── js/              # Interactive scripts (text scrambling, routing, terminal effects)
-├── index.html       # Main landing page (Matrix terminal)
-├── technical.html   # Technical path / Software & ML portfolio
-└── creative.html    # Creative path / Digital art & animation portfolio
+├── index.html            # 3D moon landing page
+├── pages/                # about, coding, creativity, blog, contact
+├── js/                   # Three.js scene, starfield, loader, hover effects, transitions
+├── css/style.css         # Site styles
+├── assets/               # Moon model (.glb), texture, favicon
+├── Images/               # Profile picture and creative portfolio photos
+├── data/photos.json      # Gallery metadata
+├── scripts/              # convert_images.py (JPG to WebP)
+└── .github/workflows/    # convert-images.yml
+```
+
+---
+
+## 💻 Running locally
+
+The site uses ES modules, so serve it over HTTP instead of opening the file directly:
+
+```bash
+git clone https://github.com/Mehulsri07/Portfolio-Moon.git
+cd Portfolio-Moon
+python -m http.server 8000
+```
+
+Then open http://localhost:8000.
