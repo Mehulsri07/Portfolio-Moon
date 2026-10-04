@@ -2,10 +2,7 @@
 window.addEventListener('error', e => console.error('Global Error:', e));
 window.addEventListener('unhandledrejection', e => console.error('Promise Error:', e));
 
-import { createScene, createBloomComposer, updateSceneTheme } from './scene.js';
-import { loadPortfolioModel } from './loader.js';
 import { createScrollController, createAnimationLoop } from './animation.js';
-import { setupInteraction } from './interaction.js';
 
 // Import visual effects
 import { initStarfield } from './starfield.js';
@@ -19,18 +16,9 @@ const loadingEl = document.getElementById('moon-loading');
 const loadingFill = loadingEl?.querySelector('.moon-loading-fill');
 const loadingBar = loadingEl?.querySelector('.moon-loading-bar');
 
-const { scene, camera, renderer, keyLight, fillLight, ambientLight } = createScene(canvas);
-const sceneComponents = { keyLight, fillLight, ambientLight };
-
-const { composer, bloomPass } = createBloomComposer(renderer, scene, camera);
-
+// Navigation first: the Coding/Creativity labels must appear on scroll
+// even if Three.js, the CDN or WebGL fails below.
 const scrollState = createScrollController(labels);
-
-let activeModel = null;
-
-// Initial theme update
-updateSceneTheme(scene, sceneComponents, 'dark');
-bloomPass.strength = 0.15;
 
 // Initialize visual effects
 initStarfield();
@@ -45,52 +33,62 @@ function setLoadingProgress(p) {
   loadingBar.setAttribute('aria-valuenow', String(pct));
 }
 
-async function loadModel() {
+function finishLoading() {
+  loadingEl?.classList.add('done');
+  loadingEl?.setAttribute('aria-busy', 'false');
+}
+
+async function startMoon() {
+  // Loaded lazily so a failed three.js download cannot take the page's links with it
+  const [{ createScene, createBloomComposer, updateSceneTheme }, { loadPortfolioModel }, { setupInteraction }] =
+    await Promise.all([import('./scene.js'), import('./loader.js'), import('./interaction.js')]);
+
+  const { scene, camera, renderer, keyLight, fillLight, ambientLight } = createScene(canvas);
+  const { composer, bloomPass } = createBloomComposer(renderer, scene, camera);
+
+  updateSceneTheme(scene, { keyLight, fillLight, ambientLight }, 'dark');
+  bloomPass.strength = 0.15;
+
+  let activeModel = null;
+
+  createAnimationLoop({
+    composer,
+    renderer,
+    scene,
+    camera,
+    getMoon: () => activeModel,
+    scrollState,
+  });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    composer.setPixelRatio(renderer.getPixelRatio());
+    composer.setSize(window.innerWidth, window.innerHeight);
+    bloomPass.setSize(window.innerWidth, window.innerHeight);
+  });
+
   loadingEl?.classList.remove('done');
   loadingEl?.setAttribute('aria-busy', 'true');
   setLoadingProgress(0);
 
-  try {
-    activeModel = await loadPortfolioModel(scene, 'moon', {
-      renderer,
-      onProgress: setLoadingProgress,
-    });
+  activeModel = await loadPortfolioModel(scene, 'moon', {
+    renderer,
+    onProgress: setLoadingProgress,
+  });
 
-    setLoadingProgress(1);
-    loadingEl?.classList.add('done');
-    loadingEl?.setAttribute('aria-busy', 'false');
+  setLoadingProgress(1);
 
-    setupInteraction({
-      canvas,
-      camera,
-      moon: activeModel,
-      isInteractive: () => scrollState.moonFade > 0.18,
-    });
-
-  } catch (err) {
-    console.error('Moon model failed to load:', err);
-    loadingEl?.classList.add('done');
-    loadingEl?.setAttribute('aria-busy', 'false');
-  }
+  setupInteraction({
+    canvas,
+    camera,
+    moon: activeModel,
+    isInteractive: () => scrollState.moonFade > 0.18,
+  });
 }
 
-loadModel();
-
-createAnimationLoop({
-  composer,
-  renderer,
-  scene,
-  camera,
-  getMoon: () => activeModel,
-  scrollState,
-});
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  composer.setPixelRatio(renderer.getPixelRatio());
-  composer.setSize(window.innerWidth, window.innerHeight);
-  bloomPass.setSize(window.innerWidth, window.innerHeight);
-});
+startMoon()
+  .catch((err) => console.error('Moon scene failed to start:', err))
+  .finally(finishLoading);

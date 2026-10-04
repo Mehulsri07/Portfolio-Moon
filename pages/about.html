@@ -10,7 +10,7 @@
   <meta property="og:description" content="Software engineer, photographer, and creative builder.">
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css" />
+  <link rel="stylesheet" href="../css/pages.css?v=3" />
   <style>
     .mobile-menu a {
       font-family: var(--serif);
@@ -95,11 +95,12 @@
     }
     .skills-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1px; background: var(--border); border: 1px solid var(--border);
+      gap: 1px; padding: 1px;
       border-radius: 8px; overflow: hidden;
     }
     .skill-card {
       background: var(--bg); padding: 1.5rem;
+      box-shadow: 0 0 0 1px var(--border);
       transition: background 0.3s;
     }
     .skill-card:hover { background: var(--surface); }
@@ -116,6 +117,7 @@
     .footer-link {
       font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
       letter-spacing: 0.1em; color: var(--text-muted); text-decoration: none;
+      display: inline-flex; align-items: center; min-height: 44px;
       transition: color 0.3s;
     }
     .footer-link:hover { color: var(--text); }
@@ -136,7 +138,7 @@
 
   <!-- Nav -->
   <nav class="nav">
-    <a href="../index.html" class="back"><span class="back-arrow">←</span> Return to orbit</a>
+    <a href="../index.html" class="back"><span class="back-arrow">←</span> Mehul Srivastava</a>
     <div class="nav-links">
       <a href="coding.html" class="nav-link">Coding</a>
       <a href="creativity.html" class="nav-link">Creativity</a>

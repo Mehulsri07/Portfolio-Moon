@@ -11,7 +11,7 @@
   --bg: #090921;
   --text: #f8f8fa;
   --cream: #e2d9c6;
-  --muted: #404558;
+  --muted: #9aa0b8;
   --accent: #79b6f2;
   --serif: 'Cormorant Garamond', serif;
   --mono: 'Space Mono', monospace;
@@ -48,6 +48,7 @@ p {
   position: relative;
   z-index: 10;
   pointer-events: none;
+  padding-bottom: 14vh;
   background: radial-gradient(circle at center, rgba(121, 182, 242, 0.05) 0%, transparent 60%);
 }
 
@@ -81,14 +82,47 @@ p {
   }
 }
 
-.hint {
-  position: absolute;
-  bottom: 60px;
+.hero-name {
+  margin-top: 1.75rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  letter-spacing: .04em;
+  color: var(--text);
+  opacity: 0;
+  animation: blurIn 2s 1.1s forwards;
+}
+
+.hero-role {
+  margin-top: .5rem;
   font-family: var(--mono);
-  font-size: .6rem;
+  font-size: .8rem;
+  letter-spacing: .08em;
+  color: var(--cream);
+  opacity: 0;
+  animation: blurIn 2s 1.3s forwards;
+}
+
+/* Sits in the flow under the role line so it stays above the moon */
+.hint {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  font-family: var(--mono);
+  font-size: .75rem;
   letter-spacing: .2em;
   color: var(--muted);
-  opacity: .7;
+}
+
+.hint::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg);
 }
 
 #moon-loading {
@@ -108,7 +142,7 @@ p {
   visibility: hidden;
 }
 
-#moon-loading-inner {
+.moon-loading-inner {
   text-align: center;
   max-width: 220px;
 }
@@ -116,7 +150,7 @@ p {
 .moon-loading-label {
   display: block;
   font-family: var(--mono);
-  font-size: .55rem;
+  font-size: .7rem;
   letter-spacing: .35em;
   text-transform: uppercase;
   color: var(--muted);
@@ -147,7 +181,6 @@ p {
 #moon-canvas {
   position: fixed;
   inset: 0;
-  cursor: pointer;
   z-index: 2;
 }
 
@@ -157,11 +190,14 @@ p {
   pointer-events: none;
   z-index: 5;
   opacity: 0;
-  transition: opacity .6s ease;
+  visibility: hidden; /* keeps the hidden links out of reach of taps and Tab */
+  transition: opacity .6s ease, visibility 0s .6s;
 }
 
 #labels.show {
   opacity: 1;
+  visibility: visible;
+  transition: opacity .6s ease;
 }
 
 
@@ -300,34 +336,40 @@ body:has(.label.right:hover) .label.right {
   100% { stroke-dashoffset: 150.8; transform: rotate(360deg); }
 }
 
-/* ── Bottom Nav ─────────────────────────────────────── */
-#bottom-nav {
+/* ── Site Nav (always visible, top right over the sky) ── */
+#site-nav {
   position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
+  top: 18px;
+  right: 40px;
+  z-index: 12;
   display: flex;
-  gap: 2rem;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
+  gap: .5rem;
 }
-#labels.show ~ #bottom-nav {
-  opacity: 1;
-  pointer-events: auto;
-}
-.bottom-link {
+.site-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(255,255,255,0.35);
+  color: rgba(248, 248, 250, 0.72);
   transition: color 0.3s ease;
 }
-.bottom-link:hover {
-  color: rgba(255,255,255,0.8);
+.site-link:hover {
+  color: var(--text);
+}
+
+a:focus-visible {
+  outline: 1px solid var(--cream);
+  outline-offset: 4px;
+}
+
+::selection {
+  background: var(--cream);
+  color: var(--bg);
 }
 
 /* ── Easter Egg ─────────────────────────────────────── */
@@ -347,7 +389,7 @@ body:has(.label.right:hover) .label.right {
   backdrop-filter: blur(10px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .easter-toast.show {
   opacity: 1;
@@ -375,13 +417,12 @@ body:has(.label.right:hover) .label.right {
     font-size: clamp(2.2rem, 9vw, 3rem);
   }
   #hero {
-    padding-top: 0;
     justify-content: flex-start;
-    padding-top: 22vh;
+    padding-top: 16vh;
+    padding-bottom: 0;
   }
   .hint {
-    bottom: 40px;
-    font-size: 0.7rem;
+    margin-top: 1.75rem;
   }
 
   /* Labels: stack vertically at bottom, large tap targets */
@@ -390,7 +431,7 @@ body:has(.label.right:hover) .label.right {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-end;
-    padding-bottom: 100px;
+    padding-bottom: 32px;
     gap: 0;
     inset: 0;
   }
@@ -408,6 +449,8 @@ body:has(.label.right:hover) .label.right {
     font-size: 13px;
     letter-spacing: 0.3em;
     text-align: center;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(9, 9, 33, 0.72); /* scrim: the labels sit on the bright moon */
     border-top: 1px solid rgba(255,255,255,0.06);
   }
   .label.left {
@@ -417,16 +460,13 @@ body:has(.label.right:hover) .label.right {
     right: auto;
   }
 
-  /* Bottom nav: spread out, easier to tap */
-  #bottom-nav {
-    bottom: 20px;
-    gap: 1.5rem;
-    width: 100%;
-    justify-content: center;
-    padding: 0 1rem;
+  #site-nav {
+    top: 8px;
+    right: 8px;
+    gap: 0;
   }
-  .bottom-link {
-    padding: 10px 8px;
+  .site-link {
+    padding: 0 10px;
     font-size: 11px;
   }
 
@@ -445,8 +485,24 @@ body:has(.label.right:hover) .label.right {
     display: none;
   }
 
-  .featured-grid {
-    grid-template-columns: 1fr !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-line,
+  .hero-name,
+  .hero-role {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  #cursor-trail-canvas,
+  .hover-bg {
+    display: none;
+  }
+  #labels,
+  #labels.show {
+    transition: none;
   }
 }
 

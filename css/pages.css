@@ -38,7 +38,7 @@ body {
 /* ── Nav ── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.25rem 3rem;
+  padding: 0.5rem 3rem;
   display: flex; justify-content: space-between; align-items: center;
   background: rgba(10, 10, 11, 0.7);
   backdrop-filter: blur(20px) saturate(1.6);
@@ -49,6 +49,7 @@ body {
   font-family: var(--mono); text-decoration: none; color: var(--text-muted);
   font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em;
   transition: color 0.3s var(--ease-out); display: inline-flex; align-items: center; gap: 0.5rem;
+  min-height: 44px;
 }
 .back:hover { color: var(--text); }
 .back-arrow { display: inline-block; transition: transform 0.3s var(--ease-out); }
@@ -58,13 +59,14 @@ body {
 .nav-link {
   font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
   letter-spacing: 0.1em; color: var(--text-muted); text-decoration: none;
+  display: inline-flex; align-items: center; min-height: 44px;
   transition: color 0.3s;
 }
 .nav-link:hover { color: var(--text); }
 .nav-link.active { color: var(--accent); }
 
 /* ── Mobile Menu ── */
-.hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; padding: 10px 12px; margin-right: -12px; min-width: 44px; min-height: 44px; }
 .hamburger span {
   display: block; width: 20px; height: 1.5px; background: var(--text-muted);
   margin: 4px 0; transition: all 0.3s;
@@ -85,7 +87,7 @@ body {
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .hamburger { display: block; }
-  .nav { padding: 1rem 1.5rem; }
+  .nav { padding: 0.35rem 1.5rem; }
 }
 
 /* ── Resume Button ── */
@@ -110,6 +112,13 @@ body {
   letter-spacing: 0.15em; color: var(--text-muted); margin: 0;
 }
 
+/* ── Browser surfaces ── */
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 4px;
+}
+::selection { background: var(--accent); color: var(--bg); }
+
 /* ── Animations ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -118,4 +127,13 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
 }

@@ -23,7 +23,7 @@
   <!-- Preload the moon model so it's ready when user scrolls -->
   <link rel="preload" href="./assets/models/moon_opt.glb" as="fetch" crossorigin>
 
-  <link rel="stylesheet" href="./css/style.css?v=13" />
+  <link rel="stylesheet" href="./css/style.css?v=15" />
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"
     rel="stylesheet" />
@@ -37,7 +37,7 @@
   }
   </script>
 
-  <script type="module" src="./js/main.js?v=23"></script>
+  <script type="module" src="./js/main.js?v=24"></script>
 </head>
 
 <body>
@@ -68,6 +68,8 @@
   <section id="hero">
     <span class="welcome-line">Welcome to</span>
     <span class="welcome-line cursive">my world</span>
+    <h1 class="hero-name">Mehul Srivastava</h1>
+    <p class="hero-role">DevOps &amp; SRE · Event photography</p>
     <div class="hint">Scroll to reveal</div>
   </section>
 
@@ -87,14 +89,15 @@
     <a href="pages/creativity.html" class="label right">Creativity</a>
   </div>
 
-  <!-- Bottom nav for sub-pages -->
-  <nav id="bottom-nav">
-    <a href="pages/about.html" class="bottom-link">About</a>
-    <a href="pages/contact.html" class="bottom-link">Contact</a>
+  <!-- Always-visible nav for sub-pages -->
+  <nav id="site-nav" aria-label="Site">
+    <a href="pages/about.html" class="site-link">About</a>
+    <a href="pages/contact.html" class="site-link">Contact</a>
+    <a href="Mehul_Resume_.pdf" download class="site-link">Resume</a>
   </nav>
 
   <!-- Easter egg tooltip -->
-  <div id="easter-egg-toast" class="easter-toast">🧑‍🚀 You found the astronaut!</div>
+  <div id="easter-egg-toast" class="easter-toast">You found the astronaut.</div>
 
 
 

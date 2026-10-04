@@ -11,26 +11,13 @@
   <meta property="og:description" content="A released desktop app, CI/CD pipelines, observability on AWS, and deep learning research.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css" />
+  <link rel="stylesheet" href="../css/pages.css?v=3" />
   <style>
     /* ── Design Tokens ── */
     :root {
-      --accent-green: #00ff41;
-      --accent-green-dim: rgba(0, 255, 65, 0.06);
-      --accent-blue: #58a6ff;
-      --accent-purple: #bc8cff;
-      --accent-orange: #f0883e;
-    }
-
-    /* ── Background Dithering Shader Canvas ── */
-    #bg-dither {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      opacity: 0.18;
-      pointer-events: none;
-      width: 100%;
-      height: 100%;
+      --accent-green: #6fdc8c;
+      --accent-green-dim: rgba(111, 220, 140, 0.07);
+      --text-body: #b4b4b8;
     }
 
     .back:hover {
@@ -44,17 +31,6 @@
       margin: 0 auto;
       position: relative;
       z-index: 5;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 6rem;
-      left: -10%;
-      width: 50%;
-      height: 300px;
-      background: radial-gradient(ellipse, rgba(0, 255, 65, 0.03) 0%, transparent 70%);
-      pointer-events: none;
     }
 
     .hero-label {
@@ -81,17 +57,14 @@
     h1 em {
       font-style: italic;
       font-weight: 400;
-      background: linear-gradient(135deg, var(--text) 0%, var(--accent-green) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent-green);
     }
 
     .subtitle {
       color: var(--text-muted);
       font-size: 1.1rem;
       font-weight: 300;
-      max-width: 520px;
+      max-width: 60ch;
       line-height: 1.7;
       opacity: 0;
       animation: fadeUp 0.8s var(--ease-out) 0.5s forwards;
@@ -149,7 +122,7 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
       padding: 0.35rem 0.7rem;
-      border: 1px solid rgba(0, 255, 65, 0.15);
+      border: 1px solid rgba(111, 220, 140, 0.2);
       border-radius: 100px;
       background: var(--accent-green-dim);
     }
@@ -250,7 +223,7 @@
       background: #00ADD8;
     }
 
-    .card-body h3 {
+    .card-body h2 {
       font-size: 1.2rem;
       font-weight: 500;
       letter-spacing: -0.01em;
@@ -258,20 +231,28 @@
       transition: color 0.3s;
     }
 
-    .project-card:hover .card-body h3 {
+    .project-card:hover .card-body h2 {
       color: #fff;
     }
 
     .card-body p {
-      color: var(--text-muted);
-      font-size: 0.88rem;
+      color: var(--text-body);
+      font-size: 0.95rem;
       font-weight: 300;
-      max-width: 520px;
+      max-width: 64ch;
       line-height: 1.7;
+    }
+
+    .card-fact {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.02em;
+      color: var(--accent-green);
     }
 
     .card-actions {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.75rem;
     }
@@ -287,7 +268,8 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.55rem 1.1rem;
+      min-height: 44px;
+      padding: 0 1.1rem;
       border: 1px solid var(--border);
       border-radius: 6px;
       transition: all 0.3s var(--ease-out);
@@ -296,7 +278,7 @@
 
     .card-link:hover {
       color: var(--accent-green);
-      border-color: rgba(0, 255, 65, 0.25);
+      border-color: rgba(111, 220, 140, 0.3);
       background: var(--accent-green-dim);
     }
 
@@ -311,19 +293,31 @@
 
     /* ── Project Details (Expandable) ── */
     .project-details {
-      max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-out), margin-top 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
-      opacity: 0; margin-top: 0;
+      display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden;
+      transition: grid-template-rows 0.4s var(--ease-out), opacity 0.4s var(--ease-out), visibility 0s 0.4s;
     }
-    .project-details.expanded { max-height: 500px; margin-top: 1.5rem; opacity: 1; }
-    .details-content { padding-top: 1.5rem; border-top: 1px solid var(--border); }
-    .details-content h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-green); margin-bottom: 0.5rem; }
-    .details-content p { font-size: 0.85rem; line-height: 1.6; margin-bottom: 1rem; color: var(--text-muted); }
+    .project-details.expanded {
+      grid-template-rows: 1fr; opacity: 1; visibility: visible;
+      transition: grid-template-rows 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
+    }
+    .details-content { min-height: 0; overflow: hidden; }
+    .details-content::before { content: ''; display: block; margin: 1.25rem 0 1.5rem; border-top: 1px solid var(--border); }
+    .details-content h3 { font-size: 0.8rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-green); margin-bottom: 0.5rem; }
+    .details-content p { font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem; }
     .btn-toggle-details {
-      background: none; border: none; color: var(--text-muted); font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: color 0.3s; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0;
+      background: none; border: none; color: var(--text-muted); font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: color 0.3s; display: inline-flex; align-items: center; gap: 0.6rem; min-height: 44px; padding: 0 0.25rem;
     }
     .btn-toggle-details:hover { color: var(--text); }
-    .btn-toggle-details::after { content: '↓'; transition: transform 0.3s; }
-    .btn-toggle-details.open::after { transform: rotate(180deg); }
+    .btn-toggle-details::after {
+      content: ''; width: 6px; height: 6px; margin-top: -3px;
+      border-right: 1px solid currentColor; border-bottom: 1px solid currentColor;
+      transform: rotate(45deg); transition: transform 0.3s var(--ease-out);
+    }
+    .btn-toggle-details[aria-expanded="true"]::after { transform: rotate(225deg); margin-top: 3px; }
+
+    /* ── Earlier work: same rows, quieter ── */
+    .projects-grid.earlier .project-card { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .projects-grid.earlier .card-body h2 { font-size: 1.05rem; }
 
     /* ── Footer ── */
     .footer {
@@ -346,12 +340,10 @@
 
 <body>
 
-  <canvas id="bg-dither"></canvas>
-
   <!-- Navigation -->
   <nav class="nav" id="nav">
     <a href="../index.html" class="back">
-      <span class="back-arrow">←</span> Return to orbit
+      <span class="back-arrow">←</span> Mehul Srivastava
     </a>
     <div class="nav-links">
       <a href="coding.html" class="nav-link active">Coding</a>
@@ -386,7 +378,7 @@
 
   <!-- Section Divider -->
   <div class="section-divider">
-    <div class="section-label">Featured Projects — 6 Repositories</div>
+    <div class="section-label">Selected work</div>
   </div>
 
   <!-- Projects -->
@@ -399,22 +391,23 @@
             <span><span class="lang-dot lang-ts"></span>TypeScript</span>
             <span>Released — auto-updating</span>
           </div>
-          <h3>StrataField</h3>
+          <h2>StrataField</h2>
+          <div class="card-fact">Installer cut from 134 MB to 3.5 MB · in daily use at a drilling business</div>
           <p>Offline-first Windows desktop app used day to day by my family's drilling business to record borewells,
             soil layers, pipes, water levels and site photos — with an offline city map of water depths and geological
             cross-sections.</p>
 
           <div class="project-details">
             <div class="details-content">
-              <h4>Implementation</h4>
+              <h3>Implementation</h3>
               <p>Rebuilt the original Electron version on Tauri 2, cutting the installer from 134 MB to 3.5 MB, and replaced sql.js with native SQLite (schema migrations, edit history, recycle bin, daily backups) that imports the old app's data automatically. GitHub Actions runs typecheck, lint, unit tests, a Windows end-to-end test and a clean-machine installer test; tagged releases publish signed builds that installed copies auto-update from.</p>
-              <h4>Tech Stack</h4>
+              <h3>Tech Stack</h3>
               <p>Tauri 2, React, TypeScript, Rust, SQLite, Leaflet, Vitest, GitHub Actions</p>
             </div>
           </div>
         </div>
         <div class="card-actions">
-          <button class="btn-toggle-details">Details</button>
+          <button class="btn-toggle-details" aria-expanded="false">Details</button>
           <a href="https://github.com/Mehulsri07/StrataField/releases/latest" target="_blank" rel="noopener" class="card-link">Download
             <span class="link-arrow">↗</span></a>
           <a href="https://github.com/Mehulsri07/StrataField" target="_blank" rel="noopener" class="card-link">Source
@@ -428,21 +421,22 @@
             <span><span class="lang-dot lang-go"></span>Go</span>
             <span>AWS EC2</span>
           </div>
-          <h3>LoadLab</h3>
+          <h2>LoadLab</h2>
+          <div class="card-fact">Go behind Nginx on EC2 · Prometheus and Grafana · three k6 load profiles</div>
           <p>A load-testing and observability sandbox built to fail on purpose: Nginx in front of a Go backend with
             deliberately CPU- and memory-heavy routes, scraped by Prometheus and visualised in Grafana.</p>
 
           <div class="project-details">
             <div class="details-content">
-              <h4>Implementation</h4>
+              <h3>Implementation</h3>
               <p>Deployed as a Docker Compose stack on EC2, with the backend rewritten from Node.js to Go. Low, medium and high k6 load profiles show where p95 latency climbs and which resource saturates first. Fixed a Grafana redirect loop behind the Nginx sub-path proxy by correcting the root URL and forwarded headers.</p>
-              <h4>Tech Stack</h4>
+              <h3>Tech Stack</h3>
               <p>Go, Nginx, Docker Compose, Prometheus, Node Exporter, Grafana, k6, AWS EC2</p>
             </div>
           </div>
         </div>
         <div class="card-actions">
-          <button class="btn-toggle-details">Details</button>
+          <button class="btn-toggle-details" aria-expanded="false">Details</button>
           <a href="https://github.com/Mehulsri07/LoadLab" target="_blank" rel="noopener" class="card-link">Source
             <span class="link-arrow">↗</span></a>
         </div>
@@ -454,21 +448,22 @@
             <span><span class="lang-dot lang-py"></span>Python</span>
             <span>Deloitte capstone — team project</span>
           </div>
-          <h3>IntelliOps</h3>
+          <h2>IntelliOps</h2>
+          <div class="card-fact">My part: CI/CD workflows, Kafka event bus, Helm chart</div>
           <p>Deloitte capstone: an agentic AIOps platform for alert correlation, root-cause analysis and human-approved Kubernetes
             remediation. I contributed the CI/CD workflows, the Kafka event bus and the Helm chart.</p>
 
           <div class="project-details">
             <div class="details-content">
-              <h4>My Contribution</h4>
+              <h3>My Contribution</h3>
               <p>CI/CD workflows covering lint, tests, a Docker Compose smoke test, a frontend build gate and GHCR image builds. Added Kafka as an event bus interchangeable with the in-memory backend (checked by contract tests), a Helm chart for Postgres, Redis, all services and a migration job, and a load-test script.</p>
-              <h4>Tech Stack</h4>
+              <h3>Tech Stack</h3>
               <p>Python, GitHub Actions, Kafka, Helm, Kubernetes, PostgreSQL, Redis, GHCR</p>
             </div>
           </div>
         </div>
         <div class="card-actions">
-          <button class="btn-toggle-details">Details</button>
+          <button class="btn-toggle-details" aria-expanded="false">Details</button>
           <a href="https://github.com/Mehulsri07/intelliops" target="_blank" rel="noopener" class="card-link">Source
             <span class="link-arrow">↗</span></a>
         </div>
@@ -480,25 +475,35 @@
             <span><span class="lang-dot lang-py"></span>Python</span>
             <span>IEEE — under review</span>
           </div>
-          <h3>Invisible Image Watermarking — DWT + CNN</h3>
+          <h2>Invisible Image Watermarking — DWT + CNN</h2>
           <p>Deep learning-based invisible image watermarking using the Discrete Wavelet Transform and a CNN. Written up
             as a paper with M. Talwar and S. Singh, currently under review at IEEE.</p>
 
           <div class="project-details">
             <div class="details-content">
-              <h4>Evaluation</h4>
+              <h3>Evaluation</h3>
               <p>Measured with PSNR, SSIM and bit error rate under noise, JPEG compression, crop, scale and rotation attacks.</p>
-              <h4>Tech Stack</h4>
+              <h3>Tech Stack</h3>
               <p>Python, TensorFlow, Keras</p>
             </div>
           </div>
         </div>
         <div class="card-actions">
-          <button class="btn-toggle-details">Details</button>
+          <button class="btn-toggle-details" aria-expanded="false">Details</button>
           <a href="https://github.com/Mehulsri07/Watermarking-cnn" target="_blank" rel="noopener"
             class="card-link">Source <span class="link-arrow">↗</span></a>
         </div>
       </article>
+
+    </div>
+  </section>
+
+  <div class="section-divider">
+    <div class="section-label">Earlier work</div>
+  </div>
+
+  <section class="projects-section">
+    <div class="projects-grid earlier">
 
       <article class="project-card">
         <div class="card-body">
@@ -506,7 +511,7 @@
             <span><span class="lang-dot lang-ts"></span>TypeScript</span>
             <span>Web predecessor of StrataField</span>
           </div>
-          <h3>StrataDesk</h3>
+          <h2>StrataDesk</h2>
           <p>Full-stack React/TypeScript app for borewell data (Excel import, map, cross-sections) with CI/CD via GitHub
             Actions, GHCR and AWS Systems Manager to EC2, plus Prometheus/Grafana monitoring and k6 load tests.</p>
         </div>
@@ -523,7 +528,7 @@
           <div class="card-meta">
             <span><span class="lang-dot lang-py"></span>Python</span>
           </div>
-          <h3>Handwritten Math Expressions — Deep Learning</h3>
+          <h2>Handwritten Math Expressions — Deep Learning</h2>
           <p>CRNN + CTC model in TensorFlow that reads handwritten math expressions from images and solves them, trained
             on Kaggle plus synthetic data.</p>
         </div>
@@ -542,233 +547,6 @@
   </footer>
 
   <script>
-    // ── Dithering Shader Background ──
-    (function () {
-      const canvas = document.getElementById('bg-dither');
-      if (!canvas) return;
-
-      const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
-      if (!gl) { console.warn('WebGL not available'); return; }
-
-      // ── Shader Sources ──
-      const vertSrc = `
-        attribute vec2 a_position;
-        void main() {
-          gl_Position = vec4(a_position, 0.0, 1.0);
-        }
-      `;
-
-      const fragSrc = `
-        precision mediump float;
-        uniform float u_time;
-        uniform vec2 u_resolution;
-        uniform float u_pxSize;
-        uniform float u_speed;
-        uniform vec3 u_colorBack;
-        uniform vec3 u_colorFront;
-
-        // 8x8 Bayer ordered dithering matrix (normalized to 0-1)
-        float bayer8x8(vec2 pos) {
-          int x = int(mod(pos.x, 8.0));
-          int y = int(mod(pos.y, 8.0));
-
-          // Row 0
-          if (y == 0) {
-            if (x == 0) return 0.0/64.0;
-            if (x == 1) return 32.0/64.0;
-            if (x == 2) return 8.0/64.0;
-            if (x == 3) return 40.0/64.0;
-            if (x == 4) return 2.0/64.0;
-            if (x == 5) return 34.0/64.0;
-            if (x == 6) return 10.0/64.0;
-            return 42.0/64.0;
-          }
-          // Row 1
-          if (y == 1) {
-            if (x == 0) return 48.0/64.0;
-            if (x == 1) return 16.0/64.0;
-            if (x == 2) return 56.0/64.0;
-            if (x == 3) return 24.0/64.0;
-            if (x == 4) return 50.0/64.0;
-            if (x == 5) return 18.0/64.0;
-            if (x == 6) return 58.0/64.0;
-            return 26.0/64.0;
-          }
-          // Row 2
-          if (y == 2) {
-            if (x == 0) return 12.0/64.0;
-            if (x == 1) return 44.0/64.0;
-            if (x == 2) return 4.0/64.0;
-            if (x == 3) return 36.0/64.0;
-            if (x == 4) return 14.0/64.0;
-            if (x == 5) return 46.0/64.0;
-            if (x == 6) return 6.0/64.0;
-            return 38.0/64.0;
-          }
-          // Row 3
-          if (y == 3) {
-            if (x == 0) return 60.0/64.0;
-            if (x == 1) return 28.0/64.0;
-            if (x == 2) return 52.0/64.0;
-            if (x == 3) return 20.0/64.0;
-            if (x == 4) return 62.0/64.0;
-            if (x == 5) return 30.0/64.0;
-            if (x == 6) return 54.0/64.0;
-            return 22.0/64.0;
-          }
-          // Row 4
-          if (y == 4) {
-            if (x == 0) return 3.0/64.0;
-            if (x == 1) return 35.0/64.0;
-            if (x == 2) return 11.0/64.0;
-            if (x == 3) return 43.0/64.0;
-            if (x == 4) return 1.0/64.0;
-            if (x == 5) return 33.0/64.0;
-            if (x == 6) return 9.0/64.0;
-            return 41.0/64.0;
-          }
-          // Row 5
-          if (y == 5) {
-            if (x == 0) return 51.0/64.0;
-            if (x == 1) return 19.0/64.0;
-            if (x == 2) return 59.0/64.0;
-            if (x == 3) return 27.0/64.0;
-            if (x == 4) return 49.0/64.0;
-            if (x == 5) return 17.0/64.0;
-            if (x == 6) return 57.0/64.0;
-            return 25.0/64.0;
-          }
-          // Row 6
-          if (y == 6) {
-            if (x == 0) return 15.0/64.0;
-            if (x == 1) return 47.0/64.0;
-            if (x == 2) return 7.0/64.0;
-            if (x == 3) return 39.0/64.0;
-            if (x == 4) return 13.0/64.0;
-            if (x == 5) return 45.0/64.0;
-            if (x == 6) return 5.0/64.0;
-            return 37.0/64.0;
-          }
-          // Row 7
-          if (x == 0) return 63.0/64.0;
-          if (x == 1) return 31.0/64.0;
-          if (x == 2) return 55.0/64.0;
-          if (x == 3) return 23.0/64.0;
-          if (x == 4) return 61.0/64.0;
-          if (x == 5) return 29.0/64.0;
-          if (x == 6) return 53.0/64.0;
-          return 21.0/64.0;
-        }
-
-        void main() {
-          // Pixelate coordinates
-          vec2 fragCoord = gl_FragCoord.xy;
-          vec2 pixCoord = floor(fragCoord / u_pxSize) * u_pxSize;
-          vec2 uv = pixCoord / u_resolution;
-
-          // Wave shape pattern
-          float t = u_time * u_speed;
-          float wave = 0.0;
-          wave += sin(uv.x * 6.2832 * 2.0 + t * 1.5) * 0.25;
-          wave += sin(uv.y * 6.2832 * 1.5 - t * 0.8) * 0.2;
-          wave += sin((uv.x + uv.y) * 6.2832 * 1.2 + t * 1.1) * 0.2;
-          wave += sin(length(uv - 0.5) * 6.2832 * 3.0 - t * 1.3) * 0.15;
-          wave = wave * 0.5 + 0.5; // normalize to 0-1
-
-          // Apply dithering
-          float ditherCoord = floor(fragCoord.x / u_pxSize);
-          float ditherCoordY = floor(fragCoord.y / u_pxSize);
-          float threshold = bayer8x8(vec2(ditherCoord, ditherCoordY));
-
-          // Mix colors based on dithered threshold
-          vec3 color = wave > threshold ? u_colorFront : u_colorBack;
-
-          gl_FragColor = vec4(color, 1.0);
-        }
-      `;
-
-      // ── Compile Shaders ──
-      function compileShader(type, src) {
-        const s = gl.createShader(type);
-        gl.shaderSource(s, src);
-        gl.compileShader(s);
-        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-          console.error('Shader error:', gl.getShaderInfoLog(s));
-          gl.deleteShader(s);
-          return null;
-        }
-        return s;
-      }
-
-      const vert = compileShader(gl.VERTEX_SHADER, vertSrc);
-      const frag = compileShader(gl.FRAGMENT_SHADER, fragSrc);
-      if (!vert || !frag) return;
-
-      const program = gl.createProgram();
-      gl.attachShader(program, vert);
-      gl.attachShader(program, frag);
-      gl.linkProgram(program);
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.error('Link error:', gl.getProgramInfoLog(program));
-        return;
-      }
-      gl.useProgram(program);
-
-      // ── Full-screen quad ──
-      const buf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-        -1, -1,  1, -1,  -1, 1,
-        -1,  1,  1, -1,   1, 1
-      ]), gl.STATIC_DRAW);
-
-      const aPos = gl.getAttribLocation(program, 'a_position');
-      gl.enableVertexAttribArray(aPos);
-      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-      // ── Uniforms ──
-      const uTime = gl.getUniformLocation(program, 'u_time');
-      const uRes = gl.getUniformLocation(program, 'u_resolution');
-      const uPx = gl.getUniformLocation(program, 'u_pxSize');
-      const uSpeed = gl.getUniformLocation(program, 'u_speed');
-      const uBack = gl.getUniformLocation(program, 'u_colorBack');
-      const uFront = gl.getUniformLocation(program, 'u_colorFront');
-
-      // Parse hex colors to normalized RGB
-      function hexToGL(hex) {
-        const r = parseInt(hex.slice(1, 3), 16) / 255;
-        const g = parseInt(hex.slice(3, 5), 16) / 255;
-        const b = parseInt(hex.slice(5, 7), 16) / 255;
-        return [r, g, b];
-      }
-
-      const backColor = hexToGL('#001122');
-      const frontColor = hexToGL('#ff0088');
-
-      gl.uniform1f(uPx, 3.0);
-      gl.uniform1f(uSpeed, 0.6);
-      gl.uniform3f(uBack, backColor[0], backColor[1], backColor[2]);
-      gl.uniform3f(uFront, frontColor[0], frontColor[1], frontColor[2]);
-
-      // ── Resize & Render ──
-      function resize() {
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        gl.uniform2f(uRes, canvas.width, canvas.height);
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      function render(time) {
-        gl.uniform1f(uTime, time * 0.001);
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
-        requestAnimationFrame(render);
-      }
-      requestAnimationFrame(render);
-    })();
-
     // ── Scroll Reveal Animation ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -789,18 +567,9 @@
 
     // ── Expandable Details ──
     document.querySelectorAll('.btn-toggle-details').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const card = e.target.closest('.project-card');
-        const details = card.querySelector('.project-details');
-        const isOpen = details.classList.contains('expanded');
-        
-        if (isOpen) {
-          details.classList.remove('expanded');
-          e.target.classList.remove('open');
-        } else {
-          details.classList.add('expanded');
-          e.target.classList.add('open');
-        }
+      btn.addEventListener('click', () => {
+        const details = btn.closest('.project-card').querySelector('.project-details');
+        btn.setAttribute('aria-expanded', String(details.classList.toggle('expanded')));
       });
     });
 
