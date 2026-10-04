@@ -11,57 +11,15 @@
   <meta property="og:description" content="A released desktop app, CI/CD pipelines, observability on AWS, and deep learning research.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap"
     rel="stylesheet" />
+  <link rel="stylesheet" href="../css/pages.css" />
   <style>
     /* ── Design Tokens ── */
     :root {
-      --bg: #0a0a0b;
-      --surface: #111112;
-      --surface-raised: #161618;
-      --border: #1e1e20;
-      --border-hover: #333336;
-      --text: #f0f0f0;
-      --text-muted: #858588;
       --accent-green: #00ff41;
       --accent-green-dim: rgba(0, 255, 65, 0.06);
       --accent-blue: #58a6ff;
       --accent-purple: #bc8cff;
       --accent-orange: #f0883e;
-      --sans: 'Inter', sans-serif;
-      --mono: 'Space Mono', monospace;
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    /* ── Reset & Base ── */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--bg);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--border-hover);
-      border-radius: 3px;
     }
 
     /* ── Background Dithering Shader Canvas ── */
@@ -75,55 +33,8 @@
       height: 100%;
     }
 
-    /* ── Navigation ── */
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 1.25rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(10, 10, 11, 0.7);
-      backdrop-filter: blur(20px) saturate(1.6);
-      -webkit-backdrop-filter: blur(20px) saturate(1.6);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .back {
-      font-family: var(--mono);
-      text-decoration: none;
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      transition: color 0.3s var(--ease-out);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
     .back:hover {
       color: var(--accent-green);
-    }
-
-    .back-arrow {
-      display: inline-block;
-      transition: transform 0.3s var(--ease-out);
-    }
-
-    .back:hover .back-arrow {
-      transform: translateX(-3px);
-    }
-
-    .brand {
-      font-weight: 500;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
     }
 
     /* ── Hero Section ── */
@@ -327,10 +238,6 @@
       vertical-align: middle;
     }
 
-    .lang-js {
-      background: #f1e05a;
-    }
-
     .lang-py {
       background: #3572A5;
     }
@@ -341,10 +248,6 @@
 
     .lang-go {
       background: #00ADD8;
-    }
-
-    .lang-html {
-      background: #e34c26;
     }
 
     .card-body h3 {
@@ -406,49 +309,6 @@
       transform: translate(2px, -2px);
     }
 
-    /* ── Tech Stack ── */
-    .stack-section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 3rem 5rem;
-      position: relative;
-      z-index: 5;
-    }
-
-    .stack-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      color: var(--text-muted);
-      padding-bottom: 1rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .stack-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .stack-chip {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      transition: all 0.3s var(--ease-out);
-      cursor: default;
-    }
-
-    .stack-chip:hover {
-      color: var(--text);
-      border-color: var(--border-hover);
-      background: var(--surface);
-    }
-
     /* ── Project Details (Expandable) ── */
     .project-details {
       max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-out), margin-top 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
@@ -469,69 +329,17 @@
     .footer {
       position: relative;
       z-index: 5;
-      border-top: 1px solid var(--border);
-      padding: 3rem;
-      text-align: center;
     }
-
-    .footer p {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--text-muted);
-      margin: 0;
-    }
-
-    /* ── Stats Counter ── */
-    .stats-section { max-width: 1100px; margin: 0 auto; padding: 0 3rem 3rem; position: relative; z-index: 5; }
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-      background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
-    }
-    .stat-card {
-      background: var(--bg); padding: 2rem; text-align: center;
-      transition: background 0.3s;
-    }
-    .stat-card:hover { background: var(--surface); }
-    .stat-number {
-      font-size: 2.5rem; font-weight: 300; letter-spacing: -0.03em;
-      color: var(--accent-green); margin-bottom: 0.3rem;
-      font-variant-numeric: tabular-nums;
-    }
-    .stat-label {
-      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
-      letter-spacing: 0.2em; color: var(--text-muted);
-    }
-
-    /* ── Nav Links ── */
-    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-    .nav-link { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
-    .nav-link:hover { color: var(--text); }
     .nav-link.active { color: var(--accent-green); }
-    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
-    .hamburger span { display: block; width: 20px; height: 1.5px; background: var(--text-muted); margin: 4px 0; }
-    .mobile-menu { display: none; position: fixed; inset: 0; background: rgba(10,10,11,0.95); backdrop-filter: blur(20px); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-family: var(--sans); font-size: 1.5rem; color: var(--text); text-decoration: none; opacity: 0.7; transition: opacity 0.3s; }
-    .mobile-menu a:hover { opacity: 1; }
-
-    /* ── Animations ── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .hero { padding: 8rem 1.5rem 2.5rem; }
-      .nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      .hamburger { display: block; }
-      .section-divider, .projects-section, .stack-section, .stats-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .section-divider, .projects-section { padding-left: 1.5rem; padding-right: 1.5rem; }
       .project-card { grid-template-columns: 1fr; gap: 1rem; padding: 1.5rem; }
       .card-actions { align-self: flex-start; }
       .github-card { max-width: 100%; }
       h1 { font-size: 2.2rem; }
-      .stats-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -725,53 +533,6 @@
         </div>
       </article>
 
-    </div>
-  </section>
-
-  <!-- Stats Counter -->
-  <section class="stats-section">
-    <div class="stats-grid" id="stats-grid">
-      <div class="stat-card">
-        <div class="stat-number" data-target="6">0</div>
-        <div class="stat-label">Projects Built</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" data-target="5">0</div>
-        <div class="stat-label">Languages</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" data-target="20" data-suffix="+">0</div>
-        <div class="stat-label">Technologies</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Tech Stack -->
-  <section class="stack-section">
-    <div class="stack-label">Technologies</div>
-    <div class="stack-grid">
-      <div class="stack-chip">Python</div>
-      <div class="stack-chip">TypeScript</div>
-      <div class="stack-chip">Go</div>
-      <div class="stack-chip">Bash</div>
-      <div class="stack-chip">SQL</div>
-      <div class="stack-chip">AWS EC2</div>
-      <div class="stack-chip">Docker</div>
-      <div class="stack-chip">GitHub Actions</div>
-      <div class="stack-chip">Kubernetes</div>
-      <div class="stack-chip">Helm</div>
-      <div class="stack-chip">Nginx</div>
-      <div class="stack-chip">Linux</div>
-      <div class="stack-chip">Prometheus</div>
-      <div class="stack-chip">Grafana</div>
-      <div class="stack-chip">k6</div>
-      <div class="stack-chip">React</div>
-      <div class="stack-chip">Tauri</div>
-      <div class="stack-chip">PostgreSQL</div>
-      <div class="stack-chip">SQLite</div>
-      <div class="stack-chip">Kafka</div>
-      <div class="stack-chip">TensorFlow / Keras</div>
-      <div class="stack-chip">Google Earth Engine</div>
     </div>
   </section>
 
@@ -1025,27 +786,6 @@
       card.style.transition = `opacity 0.6s ${0.06 * i}s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s ${0.06 * i}s cubic-bezier(0.16, 1, 0.3, 1)`;
       observer.observe(card);
     });
-
-    // ── Animated Stats Counter ──
-    const statsObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.querySelectorAll('.stat-number').forEach(el => {
-          const target = parseInt(el.dataset.target);
-          const suffix = el.dataset.suffix || '';
-          let current = 0;
-          const step = Math.ceil(target / 40);
-          const timer = setInterval(() => {
-            current += step;
-            if (current >= target) { current = target; clearInterval(timer); }
-            el.textContent = current + suffix;
-          }, 40);
-        });
-        statsObserver.unobserve(entry.target);
-      });
-    }, { threshold: 0.3 });
-    const statsGrid = document.getElementById('stats-grid');
-    if (statsGrid) statsObserver.observe(statsGrid);
 
     // ── Expandable Details ──
     document.querySelectorAll('.btn-toggle-details').forEach(btn => {

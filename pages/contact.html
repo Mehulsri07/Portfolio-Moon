@@ -9,60 +9,17 @@
   <meta property="og:title" content="Contact | Mehul Srivastava">
   <meta property="og:description" content="Reach out for collaborations, projects, or just to say hello.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/pages.css" />
   <style>
-    :root {
-      --bg: #0a0a0b; --surface: #111112; --surface-raised: #161618;
-      --border: #1e1e20; --border-hover: #333336;
-      --text: #f0f0f0; --text-muted: #858588;
-      --accent: #c8b8ff; --accent-dim: rgba(200,184,255,0.08);
-      --accent-warm: #e2d9c6;
-      --sans: 'Inter', sans-serif; --mono: 'Space Mono', monospace;
-      --serif: 'Cormorant Garamond', serif;
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: var(--bg); color: var(--text); font-family: var(--sans);
-      line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
-      min-height: 100vh; display: flex; flex-direction: column;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
-
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 1.25rem 3rem; display: flex; justify-content: space-between; align-items: center;
-      background: rgba(10,10,11,0.7); backdrop-filter: blur(20px) saturate(1.6);
-      -webkit-backdrop-filter: blur(20px) saturate(1.6);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+    .mobile-menu a {
+      font-family: var(--serif);
+      font-size: 2rem;
     }
-    .back {
-      font-family: var(--mono); text-decoration: none; color: var(--text-muted);
-      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em;
-      transition: color 0.3s var(--ease-out); display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .back:hover { color: var(--text); }
-    .back-arrow { display: inline-block; transition: transform 0.3s var(--ease-out); }
-    .back:hover .back-arrow { transform: translateX(-3px); }
-    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-    .nav-link {
-      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
-      letter-spacing: 0.1em; color: var(--text-muted); text-decoration: none; transition: color 0.3s;
-    }
-    .nav-link:hover { color: var(--text); }
-    .nav-link.active { color: var(--accent); }
-    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
-    .hamburger span { display: block; width: 20px; height: 1.5px; background: var(--text-muted); margin: 4px 0; transition: all 0.3s; }
-    .mobile-menu {
-      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(10,10,11,0.95); backdrop-filter: blur(20px); z-index: 99;
-      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-family: var(--serif); font-size: 2rem; color: var(--text); text-decoration: none; opacity: 0.7; transition: opacity 0.3s; }
-    .mobile-menu a:hover { opacity: 1; }
-    @media (max-width: 768px) { .nav-links { display: none; } .hamburger { display: block; } .nav { padding: 1rem 1.5rem; } }
 
     /* ── Content ── */
     .contact-wrapper {
@@ -122,32 +79,6 @@
     .resume-standalone {
       margin-top: 2.5rem;
       opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.8s forwards;
-    }
-    .resume-btn {
-      display: inline-flex; align-items: center; gap: 0.75rem;
-      padding: 0.8rem 1.6rem;
-      background: var(--accent-dim); border: 1px solid rgba(200,184,255,0.2);
-      border-radius: 8px; color: var(--accent); text-decoration: none;
-      font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase;
-      letter-spacing: 0.1em; transition: all 0.3s var(--ease-out);
-    }
-    .resume-btn:hover {
-      background: rgba(200,184,255,0.15); border-color: rgba(200,184,255,0.35);
-      transform: translateY(-1px);
-    }
-    .resume-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
-
-    .footer {
-      border-top: 1px solid var(--border); padding: 3rem; text-align: center;
-    }
-    .footer p {
-      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
-      letter-spacing: 0.15em; color: var(--text-muted); margin: 0;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
     @media (max-width: 640px) {
       .contact-wrapper { padding: 7rem 1.5rem 3rem; }
