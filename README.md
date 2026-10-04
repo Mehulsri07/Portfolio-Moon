@@ -10,7 +10,7 @@ My personal portfolio: a 3D moon landing page that splits into two tracks, one f
 
 - **3D moon landing:** a Three.js scene with a lit, textured moon model (glTF) over an animated starfield.
 - **Two tracks:** hover the coding side for a Matrix-style digital rain effect, or the creative side for the art portfolio. Each leads to its own page.
-- **Pages:** about, coding projects, creative work (photo gallery), blog and contact, with animated page transitions.
+- **Pages:** about, coding projects, creative work (photo gallery) and contact, with animated page transitions.
 - **Automated image pipeline:** a GitHub Actions workflow converts new gallery photos to WebP whenever `Images/Portfolio_Creativity/` or `data/photos.json` changes.
 
 ---
@@ -29,7 +29,7 @@ My personal portfolio: a 3D moon landing page that splits into two tracks, one f
 ```text
 Portfolio-Moon/
 ├── index.html            # 3D moon landing page
-├── pages/                # about, coding, creativity, blog, contact
+├── pages/                # about, coding, creativity, contact
 ├── js/                   # Three.js scene, starfield, loader, hover effects, transitions
 ├── css/style.css         # Site styles
 ├── assets/               # Moon model (.glb), texture, favicon
