@@ -9,6 +9,8 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <meta property="og:title" content="Design & Creativity | Portfolio">
   <meta property="og:description" content="Photography and creative visual works.">
+  <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Tangerine:wght@700&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../css/pages.css?v=4" />
@@ -117,6 +119,12 @@
       overflow: hidden;
       cursor: pointer;
       background: var(--surface);
+      box-shadow: 0 0 18px rgba(200, 184, 255, 0.14);
+      transition: box-shadow 0.6s var(--ease-out);
+    }
+
+    .gallery-item:hover {
+      box-shadow: 0 0 28px rgba(200, 184, 255, 0.28);
     }
 
     .gallery-item img {
@@ -563,7 +571,7 @@
         item.dataset.index = i;
         item.style.opacity = '0';
         item.style.transform = 'translateY(30px)';
-        item.style.transition = `opacity 0.7s ${0.05 * i}s var(--ease-out), transform 0.7s ${0.05 * i}s var(--ease-out)`;
+        item.style.transition = `opacity 0.7s ${0.05 * i}s var(--ease-out), transform 0.7s ${0.05 * i}s var(--ease-out), box-shadow 0.6s var(--ease-out)`;
         item.innerHTML = `
           <img src="${BASE + p.file}" alt="${p.title}" loading="lazy" decoding="async">
           <div class="item-overlay">
