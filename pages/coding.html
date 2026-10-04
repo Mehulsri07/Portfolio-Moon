@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Engineering & Logic | Mehul Srivastava</title>
-  <meta name="description" content="Software engineering portfolio showcasing projects in deep learning, Three.js, geological visualization, and full-stack development.">
+  <meta name="description" content="Projects by Mehul Srivastava: a released Tauri desktop app, CI/CD with GitHub Actions, Docker and AWS EC2, Prometheus/Grafana observability, and deep learning.">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <meta property="og:title" content="Engineering & Logic | Mehul Srivastava">
-  <meta property="og:description" content="Projects in deep learning, geological visualization, and full-stack development.">
+  <meta property="og:description" content="A released desktop app, CI/CD pipelines, observability on AWS, and deep learning research.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap"
     rel="stylesheet" />
   <style>
@@ -20,7 +20,7 @@
       --border: #1e1e20;
       --border-hover: #333336;
       --text: #f0f0f0;
-      --text-muted: #777779;
+      --text-muted: #858588;
       --accent-green: #00ff41;
       --accent-green-dim: rgba(0, 255, 65, 0.06);
       --accent-blue: #58a6ff;
@@ -232,7 +232,7 @@
     }
 
     .github-badge {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-family: var(--mono);
       color: var(--accent-green);
       letter-spacing: 0.05em;
@@ -254,7 +254,7 @@
 
     .section-label {
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.25em;
       color: var(--text-muted);
@@ -311,7 +311,7 @@
 
     .card-meta {
       font-family: var(--mono);
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
@@ -333,6 +333,14 @@
 
     .lang-py {
       background: #3572A5;
+    }
+
+    .lang-ts {
+      background: #3178c6;
+    }
+
+    .lang-go {
+      background: #00ADD8;
     }
 
     .lang-html {
@@ -362,6 +370,7 @@
     .card-actions {
       display: flex;
       align-items: center;
+      gap: 0.75rem;
     }
 
     .card-link {
@@ -408,7 +417,7 @@
 
     .stack-label {
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.25em;
       color: var(--text-muted);
@@ -425,7 +434,7 @@
 
     .stack-chip {
       font-family: var(--mono);
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       padding: 0.5rem 1rem;
       border: 1px solid var(--border);
@@ -450,7 +459,7 @@
     .details-content h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-green); margin-bottom: 0.5rem; }
     .details-content p { font-size: 0.85rem; line-height: 1.6; margin-bottom: 1rem; color: var(--text-muted); }
     .btn-toggle-details {
-      background: none; border: none; color: var(--text-muted); font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: color 0.3s; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0;
+      background: none; border: none; color: var(--text-muted); font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: color 0.3s; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0;
     }
     .btn-toggle-details:hover { color: var(--text); }
     .btn-toggle-details::after { content: '↓'; transition: transform 0.3s; }
@@ -491,13 +500,13 @@
       font-variant-numeric: tabular-nums;
     }
     .stat-label {
-      font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase;
+      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
       letter-spacing: 0.2em; color: var(--text-muted);
     }
 
     /* ── Nav Links ── */
     .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-    .nav-link { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+    .nav-link { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
     .nav-link:hover { color: var(--text); }
     .nav-link.active { color: var(--accent-green); }
     .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
@@ -541,22 +550,21 @@
       <a href="creativity.html" class="nav-link">Creativity</a>
       <a href="about.html" class="nav-link">About</a>
       <a href="contact.html" class="nav-link">Contact</a>
-      <a href="blog.html" class="nav-link">Blog</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
   <div class="mobile-menu" id="mobile-menu">
     <a href="coding.html">Coding</a><a href="creativity.html">Creativity</a>
     <a href="about.html">About</a><a href="contact.html">Contact</a>
-    <a href="blog.html">Blog</a><a href="../index.html">Home</a>
+    <a href="../index.html">Home</a>
   </div>
 
   <!-- Hero -->
   <section class="hero" id="hero">
     <div class="hero-label">Portfolio — Source Code</div>
     <h1>Projects <em>&</em><br>Engineering.</h1>
-    <p class="subtitle">Real projects built with Python, JavaScript, and deep learning — from geological visualization
-      to handwritten math recognition.</p>
+    <p class="subtitle">Final-year CS (AI/ML) student working towards DevOps and SRE roles — shipping a released desktop
+      app, CI/CD pipelines, and load-tested, monitored services on AWS.</p>
 
     <a href="https://github.com/Mehulsri07" target="_blank" rel="noopener" class="github-card">
       <img src="https://avatars.githubusercontent.com/u/151434031?v=4" alt="Mehul's avatar" class="github-avatar" />
@@ -580,24 +588,123 @@
       <article class="project-card">
         <div class="card-body">
           <div class="card-meta">
-            <span><span class="lang-dot lang-js"></span>JavaScript</span>
-            <span>Updated Apr 2026</span>
+            <span><span class="lang-dot lang-ts"></span>TypeScript</span>
+            <span>Released — auto-updating</span>
           </div>
-          <h3>Strata Desk</h3>
-          <p>A geological cross-section renderer with stratigraphic correlation, borehole data visualization, and
-            interactive layer management for fieldwork professionals.</p>
-          
+          <h3>StrataField</h3>
+          <p>Offline-first Windows desktop app used day to day by my family's drilling business to record borewells,
+            soil layers, pipes, water levels and site photos — with an offline city map of water depths and geological
+            cross-sections.</p>
+
           <div class="project-details">
             <div class="details-content">
               <h4>Implementation</h4>
-              <p>Built using a custom 2D canvas rendering engine to draw dynamic Bézier curves that connect stratigraphy across multiple boreholes. The data is managed via a React frontend with a modular architecture.</p>
+              <p>Rebuilt the original Electron version on Tauri 2, cutting the installer from 134 MB to 3.5 MB, and replaced sql.js with native SQLite (schema migrations, edit history, recycle bin, daily backups) that imports the old app's data automatically. GitHub Actions runs typecheck, lint, unit tests, a Windows end-to-end test and a clean-machine installer test; tagged releases publish signed builds that installed copies auto-update from.</p>
               <h4>Tech Stack</h4>
-              <p>React, JavaScript, HTML5 Canvas, TailwindCSS</p>
+              <p>Tauri 2, React, TypeScript, Rust, SQLite, Leaflet, Vitest, GitHub Actions</p>
             </div>
           </div>
         </div>
         <div class="card-actions">
           <button class="btn-toggle-details">Details</button>
+          <a href="https://github.com/Mehulsri07/StrataField/releases/latest" target="_blank" rel="noopener" class="card-link">Download
+            <span class="link-arrow">↗</span></a>
+          <a href="https://github.com/Mehulsri07/StrataField" target="_blank" rel="noopener" class="card-link">Source
+            <span class="link-arrow">↗</span></a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="card-body">
+          <div class="card-meta">
+            <span><span class="lang-dot lang-go"></span>Go</span>
+            <span>AWS EC2</span>
+          </div>
+          <h3>LoadLab</h3>
+          <p>A load-testing and observability sandbox built to fail on purpose: Nginx in front of a Go backend with
+            deliberately CPU- and memory-heavy routes, scraped by Prometheus and visualised in Grafana.</p>
+
+          <div class="project-details">
+            <div class="details-content">
+              <h4>Implementation</h4>
+              <p>Deployed as a Docker Compose stack on EC2, with the backend rewritten from Node.js to Go. Low, medium and high k6 load profiles show where p95 latency climbs and which resource saturates first. Fixed a Grafana redirect loop behind the Nginx sub-path proxy by correcting the root URL and forwarded headers.</p>
+              <h4>Tech Stack</h4>
+              <p>Go, Nginx, Docker Compose, Prometheus, Node Exporter, Grafana, k6, AWS EC2</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-toggle-details">Details</button>
+          <a href="https://github.com/Mehulsri07/LoadLab" target="_blank" rel="noopener" class="card-link">Source
+            <span class="link-arrow">↗</span></a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="card-body">
+          <div class="card-meta">
+            <span><span class="lang-dot lang-py"></span>Python</span>
+            <span>Team project — contributor</span>
+          </div>
+          <h3>IntelliOps</h3>
+          <p>Agentic AIOps platform for alert correlation, root-cause analysis and human-approved Kubernetes
+            remediation. I contributed the CI/CD workflows, the Kafka event bus and the Helm chart.</p>
+
+          <div class="project-details">
+            <div class="details-content">
+              <h4>My Contribution</h4>
+              <p>CI/CD workflows covering lint, tests, a Docker Compose smoke test, a frontend build gate and GHCR image builds. Added Kafka as an event bus interchangeable with the in-memory backend (checked by contract tests), a Helm chart for Postgres, Redis, all services and a migration job, and a load-test script.</p>
+              <h4>Tech Stack</h4>
+              <p>Python, GitHub Actions, Kafka, Helm, Kubernetes, PostgreSQL, Redis, GHCR</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-toggle-details">Details</button>
+          <a href="https://github.com/Mehulsri07/intelliops" target="_blank" rel="noopener" class="card-link">Source
+            <span class="link-arrow">↗</span></a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="card-body">
+          <div class="card-meta">
+            <span><span class="lang-dot lang-py"></span>Python</span>
+            <span>IEEE — under review</span>
+          </div>
+          <h3>Invisible Image Watermarking — DWT + CNN</h3>
+          <p>Deep learning-based invisible image watermarking using the Discrete Wavelet Transform and a CNN. Written up
+            as a paper with M. Talwar and S. Singh, currently under review at IEEE.</p>
+
+          <div class="project-details">
+            <div class="details-content">
+              <h4>Evaluation</h4>
+              <p>Measured with PSNR, SSIM and bit error rate under noise, JPEG compression, crop, scale and rotation attacks.</p>
+              <h4>Tech Stack</h4>
+              <p>Python, TensorFlow, Keras</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-toggle-details">Details</button>
+          <a href="https://github.com/Mehulsri07/Watermarking-cnn" target="_blank" rel="noopener"
+            class="card-link">Source <span class="link-arrow">↗</span></a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="card-body">
+          <div class="card-meta">
+            <span><span class="lang-dot lang-ts"></span>TypeScript</span>
+            <span>Web predecessor of StrataField</span>
+          </div>
+          <h3>StrataDesk</h3>
+          <p>Full-stack React/TypeScript app for borewell data (Excel import, map, cross-sections) with CI/CD via GitHub
+            Actions, GHCR and AWS Systems Manager to EC2, plus Prometheus/Grafana monitoring and k6 load tests.</p>
+        </div>
+        <div class="card-actions">
+          <a href="https://strata-desk.vercel.app" target="_blank" rel="noopener" class="card-link">Live
+            <span class="link-arrow">↗</span></a>
           <a href="https://github.com/Mehulsri07/StrataDesk" target="_blank" rel="noopener" class="card-link">Source
             <span class="link-arrow">↗</span></a>
         </div>
@@ -607,98 +714,14 @@
         <div class="card-body">
           <div class="card-meta">
             <span><span class="lang-dot lang-py"></span>Python</span>
-            <span>Updated Mar 2026</span>
           </div>
           <h3>Handwritten Math Expressions — Deep Learning</h3>
-          <p>OCR classifier that recognizes handwritten mathematical expressions using a custom CNN pipeline trained on
-            symbol datasets with real-time inference.</p>
-            
-          <div class="project-details">
-            <div class="details-content">
-              <h4>Implementation</h4>
-              <p>Designed a Convolutional Neural Network (CNN) architecture optimized for spatial hierarchy recognition. Implemented data augmentation techniques to handle varying handwriting styles.</p>
-              <h4>Tech Stack</h4>
-              <p>Python, TensorFlow, Keras, OpenCV, NumPy</p>
-            </div>
-          </div>
+          <p>CRNN + CTC model in TensorFlow that reads handwritten math expressions from images and solves them, trained
+            on Kaggle plus synthetic data.</p>
         </div>
         <div class="card-actions">
-          <button class="btn-toggle-details">Details</button>
           <a href="https://github.com/Mehulsri07/Handwritten-Math-Expressions-using-Deep-Learning" target="_blank"
             rel="noopener" class="card-link">Source <span class="link-arrow">↗</span></a>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="card-body">
-          <div class="card-meta">
-            <span><span class="lang-dot lang-py"></span>Python</span>
-            <span>Updated Nov 2025</span>
-          </div>
-          <h3>Watermarking CNN</h3>
-          <p>Deep learning based digital watermarking system using convolutional neural networks for embedding and
-            extracting imperceptible watermarks in images.</p>
-            
-          <div class="project-details">
-            <div class="details-content">
-              <h4>Implementation</h4>
-              <p>Utilized an encoder-decoder network architecture to invisibly embed watermark tensors into image spatial domains, maintaining robustness against compression and filtering.</p>
-              <h4>Tech Stack</h4>
-              <p>Python, PyTorch, Matplotlib</p>
-            </div>
-          </div>
-        </div>
-        <div class="card-actions">
-          <button class="btn-toggle-details">Details</button>
-          <a href="https://github.com/Mehulsri07/Watermarking-CNN" target="_blank" rel="noopener"
-            class="card-link">Source <span class="link-arrow">↗</span></a>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="card-body">
-          <div class="card-meta">
-            <span><span class="lang-dot lang-js"></span>JavaScript</span>
-            <span>Updated Nov 2025</span>
-          </div>
-          <h3>CafeTrack</h3>
-          <p>A cafe management and order tracking system built with JavaScript for streamlining daily operations,
-            inventory, and customer workflows.</p>
-        </div>
-        <div class="card-actions">
-          <a href="https://github.com/Mehulsri07/CafeTrack" target="_blank" rel="noopener" class="card-link">Source
-            <span class="link-arrow">↗</span></a>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="card-body">
-          <div class="card-meta">
-            <span><span class="lang-dot lang-html"></span>HTML</span>
-            <span>Updated Apr 2026</span>
-          </div>
-          <h3>Portfolio Moon</h3>
-          <p>This portfolio website — a cinematic 3D moon experience with Three.js, scroll-driven animations, and
-            interactive hover effects.</p>
-        </div>
-        <div class="card-actions">
-          <a href="https://github.com/Mehulsri07/Portfolio-Moon" target="_blank" rel="noopener" class="card-link">Source
-            <span class="link-arrow">↗</span></a>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="card-body">
-          <div class="card-meta">
-            <span><span class="lang-dot lang-py"></span>Python</span>
-            <span>Updated Dec 2025</span>
-          </div>
-          <h3>Demo Calc</h3>
-          <p>A Python calculator demonstration project exploring basic computation logic and interface design.</p>
-        </div>
-        <div class="card-actions">
-          <a href="https://github.com/Mehulsri07/Demo-calc" target="_blank" rel="noopener" class="card-link">Source
-            <span class="link-arrow">↗</span></a>
         </div>
       </article>
 
@@ -713,11 +736,11 @@
         <div class="stat-label">Projects Built</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number" data-target="4">0</div>
+        <div class="stat-number" data-target="5">0</div>
         <div class="stat-label">Languages</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number" data-target="10" data-suffix="+">0</div>
+        <div class="stat-number" data-target="20" data-suffix="+">0</div>
         <div class="stat-label">Technologies</div>
       </div>
     </div>
@@ -728,15 +751,27 @@
     <div class="stack-label">Technologies</div>
     <div class="stack-grid">
       <div class="stack-chip">Python</div>
-      <div class="stack-chip">JavaScript</div>
+      <div class="stack-chip">TypeScript</div>
+      <div class="stack-chip">Go</div>
+      <div class="stack-chip">Bash</div>
+      <div class="stack-chip">SQL</div>
+      <div class="stack-chip">AWS EC2</div>
+      <div class="stack-chip">Docker</div>
+      <div class="stack-chip">GitHub Actions</div>
+      <div class="stack-chip">Kubernetes</div>
+      <div class="stack-chip">Helm</div>
+      <div class="stack-chip">Nginx</div>
+      <div class="stack-chip">Linux</div>
+      <div class="stack-chip">Prometheus</div>
+      <div class="stack-chip">Grafana</div>
+      <div class="stack-chip">k6</div>
       <div class="stack-chip">React</div>
-      <div class="stack-chip">Three.js</div>
-      <div class="stack-chip">TensorFlow</div>
-      <div class="stack-chip">Deep Learning</div>
-      <div class="stack-chip">CNN</div>
-      <div class="stack-chip">HTML / CSS</div>
-      <div class="stack-chip">Node.js</div>
-      <div class="stack-chip">Git</div>
+      <div class="stack-chip">Tauri</div>
+      <div class="stack-chip">PostgreSQL</div>
+      <div class="stack-chip">SQLite</div>
+      <div class="stack-chip">Kafka</div>
+      <div class="stack-chip">TensorFlow / Keras</div>
+      <div class="stack-chip">Google Earth Engine</div>
     </div>
   </section>
 

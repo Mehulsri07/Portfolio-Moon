@@ -139,15 +139,14 @@ p {
 }
 
 #scroll-space {
-  height: 120vh;
+  /* Arm rig scroll zone: zoneStart = 1×vh, zoneEnd = 3×vh.
+     For progress to reach 1.0, scrollY must reach 3×innerHeight (300vh).
+     Page = hero(100vh) + scroll-space, so scroll-space must be at least
+     300vh − 0vh (scroll-space starts after hero) = 300vh.
+     Add 40vh end-buffer so the hands rest on screen before the page ends. */
+  height: 340vh;
 }
 
-#moon-canvas {
-  position: fixed;
-  inset: 0;
-  cursor: pointer;
-  z-index: 2;
-}
 
 #labels {
   position: fixed;
@@ -364,6 +363,154 @@ body:has(.label.right:hover) .label.right {
   100% { bottom: 110%; left: 60%; opacity: 0; transform: rotate(-10deg); }
 }
 
+/* ═══════════════════════════════════════════════
+   ARM RIG — scroll-driven hands navigation
+   All hand/spill colors scoped here; never
+   bleed outside #arm-rig or .spill-overlay
+   ═══════════════════════════════════════════════ */
+
+:root {
+  --hand-maroon: #4a1005;
+  --hand-teal:   #0d3b3e;
+}
+
+/* Wrapper: fixed, full-viewport, sits above backgrounds but below labels */
+#arm-rig {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  /* No overflow:hidden — hands start off-screen and must be visible during slide-in */
+}
+
+/* ── Spill overlays ──────────────────────────── */
+.spill-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: clip-path;
+}
+.spill-maroon {
+  background: radial-gradient(circle, var(--hand-maroon) 0%, transparent 70%);
+}
+.spill-teal {
+  background: radial-gradient(circle, var(--hand-teal) 0%, transparent 70%);
+}
+.spill-overlay.active {
+  clip-path: circle(60vmax at var(--spill-x, 50%) var(--spill-y, 50%));
+}
+
+/* ── Hand element containers ─────────────────── */
+/*
+ * Both hands use off-canvas transform-origin pivots so they arc
+ * through space rather than spinning in place.
+ * Size and pivot are defined per-hand below (.hand-left / .hand-right).
+ */
+.hand-element {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/*
+ * Left hand (maroon / coding track → pages/coding.html)
+ * Starts fully off-canvas bottom-left.
+ * Pivot far below-left — tight arc sweeping CCW up into frame from below.
+ * At progress=0: rotate(90deg) around pivot → entirely below canvas.
+ * At progress=1: rotate(0deg) → resting pose, fingers reaching right.
+ */
+.hand-left {
+  width: 36vw;
+  height: calc(36vw * 1350 / 2500);
+  /* Push element itself further left so arm base is off-canvas at rest */
+  left: -8vw;
+  bottom: 0;
+  /* Pivot further left and below — arm base never enters the visible area */
+  transform-origin: -120% 200%;
+  transform: rotate(90deg);
+}
+
+/*
+ * Right hand (teal / creativity track → pages/creativity.html)
+ * Starts fully off-canvas top-right.
+ * Pivot far above-right — wide arc sweeping CCW down into frame from above.
+ * At progress=0: rotate(-90deg) around pivot → entirely above canvas.
+ * At progress=1: rotate(0deg) → resting pose, fingers reaching left.
+ */
+.hand-right {
+  width: 36vw;
+  height: calc(36vw * 1350 / 2500);
+  right: 0;
+  top: 0;
+  /* Pivot well above and slightly right of element */
+  transform-origin: 90% -220%;
+  transform: rotate(-90deg);
+}
+
+/* ── Full-canvas PNG layers ───────────────────── */
+.hand-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* Left hand transform-origins (percentage of shared 2500x1350 canvas) */
+.arm-layer    { transform-origin: 52% 35%; }
+.palm-layer   { transform-origin: 86% 35%; }
+.finger-layer { transform-origin: center;  }
+
+/* Right hand transform-origins */
+.arm-layer-r    { transform-origin: 48% 47%; }
+.palm-layer-r   { transform-origin: 18% 49%; }
+.finger-layer-r { transform-origin: center;  }
+
+/* ── Hand link (focusable hit area) ──────────── */
+.hand-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+.hand-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+}
+
+/* ── Hover scale (fine-pointer only) ─────────── */
+@media (hover: hover) and (pointer: fine) {
+  .hand-element {
+    transition: transform 0.2s ease-out;
+  }
+  .hand-element.hovered {
+    transform: scale(1.06);
+  }
+}
+
+/* ── Pulse animation ─────────────────────────── */
+@keyframes handPulse {
+  0%   { transform: scale(1);    }
+  40%  { transform: scale(1.12); }
+  100% { transform: scale(1);    }
+}
+
+.hand-element.pulsing {
+  animation: handPulse 0.4s ease-in-out forwards;
+}
+
+/* ── Settled state ───────────────────────────── */
+.hand-element.settled {
+  pointer-events: auto;
+}
+
 @media (max-width: 768px) {
   /* Hero text — readable, no overlap */
   .welcome-line:first-child {
@@ -379,7 +526,7 @@ body:has(.label.right:hover) .label.right {
   }
   .hint {
     bottom: 40px;
-    font-size: 0.55rem;
+    font-size: 0.7rem;
   }
 
   /* Labels: stack vertically at bottom, large tap targets */
@@ -425,7 +572,7 @@ body:has(.label.right:hover) .label.right {
   }
   .bottom-link {
     padding: 10px 8px;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   /* Disable hover-only canvas effects on touch */
@@ -445,6 +592,15 @@ body:has(.label.right:hover) .label.right {
 
   .featured-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  /* Arm rig: slightly wider on small screens */
+  .hand-left, .hand-right {
+    width: 52vw;
+    height: calc(52vw * 1350 / 2500);
+  }
+  .spill-overlay {
+    display: none;
   }
 }
 
