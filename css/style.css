@@ -132,10 +132,12 @@ p {
 
 .moon-loading-fill {
   height: 100%;
-  width: 0%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
   background: linear-gradient(90deg, #5a6a82, #c4b89a);
   border-radius: 1px;
-  transition: width .15s ease;
+  transition: transform .15s ease;
 }
 
 #scroll-space {

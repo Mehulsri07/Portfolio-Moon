@@ -41,7 +41,7 @@ initTransitions();
 function setLoadingProgress(p) {
   if (!loadingFill || !loadingBar) return;
   const pct = Math.round(Math.min(100, Math.max(0, p * 100)));
-  loadingFill.style.width = `${pct}%`;
+  loadingFill.style.transform = `scaleX(${pct / 100})`;
   loadingBar.setAttribute('aria-valuenow', String(pct));
 }
 
