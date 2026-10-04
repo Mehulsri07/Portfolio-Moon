@@ -808,7 +808,7 @@
     document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('open'));
   </script>
 
-  <script src="../js/transitions.js"></script>
+  <script type="module">import { initTransitions } from "../js/transitions.js?v=2"; initTransitions();</script>
 </body>
 
 </html>

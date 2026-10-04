@@ -28,14 +28,14 @@ export function initTransitions() {
         const link = e.target.closest('a[href]');
         if (!link) return;
 
-        const href = link.getAttribute('href');
+        // Leave new-tab clicks, downloads, and already-handled clicks to the browser
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (link.target === '_blank' || link.hasAttribute('download')) return;
 
-        // Skip external links, anchors, and javascript: links
-        if (!href) return;
-        if (link.target === '_blank') return;
-        if (href.startsWith('#')) return;
-        if (href.startsWith('javascript:')) return;
-        if (href.startsWith('http') && !href.includes(window.location.host)) return;
+        // Only fade for same-site page navigations (not mailto:, tel:, external, or in-page anchors)
+        const url = new URL(link.href, window.location.href);
+        if (url.origin !== window.location.origin) return;
+        if (url.pathname === window.location.pathname && url.hash) return;
 
         e.preventDefault();
 
@@ -43,7 +43,7 @@ export function initTransitions() {
         overlay.style.opacity = '1';
 
         setTimeout(() => {
-            window.location.href = href;
+            window.location.href = url.href;
         }, 400);
     });
 

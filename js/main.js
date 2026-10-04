@@ -6,7 +6,7 @@ window.addEventListener('unhandledrejection', e => console.error('Promise Error:
 import { initStarfield } from './starfield.js';
 import { initCursorTrail } from './cursor-trail.js';
 import { initHoverEffects } from './hover-effects.js';
-import { initTransitions } from './transitions.js';
+import { initTransitions } from './transitions.js?v=2';
 import { initArmRig } from './arm-rig.js';
 
 // Initialize visual effects
