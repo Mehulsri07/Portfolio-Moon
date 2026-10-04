@@ -91,52 +91,7 @@ p {
   opacity: .7;
 }
 
-#moon-loading {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg);
-  transition: opacity .55s ease, visibility .55s ease;
-  pointer-events: none;
-}
 
-#moon-loading.done {
-  opacity: 0;
-  visibility: hidden;
-}
-
-#moon-loading-inner {
-  text-align: center;
-  max-width: 220px;
-}
-
-.moon-loading-label {
-  display: block;
-  font-family: var(--mono);
-  font-size: .55rem;
-  letter-spacing: .35em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
-
-.moon-loading-bar {
-  height: 2px;
-  background: rgba(255, 255, 255, .08);
-  border-radius: 1px;
-  overflow: hidden;
-}
-
-.moon-loading-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #5a6a82, #c4b89a);
-  border-radius: 1px;
-  transition: width .15s ease;
-}
 
 #scroll-space {
   /* Arm rig scroll zone: zoneStart = 1×vh, zoneEnd = 3×vh.
@@ -279,22 +234,6 @@ body:has(.label.left:hover) .label.left {
 body:has(.label.right:hover) .label.right {
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 0 10px rgba(255, 0, 255, 0.3), 0 0 20px rgba(0, 252, 237, 0.15);
-}
-
-/* ── Preloader ──────────────────────────────────────── */
-.preloader-moon {
-  margin: 0 auto 18px;
-  width: 60px;
-  height: 60px;
-}
-.preloader-arc {
-  animation: preloaderSpin 1.8s ease-in-out infinite;
-  transform-origin: center;
-}
-@keyframes preloaderSpin {
-  0% { stroke-dashoffset: 150.8; transform: rotate(0deg); }
-  50% { stroke-dashoffset: 40; }
-  100% { stroke-dashoffset: 150.8; transform: rotate(360deg); }
 }
 
 /* ── Bottom Nav ─────────────────────────────────────── */
