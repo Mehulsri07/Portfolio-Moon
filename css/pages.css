@@ -71,6 +71,11 @@ body {
   display: block; width: 20px; height: 1.5px; background: var(--text-muted);
   margin: 4px 0; transition: all 0.3s;
 }
+/* Open state: the three bars fold into a close cross */
+.hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+.hamburger[aria-expanded="true"] span { background: var(--text); }
 .mobile-menu {
   display: none; position: fixed; inset: 0;
   background: rgba(10, 10, 11, 0.95); backdrop-filter: blur(20px);

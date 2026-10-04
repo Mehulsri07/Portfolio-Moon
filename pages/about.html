@@ -10,7 +10,7 @@
   <meta property="og:description" content="Software engineer, photographer, and creative builder.">
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css?v=3" />
+  <link rel="stylesheet" href="../css/pages.css?v=4" />
   <style>
     .mobile-menu a {
       font-family: var(--serif);
@@ -318,10 +318,6 @@
   </footer>
 
   <script>
-    // Hamburger toggle
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobile-menu');
-    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
 
     // Scroll reveal for timeline items
     const observer = new IntersectionObserver((entries) => {
@@ -340,6 +336,7 @@
       observer.observe(el);
     });
   </script>
+  <script src="../js/menu.js"></script>
   <script type="module">import { initTransitions } from "../js/transitions.js?v=2"; initTransitions();</script>
 </body>
 </html>

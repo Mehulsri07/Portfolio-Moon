@@ -11,7 +11,7 @@
   <meta property="og:description" content="Photography and creative visual works.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Tangerine:wght@700&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css?v=3" />
+  <link rel="stylesheet" href="../css/pages.css?v=4" />
   <style>
     body {
       margin: 0;
@@ -652,10 +652,9 @@
       if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
     });
 
-    // ── Hamburger ──
-    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('open'));
   </script>
 
+  <script src="../js/menu.js"></script>
   <script type="module">import { initTransitions } from "../js/transitions.js?v=2"; initTransitions();</script>
 </body>
 
