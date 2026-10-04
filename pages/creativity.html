@@ -616,7 +616,7 @@
       lightboxImg.alt = data.title;
       lightboxTitle.textContent = data.title;
       lightboxDesc.textContent = data.desc;
-      counter.textContent = `${currentIndex + 1} / ${imagesData.length}`;
+      counter.textContent = `${visualOrder().indexOf(currentIndex) + 1} / ${imagesData.length}`;
 
       requestAnimationFrame(() => {
         info.style.transition = 'opacity 0.45s var(--ease-out) 0.1s, transform 0.45s var(--ease-out) 0.1s';
@@ -625,8 +625,18 @@
       });
     }
 
+    // The masonry columns fill top to bottom, so DOM order runs down each column.
+    // Step through photos the way the page reads instead: top to bottom, then left to right.
+    function visualOrder() {
+      return [...grid.children]
+        .sort((a, b) => a.offsetTop - b.offsetTop || a.offsetLeft - b.offsetLeft)
+        .map(el => Number(el.dataset.index));
+    }
+
     function navigate(dir) {
-      currentIndex = (currentIndex + dir + imagesData.length) % imagesData.length;
+      const order = visualOrder();
+      const pos = order.indexOf(currentIndex);
+      currentIndex = order[(pos + dir + order.length) % order.length];
       updateLightbox();
     }
 
