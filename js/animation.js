@@ -1,8 +1,5 @@
 // js/animation.js
 
-// Moon radius in world units after loader.js scales the model (6.4 * 1.06 / 2)
-const BASE_RADIUS = 3.392;
-
 // Constant idle spin: 1.5 revolutions per minute, in radians per second
 const SPIN_RAD_PER_SEC = (1.5 * 2 * Math.PI) / 60;
 
@@ -50,9 +47,8 @@ const LIGHT_PARKED = [-10, 5, 7];
 export function createAnimationLoop({ composer, renderer, scene, camera, getMoon, scrollState, keyLight }) {
   const state = {
     x: 0,
-    y: -5.5,
+    y: 0,
     rotY: Math.PI,
-    scale: 1,
     opacity: 1,
     appliedOpacity: 1,
     spin: 0,
@@ -74,42 +70,43 @@ export function createAnimationLoop({ composer, renderer, scene, camera, getMoon
     const moon = getMoon();
 
     if (moon) {
-      moon.userData.baseScale ??= moon.scale.x;
-
       const rise = ease(scrollState.scrollProgress);
       const side = ease(scrollState.aboutProgress);
 
-      // Where the right edge of the screen is, in world units on the moon's plane
-      const d = camera.position.z;
-      const halfH = d * Math.tan((camera.fov * Math.PI) / 360);
-      const halfW = halfH * camera.aspect;
+      // Screen size of one world unit on the moon's plane
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const halfH = camera.position.z * Math.tan((camera.fov * Math.PI) / 360);
+      const pxPerUnit = h / (2 * halfH);
 
-      // Parked size: as tall as the screen on wide windows. On portrait screens that
-      // would cover everything, so it stays smaller and fades behind the text instead.
+      // Narrow screens: the parked moon would sit behind most of the text, so it fades
       const narrow = camera.aspect < 1;
-      const apparent = narrow ? halfW * 0.95 : halfH * 1.1;            // on-screen radius
-      const radius = (apparent * d) / Math.sqrt(d * d + apparent * apparent); // undo perspective bulge
-      const parkedScale = radius / BASE_RADIUS;
 
       const target = {
-        x: side * halfW,
-        y: lerp(rise * 5.5 - 5.5, 0, side),
+        x: side * (w / 2),                                   // px right of centre: centre on the right edge
+        y: lerp((rise * 5.5 - 5.5) * pxPerUnit, 0, side),    // px above centre: rises from below
         rotY: Math.PI * (1 - rise) - side * 0.9,
-        scale: lerp(1, parkedScale, side),
         opacity: narrow ? lerp(1, 0.28, side) : 1,
+        light: side,
       };
 
-      target.light = side;
+      // Start exactly where the scroll position says, then ease from there
+      if (!state.started) {
+        Object.assign(state, target, { started: true });
+      }
 
-      for (const k of ['x', 'y', 'rotY', 'scale', 'opacity', 'light']) {
+      for (const k of ['x', 'y', 'rotY', 'opacity', 'light']) {
         state[k] += (target[k] - state[k]) * 0.08;
       }
 
-      moon.position.x = state.x;
-      moon.position.y = state.y;
+      // The moon itself never leaves the centre of the 3D scene: a sphere drawn off-centre in
+      // a perspective view stretches into an oval. Shifting the camera's frame instead (a lens
+      // shift) slides it across the screen while it stays perfectly round and the same size.
+      moon.position.set(0, 0, 0);
+      camera.setViewOffset(w, h, -state.x, state.y, w, h);
+
       moon.rotation.y = state.rotY + state.spin;
       moon.rotation.x = Math.sin(rise * Math.PI) * 0.05 * (1 - side);
-      moon.scale.setScalar(moon.userData.baseScale * state.scale);
 
       if (keyLight) {
         keyLight.position.set(

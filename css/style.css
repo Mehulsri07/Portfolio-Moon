@@ -514,8 +514,8 @@ html {
 }
 
 .panel {
-  /* stay clear of the parked moon, which covers ~0.55 x viewport height from the right edge */
-  width: min(760px, calc(100vw - 55vh - 12vw));
+  /* stay clear of the parked moon, which covers ~0.4 x viewport height from the right edge */
+  width: min(760px, calc(100vw - 44vh - 12vw));
   margin-left: 7vw;
   padding: 16vh 0 10vh;
   font-family: 'Inter', sans-serif;

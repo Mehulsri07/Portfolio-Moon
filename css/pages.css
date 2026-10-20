@@ -95,19 +95,29 @@ body {
   .nav { padding: 0.35rem 1.5rem; }
 }
 
-/* ── Corner moon: echoes the landing page's moon parked on the right edge ── */
+/* ── Corner moon: echoes the landing page's moon parked on the right edge.
+   The wrapper clips it so the overhang can't make the page scroll sideways. ── */
+.page-moon-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  height: min(40vw, 600px);
+  overflow: hidden;
+  pointer-events: none;
+}
 .page-moon {
   position: absolute;
   top: -12vw;
   right: -11vw;
-  z-index: 0;
   width: min(36vw, 560px);
   height: auto;
   opacity: 0.55;
-  pointer-events: none;
   user-select: none;
 }
 @media (max-width: 768px) {
+  .page-moon-wrap { height: 50vw; }
   .page-moon { top: -24vw; right: -26vw; width: 70vw; opacity: 0.35; }
 }
 
