@@ -3,13 +3,13 @@
 
 /* ── Design Tokens ── */
 :root {
-  --bg: #0a0a0b;
-  --surface: #111112;
-  --surface-raised: #161618;
-  --border: #1e1e20;
-  --border-hover: #333336;
-  --text: #f0f0f0;
-  --text-muted: #858588;
+  --bg: #090921;
+  --surface: #0f0f2b;
+  --surface-raised: #141436;
+  --border: #1c1c3e;
+  --border-hover: #2d2d58;
+  --text: #f8f8fa;
+  --text-muted: #9aa0b8;
   --accent: #c8b8ff;
   --accent-dim: rgba(200, 184, 255, 0.08);
   --accent-warm: #e2d9c6;
@@ -40,7 +40,7 @@ body {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 0.5rem 3rem;
   display: flex; justify-content: space-between; align-items: center;
-  background: rgba(10, 10, 11, 0.7);
+  background: rgba(9, 9, 33, 0.72);
   backdrop-filter: blur(20px) saturate(1.6);
   -webkit-backdrop-filter: blur(20px) saturate(1.6);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
@@ -78,7 +78,7 @@ body {
 .hamburger[aria-expanded="true"] span { background: var(--text); }
 .mobile-menu {
   display: none; position: fixed; inset: 0;
-  background: rgba(10, 10, 11, 0.95); backdrop-filter: blur(20px);
+  background: rgba(9, 9, 33, 0.96); backdrop-filter: blur(20px);
   z-index: 99; flex-direction: column; align-items: center;
   justify-content: center; gap: 2rem;
 }
@@ -93,6 +93,22 @@ body {
   .nav-links { display: none; }
   .hamburger { display: block; }
   .nav { padding: 0.35rem 1.5rem; }
+}
+
+/* ── Corner moon: echoes the landing page's moon parked on the right edge ── */
+.page-moon {
+  position: absolute;
+  top: -12vw;
+  right: -11vw;
+  z-index: 0;
+  width: min(36vw, 560px);
+  height: auto;
+  opacity: 0.55;
+  pointer-events: none;
+  user-select: none;
+}
+@media (max-width: 768px) {
+  .page-moon { top: -24vw; right: -26vw; width: 70vw; opacity: 0.35; }
 }
 
 /* ── Resume Button ── */

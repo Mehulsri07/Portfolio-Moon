@@ -11,9 +11,9 @@
   <meta property="og:description" content="Photography and creative visual works.">
   <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Tangerine:wght@700&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@1,400&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css?v=4" />
+  <link rel="stylesheet" href="../css/pages.css?v=5" />
   <style>
     body {
       margin: 0;
@@ -197,10 +197,11 @@
     }
 
     .item-overlay .item-label {
-      font-family: 'Tangerine', cursive;
-      font-weight: 700;
-      font-size: 1.4rem;
-      letter-spacing: 0.03em;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.25rem;
+      letter-spacing: 0.01em;
       color: rgba(255, 255, 255, 0.9);
       text-shadow: 0 1px 8px rgba(0,0,0,0.6);
     }
@@ -285,9 +286,10 @@
     }
 
     .lightbox-title {
-      font-family: 'Tangerine', cursive;
-      font-weight: 700;
-      font-size: 3.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 2.4rem;
       color: var(--text);
       line-height: 1.1;
       letter-spacing: 0.02em;
@@ -403,7 +405,7 @@
       .lightbox.active .lightbox-info {
         transform: translateY(0);
       }
-      .lightbox-title { font-size: 2.4rem; }
+      .lightbox-title { font-size: 1.9rem; }
       .lightbox-nav,
       .lightbox-nav.prev:hover,
       .lightbox-nav.next:hover { top: auto; bottom: 1.25rem; transform: none; }
@@ -462,6 +464,8 @@
 
 <body>
 
+  <img src="../assets/moon-disc.webp" alt="" aria-hidden="true" class="page-moon" width="640" height="640" decoding="async">
+
   <!-- Navigation -->
   <nav class="nav" id="nav">
     <a href="../index.html" class="back">
@@ -470,14 +474,14 @@
     <div class="nav-links">
       <a href="coding.html" class="nav-link">Coding</a>
       <a href="creativity.html" class="nav-link active">Creativity</a>
-      <a href="about.html" class="nav-link">About</a>
-      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="../index.html#about" class="nav-link">About</a>
+      <a href="../index.html#contact" class="nav-link">Contact</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
   <div class="mobile-menu" id="mobile-menu">
     <a href="coding.html">Coding</a><a href="creativity.html">Creativity</a>
-    <a href="about.html">About</a><a href="contact.html">Contact</a>
+    <a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a>
     <a href="../index.html">Home</a>
   </div>
 

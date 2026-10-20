@@ -5,7 +5,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 
 export function updateSceneTheme(scene, components, theme) {
   // Background
-  scene.background = new THREE.Color('#050609');
+  scene.background = new THREE.Color('#090921');
 
   // Lighting
   if (components.keyLight) {
@@ -38,11 +38,12 @@ export function createScene(canvas) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  // No shadow map: a single lit sphere needs none, and self-shadowing drew rings across the moon
+  // and a hard arc where it grew past the shadow camera bounds on the right edge.
+  renderer.shadowMap.enabled = false;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color('#050609');
+  scene.background = new THREE.Color('#090921');
 
   const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 300);
   camera.position.set(0, 0, 10.8);
@@ -51,7 +52,6 @@ export function createScene(canvas) {
   // Top-down illumination creates the dramatic half-dark crescent at the bottom
   const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
   keyLight.position.set(2, 12, 4);
-  keyLight.castShadow = true;
   scene.add(keyLight);
 
   // Subtle cool fill from the left — keeps dark side from being pure black

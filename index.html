@@ -27,9 +27,9 @@
   <!-- Preload the moon model so it's ready when user scrolls -->
   <link rel="preload" href="./assets/models/moon_opt.glb" as="fetch" crossorigin>
 
-  <link rel="stylesheet" href="./css/style.css?v=16" />
+  <link rel="stylesheet" href="./css/style.css?v=21" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"
     rel="stylesheet" />
 
   <script type="importmap">
@@ -41,7 +41,7 @@
   }
   </script>
 
-  <script type="module" src="./js/main.js?v=24"></script>
+  <script type="module" src="./js/main.js?v=29"></script>
 </head>
 
 <body>
@@ -78,6 +78,117 @@
   </section>
 
   <div id="scroll-space"></div>
+
+  <!-- About + Contact: the moon parks on the right edge while these scroll by on the left -->
+  <main id="sections">
+    <section id="about" class="panel" aria-labelledby="about-title">
+      <header class="about-intro">
+        <img src="Images/pfp/headshot.webp" alt="Portrait of Mehul Srivastava" class="about-photo" width="136" height="136" loading="lazy" decoding="async">
+        <div>
+          <h2 id="about-title" class="about-name">Mehul Srivastava</h2>
+          <p class="about-tagline">DevOps &amp; SRE · Event photography</p>
+        </div>
+      </header>
+
+      <p class="about-lead">I'm a final-year Computer Science (AI/ML) student working towards DevOps and SRE roles. I work hands-on with Docker, GitHub Actions, AWS EC2 and Prometheus/Grafana, and I maintain a desktop app my family's drilling business uses every day. Away from the terminal, I photograph events: 75+ assignments as head of coverage at Aperture.</p>
+
+      <div class="about-actions">
+        <a class="about-cta" href="pages/coding.html">See my projects</a>
+        <p class="about-links">
+          <a href="mailto:meulsri.0701@gmail.com">Email</a>
+          <a href="https://www.linkedin.com/in/mehul-srivastava-293923240/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/Mehulsri07" target="_blank" rel="noopener">GitHub</a>
+          <a href="Mehul_Resume_.pdf" download>Resume (PDF)</a>
+        </p>
+      </div>
+
+      <section class="cv-section" aria-labelledby="cv-education">
+        <h3 id="cv-education">Education</h3>
+        <div class="cv-body">
+          <article class="cv-entry">
+            <div class="cv-row"><h4>Manipal University Jaipur</h4><span class="cv-when">2023 – 2027</span></div>
+            <div class="cv-row"><p class="cv-role">B.Tech, Computer Science &amp; Engineering (AI/ML)</p><span class="cv-where">Jaipur, India</span></div>
+            <p class="cv-note">Coursework in Operating Systems, Computer Networks, DBMS, Algorithms, AI/ML and NLP.</p>
+          </article>
+          <article class="cv-entry">
+            <div class="cv-row"><h4>Seth M.R. Jaipuria School</h4><span class="cv-when">2008 – 2023</span></div>
+            <div class="cv-row"><p class="cv-role">Class XII (ISC) 80.25% · Class X (ICSE) 91.20%</p><span class="cv-where">Lucknow, India</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-experience">
+        <h3 id="cv-experience">Experience</h3>
+        <div class="cv-body">
+          <article class="cv-entry">
+            <div class="cv-row"><h4>India Space Academy</h4><span class="cv-when">May 2026 – Jul 2026</span></div>
+            <div class="cv-row"><p class="cv-role">Remote Sensing &amp; GIS Trainee</p><span class="cv-where">Remote</span></div>
+            <p class="cv-note">Remote sensing reports on the Urban Heat Island effect and Aerosol Optical Depth / NO₂ over Lucknow, from MODIS and Sentinel-5P data processed in Google Earth Engine.</p>
+          </article>
+          <article class="cv-entry">
+            <div class="cv-row"><h4>Voxa Studio</h4><span class="cv-when">Sep 2025 – Dec 2025</span></div>
+            <div class="cv-row"><p class="cv-role">Intern</p></div>
+            <p class="cv-note">Real client projects, and hands-on experience with software development workflows and collaborative engineering.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-leadership">
+        <h3 id="cv-leadership">Leadership</h3>
+        <div class="cv-body">
+          <article class="cv-entry">
+            <div class="cv-row"><h4>Aperture Digital Arts Society</h4><span class="cv-when">May 2025 – May 2026</span></div>
+            <div class="cv-row"><p class="cv-role">Head of Coverage Photography</p><span class="cv-where">Manipal University Jaipur</span></div>
+            <p class="cv-note">Led the photography team across 75+ event assignments, including CEO Conclave, Manipal Marathon, Oneiros and TechIdeate, managing coverage, delivery timelines and membership drives.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-publications">
+        <h3 id="cv-publications">Publication</h3>
+        <div class="cv-body">
+          <article class="cv-entry">
+            <h4 class="cv-paper">Deep Learning-Based Invisible Image Watermarking Using DWT and CNN</h4>
+            <p class="cv-role">Srivastava M., Talwar M., Singh S. · IEEE, under review</p>
+            <p class="cv-note">Built in TensorFlow/Keras and evaluated with PSNR, SSIM and bit error rate under noise, JPEG, crop, scale and rotation attacks.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-skills">
+        <h3 id="cv-skills">Toolkit</h3>
+        <div class="cv-body cv-skills">
+          <div class="skill-group">
+            <h4>Cloud &amp; DevOps</h4>
+            <ul><li>AWS EC2</li><li>Systems Manager</li><li>Docker</li><li>Docker Compose</li><li>GitHub Actions</li><li>GHCR</li><li>Kubernetes (kind)</li><li>Linux</li></ul>
+          </div>
+          <div class="skill-group">
+            <h4>Observability &amp; Testing</h4>
+            <ul><li>Prometheus</li><li>Grafana</li><li>Node Exporter</li><li>k6</li></ul>
+          </div>
+          <div class="skill-group">
+            <h4>Languages, Frameworks &amp; Data</h4>
+            <ul><li>Python</li><li>React</li><li>Tauri</li><li>PostgreSQL</li><li>SQLite</li><li>TensorFlow/Keras</li><li>Leaflet</li><li>Google Earth Engine</li></ul>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="contact" class="panel" aria-labelledby="contact-title">
+      <h2 id="contact-title" class="contact-title">Let's talk.</h2>
+      <p class="contact-lede">I'm looking for DevOps and SRE roles. I'm also up for photography work, a collaboration, or just a hello.</p>
+      <a class="contact-email" href="mailto:meulsri.0701@gmail.com">meulsri.0701@gmail.com</a>
+      <ul class="contact-links">
+        <li><a href="https://www.linkedin.com/in/mehul-srivastava-293923240/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/Mehulsri07" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.instagram.com/mehul_sri_07/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="Mehul_Resume_.pdf" download>Resume (PDF)</a></li>
+      </ul>
+    </section>
+
+    <footer class="site-footer">© Mehul Srivastava</footer>
+  </main>
+
   <canvas id="moon-canvas"></canvas>
 
   <div class="hover-bg coding-bg">
@@ -95,8 +206,8 @@
 
   <!-- Always-visible nav for sub-pages -->
   <nav id="site-nav" aria-label="Site">
-    <a href="pages/about.html" class="site-link">About</a>
-    <a href="pages/contact.html" class="site-link">Contact</a>
+    <a href="#about" class="site-link">About</a>
+    <a href="#contact" class="site-link">Contact</a>
     <a href="Mehul_Resume_.pdf" download class="site-link">Resume</a>
   </nav>
 

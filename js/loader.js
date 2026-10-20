@@ -102,8 +102,6 @@ export async function loadPortfolioModel(scene, type, options = {}) {
 
   model.traverse((child) => {
     if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
       applyModelMaterial(child, texture, renderer, type);
     }
   });

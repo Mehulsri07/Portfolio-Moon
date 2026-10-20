@@ -2,26 +2,25 @@
 window.addEventListener('error', e => console.error('Global Error:', e));
 window.addEventListener('unhandledrejection', e => console.error('Promise Error:', e));
 
-import { createScrollController, createAnimationLoop } from './animation.js';
+import { createScrollController, createAnimationLoop } from './animation.js?v=5';
 
 // Import visual effects
-import { initStarfield } from './starfield.js';
 import { initCursorTrail } from './cursor-trail.js';
 import { initHoverEffects } from './hover-effects.js';
 import { initTransitions } from './transitions.js?v=2';
 
 const canvas = document.getElementById('moon-canvas');
 const labels = document.getElementById('labels');
+const about = document.getElementById('about');
 const loadingEl = document.getElementById('moon-loading');
 const loadingFill = loadingEl?.querySelector('.moon-loading-fill');
 const loadingBar = loadingEl?.querySelector('.moon-loading-bar');
 
 // Navigation first: the Coding/Creativity labels must appear on scroll
 // even if Three.js, the CDN or WebGL fails below.
-const scrollState = createScrollController(labels);
+const scrollState = createScrollController(labels, about);
 
 // Initialize visual effects
-initStarfield();
 initCursorTrail();
 initHoverEffects();
 initTransitions();
@@ -41,7 +40,7 @@ function finishLoading() {
 async function startMoon() {
   // Loaded lazily so a failed three.js download cannot take the page's links with it
   const [{ createScene, createBloomComposer, updateSceneTheme }, { loadPortfolioModel }, { setupInteraction }] =
-    await Promise.all([import('./scene.js'), import('./loader.js'), import('./interaction.js')]);
+    await Promise.all([import('./scene.js?v=3'), import('./loader.js?v=2'), import('./interaction.js')]);
 
   const { scene, camera, renderer, keyLight, fillLight, ambientLight } = createScene(canvas);
   const { composer, bloomPass } = createBloomComposer(renderer, scene, camera);
@@ -58,6 +57,7 @@ async function startMoon() {
     camera,
     getMoon: () => activeModel,
     scrollState,
+    keyLight,
   });
 
   window.addEventListener('resize', () => {

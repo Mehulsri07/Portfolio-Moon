@@ -21,7 +21,7 @@ FONT_NAME = "C:/Windows/Fonts/GARA.TTF"
 FONT_ROLE = "C:/Windows/Fonts/consola.ttf"
 
 
-def moon(radius):
+def moon(radius, light=(0.0, -0.86, 0.5)):
     """Orthographic view of the equirectangular moon texture, lit from above."""
     tex = np.asarray(Image.open("assets/moon_texture.jpg").convert("RGB"), dtype=np.float32) / 255
     th, tw = tex.shape[:2]
@@ -41,7 +41,7 @@ def moon(radius):
     rgb = tex[v, u]
 
     # Key light from above and slightly toward the viewer, like the site's scene
-    light = np.array([0.0, -0.86, 0.5])
+    light = np.array(light, dtype=float) / np.linalg.norm(light)
     lit = np.clip(nx * light[0] + ny * light[1] + nz * light[2], 0, 1) ** 0.9
     shade = (0.05 + 0.95 * lit)[..., None]
     rgb = rgb * shade * np.array([0.92, 0.96, 1.06])   # faint cool cast

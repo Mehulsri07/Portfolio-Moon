@@ -26,7 +26,6 @@ body {
   color: var(--text);
   overflow-x: hidden;
   font-family: var(--mono);
-  min-height: 200vh;
   transition: background var(--transition), color var(--transition);
 }
 
@@ -49,7 +48,7 @@ p {
   z-index: 10;
   pointer-events: none;
   padding-bottom: 14vh;
-  background: radial-gradient(circle at center, rgba(121, 182, 242, 0.05) 0%, transparent 60%);
+  background: radial-gradient(circle at center, rgba(226, 217, 198, 0.035) 0%, transparent 60%);
 }
 
 .welcome-line {
@@ -60,7 +59,7 @@ p {
   filter: blur(20px);
   transform: translateY(10px);
   animation: blurIn 2s forwards;
-  text-shadow: 0 2px 16px #79b6f2, 0 0 2px #fff2;
+  text-shadow: 0 2px 18px rgba(226, 217, 198, 0.22);
 }
 
 .welcome-line:first-child {
@@ -150,8 +149,8 @@ p {
 .moon-loading-label {
   display: block;
   font-family: var(--mono);
-  font-size: .7rem;
-  letter-spacing: .35em;
+  font-size: .8rem;
+  letter-spacing: .3em;
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 14px;
@@ -356,6 +355,7 @@ body:has(.label.right:hover) .label.right {
   text-transform: uppercase;
   text-decoration: none;
   color: rgba(248, 248, 250, 0.72);
+  text-shadow: 0 1px 10px rgba(5, 6, 9, 0.9); /* readable where the parked moon reaches the top */
   transition: color 0.3s ease;
 }
 .site-link:hover {
@@ -475,11 +475,6 @@ a:focus-visible {
     display: none;
   }
 
-  /* Reduce star count impact — canvas still renders but lighter */
-  #starfield-canvas {
-    opacity: 0.6;
-  }
-
   /* Cursor trail off on touch devices */
   #cursor-trail-canvas {
     display: none;
@@ -506,3 +501,360 @@ a:focus-visible {
   }
 }
 
+/* ── About + Contact ─────────────────────────────────────
+   The moon parks on the right edge (see animation.js) while these
+   scroll by on the left, laid out like the resume. */
+html {
+  scroll-behavior: smooth;
+}
+
+#sections {
+  position: relative;
+  z-index: 10;
+}
+
+.panel {
+  /* stay clear of the parked moon, which covers ~0.55 x viewport height from the right edge */
+  width: min(760px, calc(100vw - 55vh - 12vw));
+  margin-left: 7vw;
+  padding: 16vh 0 10vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+}
+
+#about {
+  padding-top: 22vh;
+}
+
+.about-intro {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* A thin moonlit orbit around the portrait */
+.about-photo {
+  flex: none;
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 6px var(--bg),
+    0 0 0 7px rgba(226, 217, 198, 0.45),
+    0 0 48px rgba(226, 217, 198, 0.12);
+}
+
+.about-name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 4.6vw, 3.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+}
+
+.about-tagline {
+  margin-top: 0.55rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.about-lead {
+  max-width: 34ch;
+  margin-top: 2.75rem;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.45rem, 2.2vw, 1.85rem);
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-top: 2.25rem;
+}
+
+.about-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 48px;
+  padding: 0 1.4rem;
+  border: 1px solid rgba(226, 217, 198, 0.55);
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--cream);
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.about-cta::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-cta:hover {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--bg);
+}
+
+.about-cta:hover::after {
+  transform: translateX(3px) rotate(45deg);
+}
+
+.about-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.about-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.about-links a,
+.contact-links a,
+.contact-email {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(226, 217, 198, 0.35);
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color 0.3s ease, color 0.3s ease;
+}
+
+.about-links a:hover,
+.contact-links a:hover,
+.contact-email:hover {
+  color: var(--cream);
+  text-decoration-color: var(--cream);
+}
+
+/* Sections: heading in its own column, entries strung along a thin orbit line */
+.cv-section {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0 2rem;
+  margin-top: 4rem;
+}
+
+.cv-section h3 {
+  padding-top: 0.1rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--cream);
+}
+
+.cv-body {
+  border-left: 1px solid rgba(226, 217, 198, 0.18);
+}
+
+.cv-entry {
+  position: relative;
+  padding-left: 1.6rem;
+}
+
+.cv-entry::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 0.45rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 0 0 1px var(--cream);
+}
+
+.cv-entry + .cv-entry {
+  margin-top: 2rem;
+}
+
+.cv-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.15rem 1.5rem;
+}
+
+.cv-entry h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.cv-paper {
+  max-width: 46ch;
+}
+
+.cv-role {
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(248, 248, 250, 0.78);
+}
+
+.cv-when,
+.cv-where {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.cv-note {
+  max-width: 62ch;
+  margin-top: 0.55rem;
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(248, 248, 250, 0.8);
+}
+
+.skill-group {
+  padding-left: 1.6rem;
+}
+
+.skill-group + .skill-group {
+  margin-top: 1.5rem;
+}
+
+.skill-group h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.skill-group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  list-style: none;
+}
+
+.skill-group li {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid rgba(226, 217, 198, 0.22);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: rgba(248, 248, 250, 0.85);
+}
+
+#contact {
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12vh 0 6vh;
+}
+
+.contact-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1;
+  color: var(--cream);
+}
+
+.contact-lede {
+  max-width: 52ch;
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(248, 248, 250, 0.85);
+}
+
+.contact-email {
+  width: fit-content;
+  margin-top: 2.25rem;
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  overflow-wrap: anywhere;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2rem;
+  margin-top: 1.75rem;
+  list-style: none;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+
+.contact-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.site-footer {
+  margin-left: 7vw;
+  padding: 0 0 2.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+@media (max-width: 768px) {
+  .panel {
+    width: auto;
+    margin: 0 1.5rem;
+    padding: 12vh 0 8vh;
+  }
+  #about {
+    padding-top: 14vh;
+  }
+  .about-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .about-photo {
+    width: 104px;
+    height: 104px;
+  }
+  .cv-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .site-footer {
+    margin-left: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
