@@ -323,7 +323,7 @@
 
     /* ── Project screenshots ── */
     .card-shots {
-      margin-top: 1rem;
+      margin-bottom: 1.5rem;
       max-width: 720px;
     }
     .card-shots a {
@@ -434,20 +434,20 @@
             soil layers, pipes, water levels and site photos — with an offline city map of water depths and geological
             cross-sections.</p>
 
-          <figure class="card-shots">
-            <a class="shot-main" href="../Images/projects/stratafield-home.webp" target="_blank" rel="noopener">
-              <img src="../Images/projects/stratafield-home.webp" alt="StrataField's home screen: water level over the years, the newest borewells and what needs attention" width="1240" height="780" loading="lazy" decoding="async">
-            </a>
-            <div class="shot-strip">
-              <a href="../Images/projects/stratafield-borewell.webp" target="_blank" rel="noopener"><img src="../Images/projects/stratafield-borewell.webp" alt="A borewell's page: details, soil layers, pipe and water level" width="1000" height="629" loading="lazy" decoding="async"></a>
-              <a href="../Images/projects/stratafield-map.webp" target="_blank" rel="noopener"><img src="../Images/projects/stratafield-map.webp" alt="The map, coloured by depth to water" width="1000" height="629" loading="lazy" decoding="async"></a>
-              <a href="../Images/projects/stratafield-section-drawing.webp" target="_blank" rel="noopener"><img src="../Images/projects/stratafield-section-drawing.webp" alt="A cross-section between borewells: measured columns with estimates between them" width="1000" height="629" loading="lazy" decoding="async"></a>
-            </div>
-            <figcaption>Screenshots from the released app.</figcaption>
-          </figure>
 
           <div class="project-details">
             <div class="details-content">
+              <figure class="card-shots">
+                <a class="shot-main" href="../Images/projects/stratafield-home.webp" target="_blank" rel="noopener">
+                  <img data-src="../Images/projects/stratafield-home.webp" alt="StrataField's home screen: water level over the years, the newest borewells and what needs attention" width="1240" height="780" loading="lazy" decoding="async">
+                </a>
+                <div class="shot-strip">
+                  <a href="../Images/projects/stratafield-borewell.webp" target="_blank" rel="noopener"><img data-src="../Images/projects/stratafield-borewell.webp" alt="A borewell's page: details, soil layers, pipe and water level" width="1000" height="629" loading="lazy" decoding="async"></a>
+                  <a href="../Images/projects/stratafield-map.webp" target="_blank" rel="noopener"><img data-src="../Images/projects/stratafield-map.webp" alt="The map, coloured by depth to water" width="1000" height="629" loading="lazy" decoding="async"></a>
+                  <a href="../Images/projects/stratafield-section-drawing.webp" target="_blank" rel="noopener"><img data-src="../Images/projects/stratafield-section-drawing.webp" alt="A cross-section between borewells: measured columns with estimates between them" width="1000" height="629" loading="lazy" decoding="async"></a>
+                </div>
+                <figcaption>Screenshots from the released app.</figcaption>
+              </figure>
               <h3>Implementation</h3>
               <p>Rebuilt the original Electron version on Tauri 2, cutting the installer from 134 MB to 3.5 MB, and replaced sql.js with native SQLite (schema migrations, edit history, recycle bin, daily backups) that imports the old app's data automatically. GitHub Actions runs typecheck, lint, unit tests, a Windows end-to-end test and a clean-machine installer test; tagged releases publish signed builds that installed copies auto-update from.</p>
               <h3>Tech Stack</h3>
@@ -618,7 +618,15 @@
     document.querySelectorAll('.btn-toggle-details').forEach(btn => {
       btn.addEventListener('click', () => {
         const details = btn.closest('.project-card').querySelector('.project-details');
-        btn.setAttribute('aria-expanded', String(details.classList.toggle('expanded')));
+        const open = details.classList.toggle('expanded');
+        btn.setAttribute('aria-expanded', String(open));
+        // Screenshots stay unloaded until someone actually opens Details
+        if (open) {
+          details.querySelectorAll('img[data-src]').forEach(img => {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          });
+        }
       });
     });
 
