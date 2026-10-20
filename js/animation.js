@@ -1,5 +1,8 @@
 // js/animation.js
 
+// Moon radius in world units after loader.js scales the model (6.4 * 1.06 / 2)
+const BASE_RADIUS = 3.392;
+
 // Constant idle spin: 1.5 revolutions per minute, in radians per second
 const SPIN_RAD_PER_SEC = (1.5 * 2 * Math.PI) / 60;
 
@@ -82,9 +85,19 @@ export function createAnimationLoop({ composer, renderer, scene, camera, getMoon
       // Narrow screens: the parked moon would sit behind most of the text, so it fades
       const narrow = camera.aspect < 1;
 
+      // One size for the whole scroll: just taller than the screen, so once parked it fills the
+      // right edge top to bottom. Portrait screens keep the original size; there it already
+      // spans the width. Solving for the radius whose on-screen size hits the target accounts
+      // for perspective making a sphere look slightly larger than its radius.
+      const d = camera.position.z;
+      const apparent = halfH * 1.05;
+      const size = narrow ? 1 : (apparent * d) / Math.sqrt(d * d + apparent * apparent) / BASE_RADIUS;
+      moon.userData.baseScale ??= moon.scale.x;
+      moon.scale.setScalar(moon.userData.baseScale * size);
+
       const target = {
         x: side * (w / 2),                                   // px right of centre: centre on the right edge
-        y: lerp((rise * 5.5 - 5.5) * pxPerUnit, 0, side),    // px above centre: rises from below
+        y: lerp((rise - 1) * 5.5 * size * pxPerUnit, 0, side), // px above centre: rises from below
         rotY: Math.PI * (1 - rise) - side * 0.9,
         opacity: narrow ? lerp(1, 0.28, side) : 1,
         light: side,

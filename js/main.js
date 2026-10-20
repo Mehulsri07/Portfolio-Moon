@@ -2,7 +2,7 @@
 window.addEventListener('error', e => console.error('Global Error:', e));
 window.addEventListener('unhandledrejection', e => console.error('Promise Error:', e));
 
-import { createScrollController, createAnimationLoop } from './animation.js?v=6';
+import { createScrollController, createAnimationLoop } from './animation.js?v=7';
 
 // Import visual effects
 import { initCursorTrail } from './cursor-trail.js';
