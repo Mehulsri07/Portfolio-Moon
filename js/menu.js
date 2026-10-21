@@ -1,9 +1,17 @@
 // js/menu.js
-// Mobile menu for the sub-pages. The hamburger stays above the open menu
-// and turns into the close button.
+// Mobile menu for every page. The hamburger stays above the open menu
+// and turns into the close button. Also marks the sub-page nav once scrolled.
 (function () {
   const btn = document.getElementById('hamburger');
   const menu = document.getElementById('mobile-menu');
+  // Sub-pages: the nav bar stays clear over the corner moon until the page scrolls
+  const nav = document.querySelector('.nav');
+  if (nav) {
+    const mark = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', mark, { passive: true });
+    mark();
+  }
+
   if (!btn || !menu) return;
 
   function setOpen(open) {
@@ -14,6 +22,10 @@
   }
 
   btn.setAttribute('aria-expanded', 'false');
+  // Same-page links (#about, #contact) should close the menu as they scroll
+  menu.addEventListener('click', (e) => {
+    if (e.target.closest('a')) setOpen(false);
+  });
   btn.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
 
   document.addEventListener('keydown', (e) => {

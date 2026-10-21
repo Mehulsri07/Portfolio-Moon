@@ -2,12 +2,12 @@
 window.addEventListener('error', e => console.error('Global Error:', e));
 window.addEventListener('unhandledrejection', e => console.error('Promise Error:', e));
 
-import { createScrollController, createAnimationLoop } from './animation.js?v=7';
+import { createScrollController, createAnimationLoop } from './animation.js?v=8';
 
 // Import visual effects
 import { initCursorTrail } from './cursor-trail.js';
 import { initHoverEffects } from './hover-effects.js';
-import { initTransitions } from './transitions.js?v=2';
+import { initTransitions } from './transitions.js?v=3';
 
 const canvas = document.getElementById('moon-canvas');
 const labels = document.getElementById('labels');
@@ -39,8 +39,8 @@ function finishLoading() {
 
 async function startMoon() {
   // Loaded lazily so a failed three.js download cannot take the page's links with it
-  const [{ createScene, createBloomComposer, updateSceneTheme }, { loadPortfolioModel }, { setupInteraction }] =
-    await Promise.all([import('./scene.js?v=3'), import('./loader.js?v=2'), import('./interaction.js')]);
+  const [{ createScene, createBloomComposer, updateSceneTheme }, { loadPortfolioModel }] =
+    await Promise.all([import('./scene.js?v=3'), import('./loader.js?v=2')]);
 
   const { scene, camera, renderer, keyLight, fillLight, ambientLight } = createScene(canvas);
   const { composer, bloomPass } = createBloomComposer(renderer, scene, camera);
@@ -81,12 +81,6 @@ async function startMoon() {
 
   setLoadingProgress(1);
 
-  setupInteraction({
-    canvas,
-    camera,
-    moon: activeModel,
-    isInteractive: () => scrollState.moonFade > 0.18,
-  });
 }
 
 startMoon()

@@ -97,7 +97,7 @@ export function createAnimationLoop({ composer, renderer, scene, camera, getMoon
 
       const target = {
         x: side * (w / 2),                                   // px right of centre: centre on the right edge
-        y: lerp((rise - 1) * 5.5 * size * pxPerUnit, 0, side), // px above centre: rises from below
+        y: lerp((rise - 1) * 5.0 * size * pxPerUnit, 0, side), // px above centre: rises from below
         rotY: Math.PI * (1 - rise) - side * 0.9,
         opacity: narrow ? lerp(1, 0.28, side) : 1,
         light: side,

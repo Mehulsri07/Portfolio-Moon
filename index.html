@@ -27,7 +27,7 @@
   <!-- Preload the moon model so it's ready when user scrolls -->
   <link rel="preload" href="./assets/models/moon_opt.glb" as="fetch" crossorigin>
 
-  <link rel="stylesheet" href="./css/style.css?v=24" />
+  <link rel="stylesheet" href="./css/style.css?v=25" />
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"
     rel="stylesheet" />
@@ -41,7 +41,8 @@
   }
   </script>
 
-  <script type="module" src="./js/main.js?v=31"></script>
+  <script src="./js/menu.js?v=2" defer></script>
+  <script type="module" src="./js/main.js?v=32"></script>
 </head>
 
 <body>
@@ -70,8 +71,7 @@
 
 
   <section id="hero">
-    <span class="welcome-line">Welcome to</span>
-    <span class="welcome-line cursive">my world</span>
+    <p class="welcome"><span class="welcome-line">Welcome to</span> <span class="welcome-line cursive">my world</span></p>
     <h1 class="hero-name">Mehul Srivastava</h1>
     <p class="hero-role">DevOps &amp; SRE · Event photography</p>
     <div class="hint">Scroll to reveal</div>
@@ -95,9 +95,7 @@
       <div class="about-actions">
         <a class="about-cta" href="pages/coding.html">See my projects</a>
         <p class="about-links">
-          <a href="mailto:mehul.srivastava0701@gmail.com">Email</a>
-          <a href="https://www.linkedin.com/in/mehul-sri/" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="https://github.com/Mehulsri07" target="_blank" rel="noopener">GitHub</a>
+          <a href="pages/creativity.html">Photography</a>
           <a href="Mehul_Resume_.pdf" download>Resume (PDF)</a>
         </p>
       </div>
@@ -206,10 +204,18 @@
 
   <!-- Always-visible nav for sub-pages -->
   <nav id="site-nav" aria-label="Site">
+    <a href="pages/coding.html" class="site-link">Projects</a>
+    <a href="pages/creativity.html" class="site-link">Photography</a>
     <a href="#about" class="site-link">About</a>
     <a href="#contact" class="site-link">Contact</a>
     <a href="Mehul_Resume_.pdf" download class="site-link">Resume</a>
   </nav>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="pages/coding.html">Projects</a><a href="pages/creativity.html">Photography</a>
+    <a href="#about">About</a><a href="#contact">Contact</a>
+    <a href="Mehul_Resume_.pdf" download>Resume</a>
+  </div>
 
   <!-- Easter egg tooltip -->
   <div id="easter-egg-toast" class="easter-toast">You found the astronaut.</div>

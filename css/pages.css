@@ -40,10 +40,15 @@ body {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 0.5rem 3rem;
   display: flex; justify-content: space-between; align-items: center;
-  background: rgba(9, 9, 33, 0.72);
-  backdrop-filter: blur(20px) saturate(1.6);
-  -webkit-backdrop-filter: blur(20px) saturate(1.6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+/* Clear over the corner moon at the top; a solid bar once the page scrolls (menu.js) */
+.nav.scrolled {
+  background: rgba(9, 9, 33, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: rgba(255, 255, 255, 0.05);
 }
 .back {
   font-family: var(--mono); text-decoration: none; color: var(--text-muted);
@@ -113,12 +118,12 @@ body {
   right: -11vw;
   width: min(36vw, 560px);
   height: auto;
-  opacity: 0.55;
+  opacity: 0.85;
   user-select: none;
 }
 @media (max-width: 768px) {
   .page-moon-wrap { height: 50vw; }
-  .page-moon { top: -24vw; right: -26vw; width: 70vw; opacity: 0.35; }
+  .page-moon { top: -24vw; right: -26vw; width: 70vw; opacity: 0.5; }
 }
 
 /* ── Resume Button ── */
@@ -145,7 +150,7 @@ body {
 
 /* ── Browser surfaces ── */
 a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
-  outline: 1px solid var(--accent);
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
 ::selection { background: var(--accent); color: var(--bg); }

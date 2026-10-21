@@ -4,16 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Design & Creativity | Portfolio</title>
-  <meta name="description" content="A visual portfolio showcasing photography, design, and creative exploration through a curated gallery of work.">
+  <title>Photography | Mehul Srivastava</title>
+  <meta name="description" content="Event, stage and street photography by Mehul Srivastava, head of coverage photography at Aperture, Manipal University Jaipur.">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
-  <meta property="og:title" content="Design & Creativity | Portfolio">
-  <meta property="og:description" content="Photography and creative visual works.">
+  <meta property="og:title" content="Photography | Mehul Srivastava">
+  <meta property="og:description" content="Event, stage and street photography by Mehul Srivastava.">
   <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@1,400&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css?v=7" />
+  <link rel="stylesheet" href="../css/pages.css?v=8" />
   <style>
     body {
       margin: 0;
@@ -51,11 +51,13 @@
     }
 
     h1 {
-      font-weight: 300;
-      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.8rem, 6vw, 4.6rem);
       margin: 0 0 1.5rem 0;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.01em;
       line-height: 1.05;
+      color: var(--accent-warm);
       opacity: 0;
       animation: fadeUp 0.8s var(--ease-out) 0.35s forwards;
     }
@@ -63,7 +65,7 @@
     h1 em {
       font-style: italic;
       font-weight: 400;
-      color: var(--accent);
+      color: var(--accent-warm);
     }
 
     .subtitle {
@@ -119,12 +121,12 @@
       overflow: hidden;
       cursor: pointer;
       background: var(--surface);
-      box-shadow: 0 0 30px rgba(200, 184, 255, 0.3);
+      box-shadow: 0 0 22px rgba(255, 255, 255, 0.07);
       transition: box-shadow 0.6s var(--ease-out);
     }
 
     .gallery-item:hover {
-      box-shadow: 0 0 44px rgba(200, 184, 255, 0.5);
+      box-shadow: 0 0 32px rgba(255, 255, 255, 0.12);
     }
 
     .gallery-item img {
@@ -472,22 +474,22 @@
       <span class="back-arrow">←</span> Mehul Srivastava
     </a>
     <div class="nav-links">
-      <a href="coding.html" class="nav-link">Coding</a>
-      <a href="creativity.html" class="nav-link active">Creativity</a>
+      <a href="coding.html" class="nav-link">Projects</a>
+      <a href="creativity.html" class="nav-link active">Photography</a>
       <a href="../index.html#about" class="nav-link">About</a>
       <a href="../index.html#contact" class="nav-link">Contact</a>
+      <a href="../Mehul_Resume_.pdf" download class="nav-link">Resume</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
   <div class="mobile-menu" id="mobile-menu">
-    <a href="coding.html">Coding</a><a href="creativity.html">Creativity</a>
+    <a href="coding.html">Projects</a><a href="creativity.html">Photography</a>
     <a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a>
-    <a href="../index.html">Home</a>
+    <a href="../Mehul_Resume_.pdf" download>Resume</a><a href="../index.html">Home</a>
   </div>
 
   <!-- Hero -->
   <section class="hero" id="hero">
-    <div class="hero-label">Portfolio — Visual Works</div>
     <h1>Through the <em>Lens</em>,<br>Into the Frame.</h1>
     <p class="subtitle">Stage, festival and street photography: light, motion and the moment right before it
       passes.</p>
@@ -660,6 +662,12 @@
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('active')) return;
       if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'Tab') {
+        const stops = [...lightbox.querySelectorAll('button')].filter(b => b.offsetParent !== null);
+        const i = stops.indexOf(document.activeElement);
+        e.preventDefault();
+        stops[(i + (e.shiftKey ? -1 : 1) + stops.length) % stops.length].focus();
+      }
       if (e.key === 'ArrowLeft') navigate(-1);
       if (e.key === 'ArrowRight') navigate(1);
     });
@@ -676,8 +684,8 @@
 
   </script>
 
-  <script src="../js/menu.js"></script>
-  <script type="module">import { initTransitions } from "../js/transitions.js?v=2"; initTransitions();</script>
+  <script src="../js/menu.js?v=2"></script>
+  <script type="module">import { initTransitions } from "../js/transitions.js?v=3"; initTransitions();</script>
 </body>
 
 </html>

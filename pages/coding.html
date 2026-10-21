@@ -4,16 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Engineering & Logic | Mehul Srivastava</title>
+  <title>Projects | Mehul Srivastava</title>
   <meta name="description" content="Projects by Mehul Srivastava: a released Tauri desktop app, CI/CD with GitHub Actions, Docker and AWS EC2, Prometheus/Grafana observability, and deep learning.">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
-  <meta property="og:title" content="Engineering & Logic | Mehul Srivastava">
+  <meta property="og:title" content="Projects | Mehul Srivastava">
   <meta property="og:description" content="A released desktop app, CI/CD pipelines, observability on AWS, and deep learning research.">
   <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css?v=7" />
+  <link rel="stylesheet" href="../css/pages.css?v=8" />
   <style>
     /* ── Design Tokens ── */
     :root {
@@ -47,11 +47,13 @@
     }
 
     h1 {
-      font-weight: 300;
-      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.8rem, 6vw, 4.6rem);
       margin: 0 0 1.5rem 0;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.01em;
       line-height: 1.05;
+      color: var(--accent-warm);
       opacity: 0;
       animation: fadeUp 0.8s var(--ease-out) 0.35s forwards;
     }
@@ -59,7 +61,7 @@
     h1 em {
       font-style: italic;
       font-weight: 400;
-      color: var(--accent-green);
+      color: var(--accent-warm);
     }
 
     .subtitle {
@@ -72,61 +74,15 @@
       animation: fadeUp 0.8s var(--ease-out) 0.5s forwards;
     }
 
-    /* ── GitHub Profile Card ── */
-    .github-card {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 2.5rem;
-      padding: 1rem 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      max-width: 400px;
-      text-decoration: none;
-      transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
-      opacity: 0;
-      animation: fadeUp 0.8s var(--ease-out) 0.6s forwards;
-    }
-
-    .github-card:hover {
-      border-color: var(--border-hover);
-      background: var(--surface-raised);
-    }
-
-    .github-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-    }
-
-    .github-info {
-      flex: 1;
-    }
-
-    .github-name {
-      font-size: 0.85rem;
-      font-weight: 500;
+    .subtitle-link {
       color: var(--text);
+      text-decoration: underline;
+      text-decoration-color: rgba(226, 217, 198, 0.4);
+      text-underline-offset: 0.25em;
     }
 
-    .github-handle {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-family: var(--mono);
-    }
-
-    .github-badge {
-      font-size: 0.7rem;
-      font-family: var(--mono);
-      color: var(--accent-green);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 0.35rem 0.7rem;
-      border: 1px solid rgba(111, 220, 140, 0.2);
-      border-radius: 100px;
-      background: var(--accent-green-dim);
+    .subtitle-link:hover {
+      text-decoration-color: var(--accent-warm);
     }
 
     /* ── Section Divider ── */
@@ -367,7 +323,6 @@
       .section-divider, .projects-section { padding-left: 1.5rem; padding-right: 1.5rem; }
       .project-card { grid-template-columns: 1fr; gap: 1rem; padding: 1.5rem; }
       .card-actions { align-self: flex-start; }
-      .github-card { max-width: 100%; }
       h1 { font-size: 2.2rem; }
     }
   </style>
@@ -383,34 +338,27 @@
       <span class="back-arrow">←</span> Mehul Srivastava
     </a>
     <div class="nav-links">
-      <a href="coding.html" class="nav-link active">Coding</a>
-      <a href="creativity.html" class="nav-link">Creativity</a>
+      <a href="coding.html" class="nav-link active">Projects</a>
+      <a href="creativity.html" class="nav-link">Photography</a>
       <a href="../index.html#about" class="nav-link">About</a>
       <a href="../index.html#contact" class="nav-link">Contact</a>
+      <a href="../Mehul_Resume_.pdf" download class="nav-link">Resume</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
   <div class="mobile-menu" id="mobile-menu">
-    <a href="coding.html">Coding</a><a href="creativity.html">Creativity</a>
+    <a href="coding.html">Projects</a><a href="creativity.html">Photography</a>
     <a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a>
-    <a href="../index.html">Home</a>
+    <a href="../Mehul_Resume_.pdf" download>Resume</a><a href="../index.html">Home</a>
   </div>
 
   <!-- Hero -->
   <section class="hero" id="hero">
-    <div class="hero-label">Portfolio — Source Code</div>
-    <h1>Projects <em>&</em><br>Engineering.</h1>
-    <p class="subtitle">Final-year CS (AI/ML) student working towards DevOps and SRE roles — shipping a released desktop
-      app, CI/CD pipelines, and load-tested, monitored services on AWS.</p>
+    <h1>Things I've <em>shipped</em><br>and run.</h1>
+    <p class="subtitle">Final-year CS (AI/ML) student working towards DevOps and SRE roles: a released desktop
+      app, CI/CD pipelines, and load-tested, monitored services on AWS. Source for all of it is on
+      <a class="subtitle-link" href="https://github.com/Mehulsri07" target="_blank" rel="noopener">GitHub</a>.</p>
 
-    <a href="https://github.com/Mehulsri07" target="_blank" rel="noopener" class="github-card">
-      <img src="https://avatars.githubusercontent.com/u/151434031?v=4" alt="Mehul's avatar" class="github-avatar" />
-      <div class="github-info">
-        <div class="github-name">Mehul Srivastava</div>
-        <div class="github-handle">@Mehulsri07</div>
-      </div>
-      <span class="github-badge">View Profile</span>
-    </a>
   </section>
 
   <!-- Section Divider -->
@@ -426,12 +374,12 @@
         <div class="card-body">
           <div class="card-meta">
             <span><span class="lang-dot lang-ts"></span>TypeScript</span>
-            <span>Released — auto-updating</span>
+            <span>Released · auto-updating</span>
           </div>
           <h2>StrataField</h2>
           <div class="card-fact">Installer cut from 134 MB to 3.5 MB · in daily use at a drilling business</div>
           <p>Offline-first Windows desktop app used day to day by my family's drilling business to record borewells,
-            soil layers, pipes, water levels and site photos — with an offline city map of water depths and geological
+            soil layers, pipes, water levels and site photos, with an offline city map of water depths and geological
             cross-sections.</p>
 
 
@@ -495,7 +443,7 @@
         <div class="card-body">
           <div class="card-meta">
             <span><span class="lang-dot lang-py"></span>Python</span>
-            <span>Deloitte capstone — team project</span>
+            <span>Deloitte capstone · team project</span>
           </div>
           <h2>IntelliOps</h2>
           <div class="card-fact">My part: CI/CD workflows, Kafka event bus, Helm chart</div>
@@ -504,6 +452,17 @@
 
           <div class="project-details">
             <div class="details-content">
+              <figure class="card-shots">
+                <a class="shot-main" href="../Images/projects/intelliops-overview.webp" target="_blank" rel="noopener">
+                  <img data-src="../Images/projects/intelliops-overview.webp" alt="IntelliOps overview: the live pipeline from detect to verify, noise reduction, and Prometheus signals for CPU, memory, latency and error rate" width="1440" height="900" loading="lazy" decoding="async">
+                </a>
+                <div class="shot-strip">
+                  <a href="../Images/projects/intelliops-incidents.webp" target="_blank" rel="noopener"><img data-src="../Images/projects/intelliops-incidents.webp" alt="An incident collapsed from several alerts, moving through correlation, root-cause analysis, approval and verification" width="1000" height="625" loading="lazy" decoding="async"></a>
+                  <a href="../Images/projects/intelliops-governance.webp" target="_blank" rel="noopener"><img data-src="../Images/projects/intelliops-governance.webp" alt="Governance: RBAC, reversible-only and human-in-the-loop gates with pass and block counts" width="1000" height="625" loading="lazy" decoding="async"></a>
+                  <a href="../Images/projects/intelliops-audit-log.webp" target="_blank" rel="noopener"><img data-src="../Images/projects/intelliops-audit-log.webp" alt="The audit log of every approval, execution and escalation" width="1000" height="625" loading="lazy" decoding="async"></a>
+                </div>
+                <figcaption>Screenshots from the running platform: overview, an incident, governance gates and the audit log.</figcaption>
+              </figure>
               <h3>My Contribution</h3>
               <p>CI/CD workflows covering lint, tests, a Docker Compose smoke test, a frontend build gate and GHCR image builds. Added Kafka as an event bus interchangeable with the in-memory backend (checked by contract tests), a Helm chart for Postgres, Redis, all services and a migration job, and a load-test script.</p>
               <h3>Tech Stack</h3>
@@ -522,9 +481,9 @@
         <div class="card-body">
           <div class="card-meta">
             <span><span class="lang-dot lang-py"></span>Python</span>
-            <span>IEEE — under review</span>
+            <span>IEEE · under review</span>
           </div>
-          <h2>Invisible Image Watermarking — DWT + CNN</h2>
+          <h2>Invisible Image Watermarking (DWT + CNN)</h2>
           <p>Deep learning-based invisible image watermarking using the Discrete Wavelet Transform and a CNN. Written up
             as a paper with M. Talwar and S. Singh, currently under review at IEEE.</p>
 
@@ -577,7 +536,7 @@
           <div class="card-meta">
             <span><span class="lang-dot lang-py"></span>Python</span>
           </div>
-          <h2>Handwritten Math Expressions — Deep Learning</h2>
+          <h2>Handwritten Math Expressions with Deep Learning</h2>
           <p>CRNN + CTC model in TensorFlow that reads handwritten math expressions from images and solves them, trained
             on Kaggle plus synthetic data.</p>
         </div>
@@ -632,8 +591,8 @@
 
   </script>
 
-  <script src="../js/menu.js"></script>
-  <script type="module">import { initTransitions } from "../js/transitions.js?v=2"; initTransitions();</script>
+  <script src="../js/menu.js?v=2"></script>
+  <script type="module">import { initTransitions } from "../js/transitions.js?v=3"; initTransitions();</script>
 </body>
 
 </html>

@@ -7,7 +7,7 @@ export function initTransitions() {
     Object.assign(overlay.style, {
         position: 'fixed',
         inset: '0',
-        background: '#0a0a0b',
+        background: '#090921',
         zIndex: '9999',
         opacity: '0',
         pointerEvents: 'none',
