@@ -876,7 +876,31 @@ html {
   min-height: 44px;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.ci-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  opacity: 0.8;
+}
+
+.ci-badge:hover {
+  opacity: 1;
+}
+
 .site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 1.25rem;
   margin-left: 7vw;
   padding: 0 0 2.5rem;
   font-family: var(--mono);

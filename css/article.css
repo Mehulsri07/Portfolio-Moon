@@ -1,0 +1,224 @@
+/* Long-form pages: the StrataField case study and the notes.
+   Loaded after pages.css, which supplies the tokens, nav, footer and corner moon. */
+
+.article {
+  position: relative;
+  z-index: 5;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 9.5rem 3rem 5rem;
+}
+
+.article-kind {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.article h1 {
+  margin-top: 0.75rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--accent-warm);
+}
+
+.article .dek {
+  max-width: 34ch;
+  margin-top: 1.25rem;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.3rem, 2.2vw, 1.65rem);
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.article-meta a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: rgba(226, 217, 198, 0.4);
+  text-underline-offset: 0.25em;
+}
+
+.article-meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.article h2 {
+  margin-top: 3.5rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.9rem;
+  line-height: 1.2;
+  color: var(--accent-warm);
+}
+
+.article h3 {
+  margin-top: 2rem;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.article p,
+.article li {
+  max-width: 68ch;
+  font-size: 1.04rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(248, 248, 250, 0.84);
+}
+
+.article p {
+  margin-top: 1rem;
+}
+
+.article ul {
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+}
+
+.article li + li {
+  margin-top: 0.5rem;
+}
+
+.article li::marker {
+  color: var(--accent-warm);
+}
+
+.article strong {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.article p a,
+.article li a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: rgba(226, 217, 198, 0.4);
+  text-underline-offset: 0.25em;
+}
+
+.article p a:hover,
+.article li a:hover {
+  text-decoration-color: var(--accent-warm);
+}
+
+.article code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
+.article pre {
+  max-width: 100%;
+  margin-top: 1.25rem;
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: rgba(248, 248, 250, 0.88);
+}
+
+.article pre code {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+}
+
+.article .diff-del { color: #e58c8c; }
+.article .diff-add { color: #8fd6a3; }
+
+.article figure {
+  margin-top: 2rem;
+}
+
+.article figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.article figcaption {
+  margin-top: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.shot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.shot-grid a {
+  display: block;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.shot-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.article-end {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.article-end a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-right: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: rgba(226, 217, 198, 0.4);
+  text-underline-offset: 0.25em;
+}
+
+@media (max-width: 768px) {
+  .article {
+    padding: 7.5rem 1.5rem 4rem;
+  }
+  .shot-grid {
+    grid-template-columns: 1fr;
+  }
+}

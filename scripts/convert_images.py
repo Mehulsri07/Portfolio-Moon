@@ -1,7 +1,10 @@
 """
 Auto-converts JPG/JPEG images in Images/Portfolio_Creativity/ to WebP.
 Also updates data/photos.json so any entry with a .jpg/.jpeg filename
-is rewritten to point to the .webp version.
+is rewritten to point to the .webp version, and records the camera details
+(body, lens, focal length, aperture, shutter, ISO) from the JPG's EXIF as
+"camera", which the gallery lightbox shows. WebP output drops EXIF, so this
+is the one chance to keep them.
 
 Run automatically via GitHub Actions on every push.
 """
@@ -15,6 +18,7 @@ FOLDER = Path("Images/Portfolio_Creativity")
 JSON_PATH = Path("data/photos.json")
 MAX_SIZE = (1600, 1600)
 QUALITY = 82
+CAMERAS = {}  # file stem -> camera details read from a JPG's EXIF during this run
 
 
 def fix_orientation(img):
@@ -35,6 +39,33 @@ def fix_orientation(img):
     return img
 
 
+def camera_details(img):
+    """'Sony ILCE-7M3 · FE 28-70mm F3.5-5.6 OSS · 70mm · f/14 · 0.4s · ISO 100', or None."""
+    try:
+        exif = img.getexif()
+        tags = {ExifTags.TAGS.get(k, k): v for k, v in list(exif.items()) + list(exif.get_ifd(0x8769).items())}
+    except Exception:
+        return None
+    parts = []
+    make, model = str(tags.get("Make", "")).strip(), str(tags.get("Model", "")).strip()
+    if model:
+        parts.append(model if make and model.lower().startswith(make.lower()) else f"{make.title()} {model}".strip())
+    if tags.get("LensModel"):
+        parts.append(str(tags["LensModel"]).strip())
+    if tags.get("FocalLength"):
+        parts.append(f"{float(tags['FocalLength']):g}mm")
+    if tags.get("FNumber"):
+        parts.append(f"f/{float(tags['FNumber']):g}")
+    if tags.get("ExposureTime"):
+        t = float(tags["ExposureTime"])
+        # 1/250s style only when the shutter really is a whole fraction (0.4s stays 0.4s)
+        parts.append(f"1/{round(1 / t)}s" if 0 < t < 1 and abs(1 / t - round(1 / t)) < 0.05 else f"{t:g}s")
+    iso = tags.get("ISOSpeedRatings") or tags.get("PhotographicSensitivity")
+    if iso:
+        parts.append(f"ISO {iso}")
+    return " · ".join(parts) if len(parts) >= 2 else None
+
+
 def convert_jpg_to_webp(src: Path) -> Path:
     """Convert a single JPG to WebP. Returns the output path."""
     out = src.with_suffix(".webp")
@@ -43,6 +74,7 @@ def convert_jpg_to_webp(src: Path) -> Path:
         return out
 
     img = Image.open(src)
+    CAMERAS[src.stem] = camera_details(img)
     img = fix_orientation(img)
     img.thumbnail(MAX_SIZE, Image.LANCZOS)
     img.save(out, "WEBP", quality=QUALITY, method=6)
@@ -66,6 +98,10 @@ def update_photos_json():
     for entry in photos:
         fname = entry.get("file", "")
         stem, ext = os.path.splitext(fname)
+        if CAMERAS.get(stem) and not entry.get("camera"):
+            entry["camera"] = CAMERAS[stem]
+            changed = True
+            print(f"  Camera details: {fname} -> {entry['camera']}")
         if ext.lower() in (".jpg", ".jpeg"):
             entry["file"] = stem + ".webp"
             changed = True

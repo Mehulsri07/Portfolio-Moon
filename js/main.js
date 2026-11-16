@@ -40,7 +40,7 @@ function finishLoading() {
 async function startMoon() {
   // Loaded lazily so a failed three.js download cannot take the page's links with it
   const [{ createScene, createBloomComposer, updateSceneTheme }, { loadPortfolioModel }] =
-    await Promise.all([import('./scene.js?v=3'), import('./loader.js?v=2')]);
+    await Promise.all([import('./scene.js?v=3'), import('./loader.js?v=3')]);
 
   const { scene, camera, renderer, keyLight, fillLight, ambientLight } = createScene(canvas);
   const { composer, bloomPass } = createBloomComposer(renderer, scene, camera);

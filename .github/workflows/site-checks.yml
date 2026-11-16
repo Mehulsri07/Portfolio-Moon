@@ -1,0 +1,49 @@
+name: Site checks
+
+# Every push checks the site the way a visitor meets it: no broken links, and a
+# Lighthouse audit of each page. The status badge in the site footer points here.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: Links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          fail: true
+          # 404.html uses site-absolute paths that only exist once deployed.
+          # LinkedIn and Instagram block automated requests, so they always "fail".
+          # The site's own GitHub Pages URLs are checked as local files instead.
+          args: >-
+            --no-progress
+            --exclude-path 404.html
+            --exclude 'linkedin\.com'
+            --exclude 'instagram\.com'
+            --exclude 'fonts\.(googleapis|gstatic)\.com'
+            --exclude 'mehulsri07\.github\.io'
+            --accept '200..=299,429'
+            './**/*.html'
+
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit pages
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./.github/lighthouserc.json
+          uploadArtifacts: true

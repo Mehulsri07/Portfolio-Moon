@@ -8,7 +8,39 @@
   <meta name="description" content="Portfolio of Mehul Srivastava — final-year CS (AI/ML) student working towards DevOps and SRE roles, and event photographer.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://mehulsri07.github.io/Portfolio-Moon/assets/og-image.png">
+  <link rel="canonical" href="https://mehulsri07.github.io/Portfolio-Moon/">
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Mehul Srivastava",
+    "url": "https://mehulsri07.github.io/Portfolio-Moon/",
+    "image": "https://mehulsri07.github.io/Portfolio-Moon/Images/pfp/headshot.webp",
+    "description": "Final-year Computer Science (AI/ML) student working towards DevOps and SRE roles, and event photographer.",
+    "email": "mailto:mehul.srivastava0701@gmail.com",
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Manipal University Jaipur"
+    },
+    "knowsAbout": [
+      "DevOps",
+      "Site reliability engineering",
+      "Docker",
+      "GitHub Actions",
+      "AWS",
+      "Prometheus",
+      "Grafana",
+      "Kubernetes",
+      "Photography"
+    ],
+    "sameAs": [
+      "https://www.linkedin.com/in/mehul-sri/",
+      "https://github.com/Mehulsri07",
+      "https://www.instagram.com/mehul_sri_07/"
+    ]
+  }
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:title" content="Mehul Srivastava | Portfolio">
@@ -25,12 +57,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- Preload the moon model so it's ready when user scrolls -->
-  <link rel="preload" href="./assets/models/moon_opt.glb" as="fetch" crossorigin>
+  <link rel="preload" href="./assets/models/moon_slim.glb" as="fetch" crossorigin>
 
-  <link rel="stylesheet" href="./css/style.css?v=25" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"
-    rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css?v=26" />
+  <!-- Fonts load without blocking first paint; text shows in a fallback face for a moment -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"></noscript>
 
   <script type="importmap">
   {
@@ -42,13 +74,13 @@
   </script>
 
   <script src="./js/menu.js?v=2" defer></script>
-  <script type="module" src="./js/main.js?v=32"></script>
+  <script type="module" src="./js/main.js?v=33"></script>
 </head>
 
 <body>
 
   <!-- Preloader -->
-  <div id="moon-loading" class="done" aria-live="polite" aria-busy="false">
+  <div id="moon-loading" class="done" aria-busy="false">
     <div class="moon-loading-inner">
       <div class="preloader-moon">
         <svg viewBox="0 0 60 60" width="60" height="60">
@@ -61,8 +93,8 @@
           <circle cx="35" cy="33" r="1.5" fill="rgba(200,184,255,0.05)"/>
         </svg>
       </div>
-      <span class="moon-loading-label">Entering orbit</span>
-      <div class="moon-loading-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <span class="moon-loading-label" aria-hidden="true">Entering orbit</span>
+      <div class="moon-loading-bar" role="progressbar" aria-label="Loading the moon" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <div class="moon-loading-fill"></div>
       </div>
     </div>
@@ -85,7 +117,8 @@
       <header class="about-intro">
         <img src="Images/pfp/headshot.webp" alt="Portrait of Mehul Srivastava" class="about-photo" width="136" height="136" loading="lazy" decoding="async">
         <div>
-          <h2 id="about-title" class="about-name">Mehul Srivastava</h2>
+          <h2 id="about-title" class="visually-hidden">About</h2>
+          <p class="about-name" aria-hidden="true">Mehul Srivastava</p>
           <p class="about-tagline">DevOps &amp; SRE · Event photography</p>
         </div>
       </header>
@@ -184,7 +217,7 @@
       </ul>
     </section>
 
-    <footer class="site-footer">© Mehul Srivastava</footer>
+    <footer class="site-footer"><span>© Mehul Srivastava</span> <a class="ci-badge" href="https://github.com/Mehulsri07/Portfolio-Moon/actions/workflows/site-checks.yml" target="_blank" rel="noopener"><img src="https://github.com/Mehulsri07/Portfolio-Moon/actions/workflows/site-checks.yml/badge.svg?branch=main" alt="Site checks: links and Lighthouse audits on every push" height="20" loading="lazy"></a></footer>
   </main>
 
   <canvas id="moon-canvas"></canvas>

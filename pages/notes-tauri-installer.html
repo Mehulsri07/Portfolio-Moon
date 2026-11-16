@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>134 MB to 6.4 MB: moving StrataField from Electron to Tauri | Mehul Srivastava</title>
+  <meta name="description" content="Why StrataField's Windows installer went from 134 MB to 6.4 MB, what moved into Rust, and how existing users' data came along without being touched.">
+  <link rel="canonical" href="https://mehulsri07.github.io/Portfolio-Moon/pages/notes-tauri-installer.html">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <meta property="og:title" content="134 MB to 6.4 MB: moving StrataField from Electron to Tauri">
+  <meta property="og:description" content="What moved into Rust, and how existing users' data came along untouched.">
+  <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/Images/projects/stratafield-home.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fonts load without blocking first paint; text shows in a fallback face for a moment -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"></noscript>
+  <link rel="stylesheet" href="../css/pages.css?v=9" />
+  <link rel="stylesheet" href="../css/article.css?v=1" />
+</head>
+
+<body>
+
+  <div class="page-moon-wrap" aria-hidden="true"><img src="../assets/moon-disc.webp" alt="" class="page-moon" width="640" height="640" decoding="async"></div>
+
+  <nav class="nav" id="nav">
+    <a href="../index.html" class="back">
+      <span class="back-arrow">←</span> Mehul Srivastava
+    </a>
+    <div class="nav-links">
+      <a href="coding.html" class="nav-link active">Projects</a>
+      <a href="creativity.html" class="nav-link">Photography</a>
+      <a href="../index.html#about" class="nav-link">About</a>
+      <a href="../index.html#contact" class="nav-link">Contact</a>
+      <a href="../Mehul_Resume_.pdf" download class="nav-link">Resume</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="coding.html">Projects</a><a href="creativity.html">Photography</a>
+    <a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a>
+    <a href="../Mehul_Resume_.pdf" download>Resume</a><a href="../index.html">Home</a>
+  </div>
+
+  <main class="article">
+    <p class="article-kind">Note · StrataField · 30 September 2026</p>
+    <h1>134 MB to 6.4 MB: moving StrataField from Electron to Tauri</h1>
+    <p class="dek">What made the old installer so big, what moved into Rust, and how existing data came along without being touched.</p>
+
+    <h2>Why the Electron build was 134 MB</h2>
+    <p>The first version of <a href="stratafield.html">StrataField</a> was an Electron app. Electron bundles its own copy of Chromium and Node.js into every app, so even a small record keeper shipped a full browser. The installer came to 134 MB for what is mostly forms, a map and drawings.</p>
+
+    <h2>What Tauri changes</h2>
+    <p>Tauri 2 draws the interface in WebView2, the browser engine that Windows 10 and 11 already include, and pairs it with a small Rust program. The screens are still React and TypeScript; what changed is everything that touches the computer itself.</p>
+    <p>The installer is <strong>6.4 MB</strong>, and that includes the full user manual as a PDF.</p>
+
+    <h2>What moved into Rust</h2>
+    <p>I kept the Rust side deliberately thin. It owns a fixed set of commands the screens may call (save a borewell, add a photo, make a backup) and the database layer underneath them. Validation, the Excel reader, the water-depth estimates and the cross-section geometry stayed in TypeScript in a shared <code>core</code> package, where they're quicker to change and are covered by unit tests.</p>
+
+    <h2>Replacing sql.js with native SQLite</h2>
+    <p>The Electron version stored everything with sql.js, which is SQLite compiled to WebAssembly: the database lives in memory and is written back to disk as one file. Moving to native SQLite through Rust meant real transactions, and a schema that can change safely:</p>
+    <ul>
+      <li>The schema carries a version number, and an older database is backed up and then upgraded one step at a time.</li>
+      <li>A database from a newer version of the app is refused and left alone, so an old copy can never damage newer data.</li>
+      <li>Every change is written to the record's history, and deleted borewells go to a Recycle bin first.</li>
+    </ul>
+
+    <h2>Bringing existing data across</h2>
+    <p>People already had records in the Electron app, so the first start of 1.0 looks for the old database and imports it automatically. The old file is only ever read, never changed, so if anything went wrong the original data would still be there. The end-to-end test covers this path: it starts the real app with a made-up copy of the old data and checks it all arrives.</p>
+
+    <h2>What I'd tell myself at the start</h2>
+    <ul>
+      <li><strong>Keep the native layer boring.</strong> The less logic in Rust, the less there is to rebuild when the UI changes.</li>
+      <li><strong>Treat migration as a feature with tests</strong>, not a script you run once.</li>
+    </ul>
+
+    <div class="article-end">
+      <a href="stratafield.html">StrataField case study</a>
+      <a href="coding.html">All projects</a>
+      <a href="https://github.com/Mehulsri07/StrataField/releases" target="_blank" rel="noopener">Every release</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>All works © Mehul Srivastava</p>
+  </footer>
+  <script src="../js/menu.js?v=2"></script>
+  <script type="module">import { initTransitions } from "../js/transitions.js?v=3"; initTransitions();</script>
+</body>
+
+</html>

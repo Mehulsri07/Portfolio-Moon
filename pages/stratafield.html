@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StrataField case study | Mehul Srivastava</title>
+  <meta name="description" content="How I built and ship StrataField, an offline Windows app for borewell records used by my family's drilling business: Electron to Tauri, native SQLite, and a CI pipeline that tests the installer on a clean machine.">
+  <link rel="canonical" href="https://mehulsri07.github.io/Portfolio-Moon/pages/stratafield.html">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <meta property="og:title" content="StrataField case study | Mehul Srivastava">
+  <meta property="og:description" content="An offline borewell record keeper in daily use, rebuilt from Electron to Tauri and shipped with signed auto-updates.">
+  <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/Images/projects/stratafield-home.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fonts load without blocking first paint; text shows in a fallback face for a moment -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"></noscript>
+  <link rel="stylesheet" href="../css/pages.css?v=9" />
+  <link rel="stylesheet" href="../css/article.css?v=1" />
+</head>
+
+<body>
+
+  <div class="page-moon-wrap" aria-hidden="true"><img src="../assets/moon-disc.webp" alt="" class="page-moon" width="640" height="640" decoding="async"></div>
+
+  <nav class="nav" id="nav">
+    <a href="../index.html" class="back">
+      <span class="back-arrow">←</span> Mehul Srivastava
+    </a>
+    <div class="nav-links">
+      <a href="coding.html" class="nav-link active">Projects</a>
+      <a href="creativity.html" class="nav-link">Photography</a>
+      <a href="../index.html#about" class="nav-link">About</a>
+      <a href="../index.html#contact" class="nav-link">Contact</a>
+      <a href="../Mehul_Resume_.pdf" download class="nav-link">Resume</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="coding.html">Projects</a><a href="creativity.html">Photography</a>
+    <a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a>
+    <a href="../Mehul_Resume_.pdf" download>Resume</a><a href="../index.html">Home</a>
+  </div>
+
+  <main class="article">
+    <p class="article-kind">Case study</p>
+    <h1>StrataField</h1>
+    <p class="dek">An offline borewell record keeper for my family's drilling business, rebuilt from Electron to Tauri and shipped with signed automatic updates.</p>
+
+    <div class="article-meta">
+      <span>Tauri 2 · React · TypeScript · Rust · SQLite</span>
+      <span data-release="Mehulsri07/StrataField">Released, auto-updating</span>
+      <a href="https://github.com/Mehulsri07/StrataField/releases/latest" target="_blank" rel="noopener">Download</a>
+      <a href="https://github.com/Mehulsri07/StrataField" target="_blank" rel="noopener">Source</a>
+    </div>
+
+    <figure>
+      <a href="../Images/projects/stratafield-home.webp" target="_blank" rel="noopener">
+        <img src="../Images/projects/stratafield-home.webp" alt="StrataField's home screen: water level over the years, the newest borewells and what needs attention" width="1240" height="780" decoding="async">
+      </a>
+      <figcaption>The home screen. Screenshots show made-up borewells.</figcaption>
+    </figure>
+
+    <h2>The problem</h2>
+    <p>A drilling contractor keeps a record of every borewell: the owner and location, the soil layers found at each depth, the pipe assembly, and water levels over time. In practice those records live on paper and in Excel logs written in whatever layout the person in the field preferred, which makes them hard to search and impossible to compare across a city.</p>
+    <p>StrataField keeps those records on the office computer, offline, in plain language, and then puts them to work: a map of the city coloured by depth to water, cross-sections of the ground between borewells, and the change in water level over the years. It's used day to day by my family's drilling business. The pilot city is Lucknow.</p>
+
+    <h2>What it does</h2>
+    <ul>
+      <li><strong>Records with a history.</strong> Owner, zone, location, drilling details, soil layers, pipe and screens, water readings, photos and files. Every change is kept in the record's history.</li>
+      <li><strong>Excel import that reads real field logs.</strong> Layers in fixed steps or drawn to scale, feet or metres, with the site details beside them.</li>
+      <li><strong>An offline map</strong> coloured by depth to water, using only recent readings, so levels measured years apart aren't mixed.</li>
+      <li><strong>Cross-sections</strong> along any line drawn on the map. Measured columns and the estimates between them are drawn differently and never confused.</li>
+      <li><strong>Reports and safety.</strong> A PDF per borewell, Excel export, a backup every day with an optional second copy, a Recycle bin, and restore from any backup.</li>
+    </ul>
+
+    <h2>Decisions</h2>
+
+    <h3>Electron to Tauri 2</h3>
+    <p>The first version was an Electron app with a 134 MB installer, because every Electron app ships its own copy of Chromium and Node. Tauri uses the WebView2 runtime that Windows already has, so the installer is 6.4 MB, with the full user manual bundled inside. I wrote up <a href="notes-tauri-installer.html">how the move went</a>.</p>
+
+    <h3>Native SQLite instead of sql.js</h3>
+    <p>The Electron version used sql.js, SQLite compiled to WebAssembly, which keeps the database in memory and writes it back as one file. The rebuild uses a native SQLite database from Rust, with a schema version and step-by-step migrations. Before an upgrade the old database is backed up; a database from a newer version of the app is refused and left untouched. The older app's data is imported automatically the first time 1.0 starts, and the old file is only ever read.</p>
+
+    <h3>A thin Rust layer, tested TypeScript</h3>
+    <p>The Rust side only does what needs the computer itself: the database, files and backups. Validation, the Excel reader, the water-depth estimates and the cross-section geometry live in TypeScript in a <code>core</code> package with unit tests, where they're quick to change.</p>
+
+    <h3>Never make an estimate look measured</h3>
+    <p>A few rules are written into the project plan for anyone changing the code. Layers between borewells are drawn faded and dashed, and clicking one shows which borewells it came from. A gap in the layers is flagged as unknown rather than filled in. Old water readings are never mixed with today's, and the period in use is always stated.</p>
+
+    <h2>How it ships</h2>
+    <ul>
+      <li><strong>Every pull request</strong> runs typecheck, lint, unit tests and a frontend build on Linux, then Rust formatting, lint and tests on Windows.</li>
+      <li><strong>An end-to-end test</strong> starts the real app on a scratch data folder and works through every screen, from bringing over old data to backups and restore. A performance test runs the same app with 5,000 borewells against time and memory limits per screen.</li>
+      <li><strong>Packaging changes</strong> also build the installer and run a clean-machine test on a fresh Windows runner: install, start twice, install over the top, uninstall, and check the data survives. A second test updates an installed older build to the newer one.</li>
+      <li><strong>Dependencies</strong> are checked with <code>npm audit</code> and <code>cargo audit</code> on every change, and Dependabot proposes updates weekly.</li>
+      <li><strong>Releases</strong> start from a tag. The workflow checks the tag matches the app version, builds, signs and tests the installer, and attaches it with its update signature to a draft release that I publish by hand. Installed copies check for the newest release once a day and only accept updates signed with the project's key.</li>
+    </ul>
+    <p>Version 1.0.0 was released on 30 September 2026, and 1.0.15 eight days later.</p>
+
+    <h2>Screens</h2>
+    <div class="shot-grid">
+      <a href="../Images/projects/stratafield-borewell.webp" target="_blank" rel="noopener"><img src="../Images/projects/stratafield-borewell.webp" alt="A borewell's page: details, soil layers, pipe and water level" width="1000" height="629" loading="lazy" decoding="async"></a>
+      <a href="../Images/projects/stratafield-map.webp" target="_blank" rel="noopener"><img src="../Images/projects/stratafield-map.webp" alt="The map, coloured by depth to water" width="1000" height="629" loading="lazy" decoding="async"></a>
+      <a href="../Images/projects/stratafield-section-drawing.webp" target="_blank" rel="noopener"><img src="../Images/projects/stratafield-section-drawing.webp" alt="A cross-section between borewells: measured columns with estimates between them" width="1000" height="629" loading="lazy" decoding="async"></a>
+    </div>
+
+    <div class="article-end">
+      <a href="coding.html">All projects</a>
+      <a href="notes-tauri-installer.html">Note: Electron to Tauri</a>
+      <a href="https://github.com/Mehulsri07/StrataField" target="_blank" rel="noopener">Source on GitHub</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>All works © Mehul Srivastava</p>
+  </footer>
+  <script src="../js/menu.js?v=2"></script>
+  <script src="../js/releases.js?v=1" defer></script>
+  <script type="module">import { initTransitions } from "../js/transitions.js?v=3"; initTransitions();</script>
+</body>
+
+</html>

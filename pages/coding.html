@@ -6,14 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects | Mehul Srivastava</title>
   <meta name="description" content="Projects by Mehul Srivastava: a released Tauri desktop app, CI/CD with GitHub Actions, Docker and AWS EC2, Prometheus/Grafana observability, and deep learning.">
+  <link rel="canonical" href="https://mehulsri07.github.io/Portfolio-Moon/pages/coding.html">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <meta property="og:title" content="Projects | Mehul Srivastava">
   <meta property="og:description" content="A released desktop app, CI/CD pipelines, observability on AWS, and deep learning research.">
   <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css?v=8" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fonts load without blocking first paint; text shows in a fallback face for a moment -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap"></noscript>
+  <link rel="stylesheet" href="../css/pages.css?v=9" />
   <style>
     /* ── Design Tokens ── */
     :root {
@@ -352,6 +355,7 @@
     <a href="../Mehul_Resume_.pdf" download>Resume</a><a href="../index.html">Home</a>
   </div>
 
+  <main>
   <!-- Hero -->
   <section class="hero" id="hero">
     <h1>Things I've <em>shipped</em><br>and run.</h1>
@@ -374,10 +378,10 @@
         <div class="card-body">
           <div class="card-meta">
             <span><span class="lang-dot lang-ts"></span>TypeScript</span>
-            <span>Released · auto-updating</span>
+            <span data-release="Mehulsri07/StrataField">Released · auto-updating</span>
           </div>
           <h2>StrataField</h2>
-          <div class="card-fact">Installer cut from 134 MB to 3.5 MB · in daily use at a drilling business</div>
+          <div class="card-fact">Installer cut from 134 MB to 6.4 MB · in daily use at a drilling business</div>
           <p>Offline-first Windows desktop app used day to day by my family's drilling business to record borewells,
             soil layers, pipes, water levels and site photos, with an offline city map of water depths and geological
             cross-sections.</p>
@@ -397,7 +401,7 @@
                 <figcaption>Screenshots from the released app.</figcaption>
               </figure>
               <h3>Implementation</h3>
-              <p>Rebuilt the original Electron version on Tauri 2, cutting the installer from 134 MB to 3.5 MB, and replaced sql.js with native SQLite (schema migrations, edit history, recycle bin, daily backups) that imports the old app's data automatically. GitHub Actions runs typecheck, lint, unit tests, a Windows end-to-end test and a clean-machine installer test; tagged releases publish signed builds that installed copies auto-update from.</p>
+              <p>Rebuilt the original Electron version on Tauri 2, cutting the installer from 134 MB to 6.4 MB, and replaced sql.js with native SQLite (schema migrations, edit history, recycle bin, daily backups) that imports the old app's data automatically. GitHub Actions runs typecheck, lint, unit tests, a Windows end-to-end test and a clean-machine installer test; tagged releases publish signed builds that installed copies auto-update from.</p>
               <h3>Tech Stack</h3>
               <p>Tauri 2, React, TypeScript, Rust, SQLite, Leaflet, Vitest, GitHub Actions</p>
             </div>
@@ -405,6 +409,8 @@
         </div>
         <div class="card-actions">
           <button class="btn-toggle-details" aria-expanded="false">Details</button>
+          <a href="stratafield.html" class="card-link">Case study
+            <span class="link-arrow">→</span></a>
           <a href="https://github.com/Mehulsri07/StrataField/releases/latest" target="_blank" rel="noopener" class="card-link">Download
             <span class="link-arrow">↗</span></a>
           <a href="https://github.com/Mehulsri07/StrataField" target="_blank" rel="noopener" class="card-link">Source
@@ -547,9 +553,45 @@
     </div>
   </section>
 
+
+  <div class="section-divider">
+    <div class="section-label">Notes</div>
+  </div>
+
+  <section class="projects-section">
+    <div class="projects-grid earlier">
+
+      <article class="project-card">
+        <div class="card-body">
+          <div class="card-meta"><span>LoadLab · 24 Jun 2026</span></div>
+          <h2>Fixing a Grafana redirect loop behind an Nginx sub-path</h2>
+          <p>One trailing path in <code>proxy_pass</code> sent Grafana and Nginx round in circles, and the rule that fixes it.</p>
+        </div>
+        <div class="card-actions">
+          <a href="notes-grafana-subpath.html" class="card-link">Read <span class="link-arrow">→</span></a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="card-body">
+          <div class="card-meta"><span>StrataField · 30 Sep 2026</span></div>
+          <h2>134 MB to 6.4 MB: moving from Electron to Tauri</h2>
+          <p>What made the old installer so big, what moved into Rust, and how existing data came along untouched.</p>
+        </div>
+        <div class="card-actions">
+          <a href="notes-tauri-installer.html" class="card-link">Read <span class="link-arrow">→</span></a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  </main>
+
   <!-- Footer -->
   <footer class="footer">
     <p>All works © Mehul Srivastava</p>
+    <a class="ci-badge" href="https://github.com/Mehulsri07/Portfolio-Moon/actions/workflows/site-checks.yml" target="_blank" rel="noopener"><img src="https://github.com/Mehulsri07/Portfolio-Moon/actions/workflows/site-checks.yml/badge.svg?branch=main" alt="Site checks: links and Lighthouse audits on every push" height="20" loading="lazy"></a>
   </footer>
 
   <script>
@@ -589,6 +631,7 @@
 
   </script>
 
+  <script src="../js/releases.js?v=1" defer></script>
   <script src="../js/menu.js?v=2"></script>
   <script type="module">import { initTransitions } from "../js/transitions.js?v=3"; initTransitions();</script>
 </body>

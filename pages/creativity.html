@@ -6,14 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Photography | Mehul Srivastava</title>
   <meta name="description" content="Event, stage and street photography by Mehul Srivastava, head of coverage photography at Aperture, Manipal University Jaipur.">
+  <link rel="canonical" href="https://mehulsri07.github.io/Portfolio-Moon/pages/creativity.html">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <meta property="og:title" content="Photography | Mehul Srivastava">
   <meta property="og:description" content="Event, stage and street photography by Mehul Srivastava.">
   <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@1,400&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="../css/pages.css?v=8" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fonts load without blocking first paint; text shows in a fallback face for a moment -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@1,400&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono&family=Cormorant+Garamond:ital,wght@1,400&display=swap"></noscript>
+  <link rel="stylesheet" href="../css/pages.css?v=9" />
   <style>
     body {
       margin: 0;
@@ -99,6 +102,7 @@
 
     /* ── Gallery Section ── */
     .gallery-section {
+      min-height: 100vh; /* holds the footer still while photos load in */
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 3rem 6rem;
@@ -303,6 +307,13 @@
       background: linear-gradient(90deg, var(--accent), transparent);
     }
 
+    .lightbox-camera {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
     .lightbox-desc {
       font-family: var(--sans);
       font-size: 0.88rem;
@@ -488,6 +499,7 @@
     <a href="../Mehul_Resume_.pdf" download>Resume</a><a href="../index.html">Home</a>
   </div>
 
+  <main>
   <!-- Hero -->
   <section class="hero" id="hero">
     <h1>Through the <em>Lens</em>,<br>Into the Frame.</h1>
@@ -501,6 +513,8 @@
   <section class="gallery-section" id="gallery">
     <div class="masonry" id="masonry-grid"></div>
   </section>
+
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
@@ -524,6 +538,7 @@
         <div class="lightbox-title" id="lightbox-title"></div>
         <div class="lightbox-divider"></div>
         <div class="lightbox-desc" id="lightbox-desc"></div>
+        <div class="lightbox-camera" id="lightbox-camera" hidden></div>
         <div class="lightbox-counter-inline" id="lightbox-counter"></div>
       </div>
     </div>
@@ -563,7 +578,8 @@
       imagesData = photos.map(p => ({
         src: BASE + p.file,
         title: p.title,
-        desc: p.desc
+        desc: p.desc,
+        camera: p.camera || ''
       }));
 
       photoCount.textContent = `${photos.length} Photograph${photos.length !== 1 ? 's' : ''}`;
@@ -630,6 +646,9 @@
       lightboxImg.alt = data.title;
       lightboxTitle.textContent = data.title;
       lightboxDesc.textContent = data.desc;
+      const cameraEl = document.getElementById('lightbox-camera');
+      cameraEl.textContent = data.camera;
+      cameraEl.hidden = !data.camera;
       counter.textContent = `${visualOrder().indexOf(currentIndex) + 1} / ${imagesData.length}`;
 
       requestAnimationFrame(() => {

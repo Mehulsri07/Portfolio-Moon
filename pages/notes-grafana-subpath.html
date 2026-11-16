@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fixing a Grafana redirect loop behind an Nginx sub-path | Mehul Srivastava</title>
+  <meta name="description" content="Grafana behind Nginx at /grafana/ kept redirecting to itself. The cause was one trailing path in proxy_pass, and the rule that fixes it.">
+  <link rel="canonical" href="https://mehulsri07.github.io/Portfolio-Moon/pages/notes-grafana-subpath.html">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <meta property="og:title" content="Fixing a Grafana redirect loop behind an Nginx sub-path">
+  <meta property="og:description" content="One trailing path in proxy_pass, and the rule that fixes it.">
+  <meta property="og:image" content="https://mehulsri07.github.io/Portfolio-Moon/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fonts load without blocking first paint; text shows in a fallback face for a moment -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"></noscript>
+  <link rel="stylesheet" href="../css/pages.css?v=9" />
+  <link rel="stylesheet" href="../css/article.css?v=1" />
+</head>
+
+<body>
+
+  <div class="page-moon-wrap" aria-hidden="true"><img src="../assets/moon-disc.webp" alt="" class="page-moon" width="640" height="640" decoding="async"></div>
+
+  <nav class="nav" id="nav">
+    <a href="../index.html" class="back">
+      <span class="back-arrow">←</span> Mehul Srivastava
+    </a>
+    <div class="nav-links">
+      <a href="coding.html" class="nav-link active">Projects</a>
+      <a href="creativity.html" class="nav-link">Photography</a>
+      <a href="../index.html#about" class="nav-link">About</a>
+      <a href="../index.html#contact" class="nav-link">Contact</a>
+      <a href="../Mehul_Resume_.pdf" download class="nav-link">Resume</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="coding.html">Projects</a><a href="creativity.html">Photography</a>
+    <a href="../index.html#about">About</a><a href="../index.html#contact">Contact</a>
+    <a href="../Mehul_Resume_.pdf" download>Resume</a><a href="../index.html">Home</a>
+  </div>
+
+  <main class="article">
+    <p class="article-kind">Note · LoadLab · 24 June 2026</p>
+    <h1>Fixing a Grafana redirect loop behind an Nginx sub-path</h1>
+    <p class="dek">Grafana kept redirecting to itself. The cause was one trailing path in <code>proxy_pass</code>.</p>
+
+    <h2>The setup</h2>
+    <p><a href="https://github.com/Mehulsri07/LoadLab" target="_blank" rel="noopener">LoadLab</a> runs on one EC2 instance with Docker Compose. Nginx is the only container with a published port: it serves the dashboard page at <code>/</code>, proxies the Go backend at <code>/api/</code>, and puts Grafana and Prometheus under <code>/grafana/</code> and <code>/prometheus/</code>. That keeps the security group down to port 80.</p>
+    <p>Grafana was told it lives under that sub-path:</p>
+<pre><code>GF_SERVER_ROOT_URL=http://&lt;ec2-ip&gt;/grafana/
+GF_SERVER_SERVE_FROM_SUB_PATH=true</code></pre>
+
+    <h2>The symptom</h2>
+    <p>Opening <code>/grafana/</code> never reached a dashboard. The browser bounced between redirects until it gave up.</p>
+
+    <h2>The cause</h2>
+    <p>The Nginx block looked like the usual reverse-proxy example:</p>
+<pre><code>location /grafana/ {
+    proxy_pass http://grafana:3000/;
+}</code></pre>
+    <p>When <code>proxy_pass</code> has a path after the host (here, the trailing <code>/</code>), Nginx replaces the part of the request that matched the <code>location</code> with that path. A request for <code>/grafana/</code> reached Grafana as <code>/</code>.</p>
+    <p>But <code>SERVE_FROM_SUB_PATH</code> tells Grafana that every request will arrive with <code>/grafana/</code> still on it. Seeing a bare <code>/</code>, it redirected the browser to <code>/grafana/</code>. Nginx stripped the prefix again, Grafana redirected again, and the loop never ended. Each side was doing the job of removing the prefix, so neither ever saw it.</p>
+
+    <h2>The fix</h2>
+    <p>Pass the prefix through untouched, so the app that knows its sub-path is the one that handles it:</p>
+<pre><code>location /grafana/ {
+<span class="diff-del">-   proxy_pass http://grafana:3000/;</span>
+<span class="diff-add">+   proxy_pass http://grafana:3000/grafana/;</span>
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    # Grafana Live uses a WebSocket
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+}</code></pre>
+    <p>The forwarded headers matter too. Grafana builds its redirects and links from them, so without the real host and scheme it points the browser at addresses it can't reach from outside the Docker network.</p>
+
+    <h2>The rule I took from it</h2>
+    <p>Decide which side owns the prefix, and only let that side touch it:</p>
+    <ul>
+      <li><strong>The app owns it</strong> (Grafana here): set its root URL to the sub-path and have the proxy pass the path through unchanged.</li>
+      <li><strong>The proxy owns it</strong> (Prometheus in the same file): strip the prefix in <code>proxy_pass</code> and rewrite the app's absolute redirects back with <code>proxy_redirect</code>.</li>
+    </ul>
+    <p>Both sides handling it loops, as above. Neither handling it sends the browser to paths outside the sub-path, which 404 instead.</p>
+
+    <div class="article-end">
+      <a href="coding.html">All projects</a>
+      <a href="https://github.com/Mehulsri07/LoadLab/commit/3d62943" target="_blank" rel="noopener">The commit</a>
+      <a href="https://github.com/Mehulsri07/LoadLab" target="_blank" rel="noopener">LoadLab on GitHub</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>All works © Mehul Srivastava</p>
+  </footer>
+  <script src="../js/menu.js?v=2"></script>
+  <script type="module">import { initTransitions } from "../js/transitions.js?v=3"; initTransitions();</script>
+</body>
+
+</html>

@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 const MODELS = {
-  moon: './assets/models/moon_opt.glb'
+  moon: './assets/models/moon_slim.glb'  // built from moon_opt.glb by scripts/slim_moon_glb.py
 };
 const FALLBACK_MOON_TEXTURE = 'assets/moon_texture.jpg';
 
@@ -102,6 +102,19 @@ export async function loadPortfolioModel(scene, type, options = {}) {
 
   model.traverse((child) => {
     if (child.isMesh) {
+      // The slim model ships without normals; on a sphere centred at the origin each
+      // vertex's normal is just its position, normalised (exact, and no seam artefacts)
+      const geom = child.geometry;
+      if (!geom.attributes.normal) {
+        const pos = geom.attributes.position;
+        const normals = new Float32Array(pos.count * 3);
+        const v = new THREE.Vector3();
+        for (let i = 0; i < pos.count; i++) {
+          v.fromBufferAttribute(pos, i).normalize();
+          normals.set([v.x, v.y, v.z], i * 3);
+        }
+        geom.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
+      }
       applyModelMaterial(child, texture, renderer, type);
     }
   });

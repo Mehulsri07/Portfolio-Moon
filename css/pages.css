@@ -155,6 +155,10 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
 }
 ::selection { background: var(--accent); color: var(--bg); }
 
+/* CI status badge in the footer: this site runs its own checks on every push */
+.ci-badge { display: inline-flex; align-items: center; min-height: 44px; margin-top: 0.75rem; opacity: 0.8; }
+.ci-badge:hover { opacity: 1; }
+
 /* ── Animations ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
