@@ -1,6 +1,9 @@
 // js/cursor-trail.js
 // Glowing particle trail that follows the mouse
 export function initCursorTrail() {
+  // No mouse, no trail (CSS already hides the canvas on touch; this skips the work too)
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
   const canvas = document.createElement('canvas');
   canvas.id = 'cursor-trail-canvas';
   Object.assign(canvas.style, {
@@ -38,7 +41,11 @@ export function initCursorTrail() {
         radius: Math.random() * 2.5 + 1,
       });
     }
+    if (!running) { running = true; requestAnimationFrame(draw); }
   });
+
+  // The loop sleeps once every particle has faded, so a still mouse costs nothing
+  let running = false;
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -72,8 +79,7 @@ export function initCursorTrail() {
       particles.splice(0, particles.length - 80);
     }
 
-    requestAnimationFrame(draw);
+    if (particles.length) requestAnimationFrame(draw);
+    else running = false;
   }
-
-  draw();
 }

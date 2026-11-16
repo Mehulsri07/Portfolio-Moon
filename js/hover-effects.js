@@ -1,4 +1,14 @@
 export function initHoverEffects() {
+// Each background is only visible while its label is hovered (see .hover-bg in style.css),
+// so it animates only then, plus the 0.6s fade-out. start() must be safe to call twice.
+function whileHovered(selector, start, stop) {
+    const label = document.querySelector(selector);
+    if (!label || !matchMedia('(hover: hover)').matches) return;
+    let timer;
+    label.addEventListener('mouseenter', () => { clearTimeout(timer); start(); });
+    label.addEventListener('mouseleave', () => { timer = setTimeout(stop, 700); });
+}
+
 // ── Matrix Rain (Coding Side) ─────────────────────────────────────
 (function initMatrix() {
     const canvas = document.getElementById('matrix-canvas');
@@ -57,7 +67,10 @@ export function initHoverEffects() {
         }
     }
 
-    setInterval(draw, 45);
+    let interval = null;
+    whileHovered('.label.left',
+        () => { interval ??= setInterval(draw, 45); },
+        () => { clearInterval(interval); interval = null; });
 })();
 
 
@@ -164,10 +177,13 @@ export function initHoverEffects() {
             ctx.fill();
         }
 
-        requestAnimationFrame(draw);
+        if (running) requestAnimationFrame(draw);
     }
 
-    requestAnimationFrame(draw);
+    let running = false;
+    whileHovered('.label.right',
+        () => { if (!running) { running = true; requestAnimationFrame(draw); } },
+        () => { running = false; });
 })();
 
 }

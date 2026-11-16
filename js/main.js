@@ -5,8 +5,8 @@ window.addEventListener('unhandledrejection', e => console.error('Promise Error:
 import { createScrollController, createAnimationLoop } from './animation.js?v=8';
 
 // Import visual effects
-import { initCursorTrail } from './cursor-trail.js';
-import { initHoverEffects } from './hover-effects.js';
+import { initCursorTrail } from './cursor-trail.js?v=2';
+import { initHoverEffects } from './hover-effects.js?v=2';
 import { initTransitions } from './transitions.js?v=3';
 
 const canvas = document.getElementById('moon-canvas');
